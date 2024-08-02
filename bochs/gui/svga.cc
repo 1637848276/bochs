@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: svga.cc 12081 2013-12-29 12:56:52Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2009-2013  The Bochs Project
+=======
+// $Id: svga.cc 13046 2017-01-24 21:52:19Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2009-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -72,6 +79,7 @@ void keyboard_handler(int scancode, int press);
 void mouse_handler(int button, int dx, int dy, int dz,
 		    int drx, int dry, int drz);
 
+<<<<<<< HEAD
 unsigned char reverse_byteorder(unsigned char b)
 {
     unsigned char ret = 0;
@@ -90,6 +98,15 @@ void create_vga_font()
     for (unsigned i=0;i< sizeof(bx_vgafont);i++) {
 	vgafont[i] = reverse_byteorder(vgafont[i]);
     }
+=======
+void create_vga_font()
+{
+  memcpy(vgafont, bx_vgafont, sizeof(bx_vgafont));
+
+  for (unsigned i=0;i< sizeof(bx_vgafont);i++) {
+    vgafont[i] = reverse_bitorder(vgafont[i]);
+  }
+>>>>>>> version-2.6.9
 }
 
 bx_svga_gui_c::bx_svga_gui_c()
@@ -97,12 +114,21 @@ bx_svga_gui_c::bx_svga_gui_c()
   put("SVGA");
 }
 
+<<<<<<< HEAD
+=======
+// SVGA implementation of the bx_gui_c methods (see nogui.cc for details)
+
+>>>>>>> version-2.6.9
 void bx_svga_gui_c::specific_init(int argc, char **argv, unsigned header_bar_y)
 {
   put("VGAGUI");
   if (vga_init() != 0) {
+<<<<<<< HEAD
     LOG_THIS setonoff(LOGLEV_PANIC, ACT_FATAL);
     BX_PANIC(("Unable to initialize SVGAlib"));
+=======
+    BX_FATAL(("Unable to initialize SVGAlib"));
+>>>>>>> version-2.6.9
     return;
   }
 
@@ -496,8 +522,12 @@ void bx_svga_gui_c::dimension_update(
   vga_getpalvec(0, 256, save_vga_pal);
   if (vga_setmode(newmode) != 0)
   {
+<<<<<<< HEAD
       LOG_THIS setonoff(LOGLEV_PANIC, ACT_FATAL);
       BX_PANIC (("Unable to set requested videomode: %ix%i", x, y));
+=======
+      BX_FATAL(("Unable to set requested videomode: %ix%i", x, y));
+>>>>>>> version-2.6.9
   }
 
   gl_setcontextvga(newmode);
@@ -542,10 +572,13 @@ void bx_svga_gui_c::mouse_enabled_changed_specific (bx_bool val)
 }
 
 
+<<<<<<< HEAD
 void headerbar_click(int x)
 {
 }
 
+=======
+>>>>>>> version-2.6.9
 void bx_svga_gui_c::exit(void)
 {
   vga_setmode(TEXT);

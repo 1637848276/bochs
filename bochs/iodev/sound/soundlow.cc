@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: soundlow.cc 12703 2015-04-03 12:18:53Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2011-2015  The Bochs Project
+=======
+// $Id: soundlow.cc 13160 2017-03-30 18:08:15Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2011-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -18,12 +25,16 @@
 //  License along with this library; if not, write to the Free Software
 //  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 
+<<<<<<< HEAD
 // Common sound module code and dummy sound lowlevel functions
 
 // Define BX_PLUGGABLE in files that can be compiled into plugins.  For
 // platforms that require a special tag on exported symbols, BX_PLUGGABLE
 // is used to know when we are exporting symbols and when we are importing.
 #define BX_PLUGGABLE
+=======
+// Common sound module code and base classes for sound lowlevel functions
+>>>>>>> version-2.6.9
 
 #include "iodev.h"
 
@@ -31,6 +42,7 @@
 
 #include "soundlow.h"
 
+<<<<<<< HEAD
 #ifndef WIN32
 #include <pthread.h>
 #endif
@@ -43,14 +55,50 @@ audio_buffer_t* new_audio_buffer(Bit32u size)
 {
   audio_buffer_t *newbuffer = new audio_buffer_t;
   newbuffer->data = new Bit8u[size];
+=======
+#define LOG_THIS
+
+// audio buffer support
+
+bx_audio_buffer_c *audio_buffers[2];
+
+bx_audio_buffer_c::bx_audio_buffer_c(Bit8u _format)
+{
+  format = _format;
+  root = NULL;
+}
+
+bx_audio_buffer_c::~bx_audio_buffer_c()
+{
+  while (root != NULL) {
+    delete_buffer();
+  }
+}
+
+audio_buffer_t* bx_audio_buffer_c::new_buffer(Bit32u size)
+{
+  audio_buffer_t *newbuffer = new audio_buffer_t;
+  if (format == BUFTYPE_FLOAT) {
+    newbuffer->fdata = new float[size];
+  } else {
+    newbuffer->data = new Bit8u[size];
+  }
+>>>>>>> version-2.6.9
   newbuffer->size = size;
   newbuffer->pos = 0;
   newbuffer->next = NULL;
 
+<<<<<<< HEAD
   if (audio_buffers == NULL) {
     audio_buffers = newbuffer;
   } else {
     audio_buffer_t *temp = audio_buffers;
+=======
+  if (root == NULL) {
+    root = newbuffer;
+  } else {
+    audio_buffer_t *temp = root;
+>>>>>>> version-2.6.9
 
     while (temp->next)
       temp = temp->next;
@@ -60,6 +108,7 @@ audio_buffer_t* new_audio_buffer(Bit32u size)
   return newbuffer;
 }
 
+<<<<<<< HEAD
 audio_buffer_t* get_current_buffer()
 {
   return audio_buffers;
@@ -73,6 +122,98 @@ void delete_audio_buffer()
   delete tmpbuffer;
 }
 
+=======
+audio_buffer_t* bx_audio_buffer_c::get_buffer()
+{
+  return root;
+}
+
+void bx_audio_buffer_c::delete_buffer()
+{
+  audio_buffer_t *tmpbuffer = root;
+  root = tmpbuffer->next;
+  if (tmpbuffer->size > 0) {
+    if (format == BUFTYPE_FLOAT) {
+      delete [] tmpbuffer->fdata;
+    } else {
+      delete [] tmpbuffer->data;
+    }
+  }
+  delete tmpbuffer;
+}
+
+// convert to float format for resampler
+
+static void convert_to_float(Bit8u *src, unsigned srcsize, audio_buffer_t *audiobuf)
+{
+  unsigned i, j;
+  bx_pcm_param_t *param = &audiobuf->param;
+  bx_bool issigned = (param->format & 1);
+  bx_bool setvol = (param->volume != BX_MAX_BIT16U);
+  Bit16s val16s;
+  Bit16u val16u;
+  float volume[2];
+
+  float *dst = audiobuf->fdata;
+  if (setvol) {
+    volume[0] = ((float)(param->volume & 0xff)) / 255.0F;
+    volume[1] = ((float)(param->volume >> 8)) / 255.0F;
+  }
+  if (param->bits == 8) {
+    if (issigned) {
+      for (i = 0; i < srcsize; i++) {
+        dst[i] = ((float)src[i]) / 128.0F;
+        if (setvol) {
+          dst[i] *= volume[i & 1];
+        }
+      }
+    } else {
+      for (i = 0; i < srcsize; i++) {
+        dst[i] = (((float)src[i]) - 128.0F) / 128.0F;
+        if (setvol) {
+          dst[i] *= volume[i & 1];
+        }
+      }
+    }
+  } else {
+    j = 0;
+    if (issigned) {
+      for (i = 0; i < srcsize; i += 2) {
+        val16s = (Bit16s)(src[i] | (src[i+1] << 8));
+        dst[j] = ((float)val16s) / 32768.0F;
+        if (setvol) {
+          dst[j] *= volume[i & 1];
+        }
+        j++;
+      }
+    } else {
+      for (i = 0; i < srcsize; i += 2) {
+        val16u = (Bit16u)(src[i] | (src[i+1] << 8));
+        dst[j] = (((float)val16u) - 32768.0F) / 32768.0F;
+        if (setvol) {
+          dst[j] *= volume[i & 1];
+        }
+        j++;
+      }
+    }
+  }
+}
+
+// convert from float format for output
+
+void convert_float_to_s16le(float *src, unsigned srcsize, Bit8u *dst)
+{
+  Bit16s val16s;
+  unsigned i, j = 0;
+
+  for (i = 0; i < srcsize; i++) {
+    val16s = (Bit16s)(src[i] * 32768.0F);
+    dst[j++] =(Bit8u)(val16s & 0xff);
+    dst[j++] = (Bit8u)(val16s >> 8);
+  }
+}
+
+>>>>>>> version-2.6.9
 // audio buffer callback function
 
 Bit32u pcm_callback(void *dev, Bit16u rate, Bit8u *buffer, Bit32u len)
@@ -82,7 +223,11 @@ Bit32u pcm_callback(void *dev, Bit16u rate, Bit8u *buffer, Bit32u len)
   UNUSED(rate);
 
   while (len > 0) {
+<<<<<<< HEAD
     audio_buffer_t *curbuffer = get_current_buffer();
+=======
+    audio_buffer_t *curbuffer = audio_buffers[1]->get_buffer();
+>>>>>>> version-2.6.9
     if (curbuffer == NULL)
       break;
     Bit32u tmplen = curbuffer->size - curbuffer->pos;
@@ -96,17 +241,52 @@ Bit32u pcm_callback(void *dev, Bit16u rate, Bit8u *buffer, Bit32u len)
       len -= tmplen;
     }
     if (curbuffer->pos >= curbuffer->size) {
+<<<<<<< HEAD
       delete_audio_buffer();
+=======
+      audio_buffers[1]->delete_buffer();
+>>>>>>> version-2.6.9
     }
   }
   return copied;
 }
 
+<<<<<<< HEAD
 // mixer thread support
 
 int mixer_control = 0;
 BX_MUTEX(mixer_mutex);
 
+=======
+// resampler & mixer thread support
+
+int resampler_control = 0;
+int mixer_control = 0;
+BX_MUTEX(resampler_mutex);
+BX_MUTEX(mixer_mutex);
+
+BX_THREAD_FUNC(resampler_thread, indata)
+{
+  bx_soundlow_waveout_c *waveout = (bx_soundlow_waveout_c*)indata;
+  resampler_control = 1;
+  while (resampler_control > 0) {
+    BX_LOCK(resampler_mutex);
+    audio_buffer_t *curbuffer = audio_buffers[0]->get_buffer();
+    BX_UNLOCK(resampler_mutex);
+    if (curbuffer != NULL) {
+      waveout->resampler(curbuffer, NULL);
+      BX_LOCK(resampler_mutex);
+      audio_buffers[0]->delete_buffer();
+      BX_UNLOCK(resampler_mutex);
+    } else {
+      BX_MSLEEP(20);
+    }
+  }
+  resampler_control = -1;
+  BX_THREAD_EXIT;
+}
+
+>>>>>>> version-2.6.9
 BX_THREAD_FUNC(mixer_thread, indata)
 {
   int len;
@@ -128,21 +308,40 @@ BX_THREAD_FUNC(mixer_thread, indata)
   BX_THREAD_EXIT;
 }
 
+<<<<<<< HEAD
 // bx_soundlow_waveout_c class implemenzation
+=======
+// bx_soundlow_waveout_c class implementation
+>>>>>>> version-2.6.9
 // The dummy output methods don't do anything.
 
 bx_soundlow_waveout_c::bx_soundlow_waveout_c()
 {
   put("waveout", "WAVOUT");
+<<<<<<< HEAD
   real_pcm_param = default_pcm_param;
   emu_pcm_param = default_pcm_param;
   cb_count = 0;
   pcm_callback_id = -1;
+=======
+  if (audio_buffers[0] == NULL) {
+    audio_buffers[0] = new bx_audio_buffer_c(BUFTYPE_FLOAT);
+    audio_buffers[1] = new bx_audio_buffer_c(BUFTYPE_UCHAR);
+  }
+  real_pcm_param = default_pcm_param;
+  cb_count = 0;
+  pcm_callback_id = -1;
+#if BX_HAVE_LIBSAMPLERATE || BX_HAVE_SOXR_LSR
+  int ret = 0;
+  src_state = src_new(SRC_SINC_MEDIUM_QUALITY, 2, &ret);
+#endif
+>>>>>>> version-2.6.9
 }
 
 bx_soundlow_waveout_c::~bx_soundlow_waveout_c()
 {
   if (pcm_callback_id >= 0) {
+<<<<<<< HEAD
     unregister_wave_callback(pcm_callback_id);
   }
   if (mixer_control > 0) {
@@ -151,6 +350,31 @@ bx_soundlow_waveout_c::~bx_soundlow_waveout_c()
       BX_MSLEEP(1);
     }
     BX_FINI_MUTEX(mixer_mutex);
+=======
+#if BX_HAVE_LIBSAMPLERATE || BX_HAVE_SOXR_LSR
+    src_delete(src_state);
+#endif
+    unregister_wave_callback(pcm_callback_id);
+    if (resampler_control > 0) {
+      resampler_control = 0;
+      while (resampler_control >= 0) {
+        BX_MSLEEP(1);
+      }
+      BX_FINI_MUTEX(resampler_mutex);
+    }
+    if (mixer_control > 0) {
+      mixer_control = 0;
+      while (mixer_control >= 0) {
+        BX_MSLEEP(1);
+      }
+      BX_FINI_MUTEX(mixer_mutex);
+    }
+    if (audio_buffers[0] != NULL) {
+      delete audio_buffers[0];
+      delete audio_buffers[1];
+      audio_buffers[0] = NULL;
+    }
+>>>>>>> version-2.6.9
   }
 }
 
@@ -168,6 +392,7 @@ int bx_soundlow_waveout_c::set_pcm_params(bx_pcm_param_t *param)
 
 int bx_soundlow_waveout_c::sendwavepacket(int length, Bit8u data[], bx_pcm_param_t *src_param)
 {
+<<<<<<< HEAD
   int len2;
 
   if (memcmp(src_param, &emu_pcm_param, sizeof(bx_pcm_param_t)) != 0) {
@@ -190,6 +415,30 @@ int bx_soundlow_waveout_c::sendwavepacket(int length, Bit8u data[], bx_pcm_param
     convert_pcm_data(data, length, tmpbuffer, len2, src_param);
     output(len2, tmpbuffer);
     delete [] tmpbuffer;
+=======
+  unsigned len1 = length;
+  audio_buffer_t *inbuffer, *outbuffer;
+
+  if (src_param->bits == 16) len1 >>= 1;
+  if (pcm_callback_id >= 0) {
+    BX_LOCK(resampler_mutex);
+    inbuffer = audio_buffers[0]->new_buffer(len1);
+    memcpy(&inbuffer->param, src_param, sizeof(bx_pcm_param_t));
+    convert_to_float(data, length, inbuffer);
+    BX_UNLOCK(resampler_mutex);
+  } else {
+    inbuffer = new audio_buffer_t;
+    inbuffer->fdata = new float[len1];
+    inbuffer->size = len1;
+    memcpy(&inbuffer->param, src_param, sizeof(bx_pcm_param_t));
+    outbuffer = new audio_buffer_t;
+    memset(outbuffer, 0, sizeof(audio_buffer_t));
+    convert_to_float(data, length, inbuffer);
+    resampler(inbuffer, outbuffer);
+    output(outbuffer->size, outbuffer->data);
+    delete [] outbuffer;
+    delete [] inbuffer;
+>>>>>>> version-2.6.9
   }
   return BX_SOUNDLOW_OK;
 }
@@ -272,6 +521,7 @@ bx_bool bx_soundlow_waveout_c::mixer_common(Bit8u *buffer, int len)
   return (len3 > 0);
 }
 
+<<<<<<< HEAD
 void bx_soundlow_waveout_c::convert_pcm_data(Bit8u *src, int srcsize, Bit8u *dst, int dstsize, bx_pcm_param_t *param)
 {
   int i, j;
@@ -326,6 +576,93 @@ void bx_soundlow_waveout_c::convert_pcm_data(Bit8u *src, int srcsize, Bit8u *dst
       channel ^= 1;
     }
   }
+=======
+void bx_soundlow_waveout_c::resampler(audio_buffer_t *inbuffer, audio_buffer_t *outbuffer)
+{
+  Bit32u fcount;
+  float *fbuffer = NULL;
+
+  fcount = resampler_common(inbuffer, &fbuffer);
+  if (outbuffer == NULL) {
+    BX_LOCK(mixer_mutex);
+    audio_buffer_t *newbuffer = audio_buffers[1]->new_buffer(fcount << 1);
+    convert_float_to_s16le(fbuffer, fcount, newbuffer->data);
+    BX_UNLOCK(mixer_mutex);
+  } else {
+    outbuffer->data = new Bit8u[fcount << 1];
+    outbuffer->size = (fcount << 1);
+    convert_float_to_s16le(fbuffer, fcount, outbuffer->data);
+  }
+  if (fbuffer != NULL) {
+    delete [] fbuffer;
+  }
+}
+
+Bit32u bx_soundlow_waveout_c::resampler_common(audio_buffer_t *inbuffer, float **fbuffer)
+{
+  unsigned i, j, fcount = 0;
+  bx_pcm_param_t param = inbuffer->param;
+
+  if (param.channels != real_pcm_param.channels) {
+    if (param.channels == 1) {
+      float *temp = new float[inbuffer->size * 2];
+      j = 0;
+      for (i = 0; i < inbuffer->size; i++) {
+        temp[j++] = inbuffer->fdata[i];
+        temp[j++] = inbuffer->fdata[i];
+      }
+      delete [] inbuffer->fdata;
+      inbuffer->fdata = temp;
+      inbuffer->size <<= 1;
+    } else {
+      BX_ERROR(("conversion from stereo to mono not implemented"));
+    }
+  }
+#if BX_HAVE_LIBSAMPLERATE || BX_HAVE_SOXR_LSR
+  if (param.samplerate != real_pcm_param.samplerate) {
+    SRC_DATA data;
+    double irate = (double)param.samplerate;
+    double orate = (double)real_pcm_param.samplerate;
+    size_t ilen = inbuffer->size / 2;
+    size_t olen = (size_t)(ilen * orate / irate + 0.5);
+    *fbuffer  = new float[olen * 2];
+    fcount = olen * 2;
+    int ret = 0;
+
+    data.data_in = inbuffer->fdata;
+    data.data_out = *fbuffer;
+    data.input_frames = (int)ilen;
+    data.output_frames = (int)olen;
+    data.src_ratio = orate / irate;
+    data.end_of_input = 0;
+    ret = src_process(src_state, &data);
+    if (ret != 0) {
+      BX_ERROR(("resampling error: %s", src_strerror(ret)));
+    }
+  } else {
+    *fbuffer = new float[inbuffer->size];
+    fcount = inbuffer->size;
+    memcpy(*fbuffer, inbuffer->data, sizeof(float) * fcount);
+  }
+#else
+  if (param.samplerate != real_pcm_param.samplerate) {
+    real_pcm_param.samplerate = param.samplerate;
+    set_pcm_params(&real_pcm_param);
+  }
+  *fbuffer = new float[inbuffer->size];
+  fcount = inbuffer->size;
+  memcpy(*fbuffer, inbuffer->data, sizeof(float) * fcount);
+#endif
+  return fcount;
+}
+
+void bx_soundlow_waveout_c::start_resampler_thread()
+{
+  BX_THREAD_ID(threadID);
+
+  BX_INIT_MUTEX(resampler_mutex);
+  BX_THREAD_CREATE(resampler_thread, this, threadID);
+>>>>>>> version-2.6.9
 }
 
 void bx_soundlow_waveout_c::start_mixer_thread()
@@ -336,7 +673,11 @@ void bx_soundlow_waveout_c::start_mixer_thread()
   BX_THREAD_CREATE(mixer_thread, this, threadID);
 }
 
+<<<<<<< HEAD
 // bx_soundlow_wavein_c class implemenzation
+=======
+// bx_soundlow_wavein_c class implementation
+>>>>>>> version-2.6.9
 // The dummy input method returns silence.
 
 bx_soundlow_wavein_c::bx_soundlow_wavein_c()
@@ -355,7 +696,11 @@ int bx_soundlow_wavein_c::openwaveinput(const char *wavedev, sound_record_handle
   UNUSED(wavedev);
   record_handler = rh;
   if (rh != NULL) {
+<<<<<<< HEAD
     record_timer_index = bx_pc_system.register_timer(this, record_timer_handler, 1, 1, 0, "wavein");
+=======
+    record_timer_index = DEV_register_timer(this, record_timer_handler, 1, 1, 0, "wavein");
+>>>>>>> version-2.6.9
     // record timer: inactive, continuous, frequency variable
   }
   return BX_SOUNDLOW_OK;
@@ -405,7 +750,11 @@ void bx_soundlow_wavein_c::record_timer(void)
   record_handler(this, record_packet_size);
 }
 
+<<<<<<< HEAD
 // bx_soundlow_midiout_c class implemenzation
+=======
+// bx_soundlow_midiout_c class implementation
+>>>>>>> version-2.6.9
 // The dummy output methods don't do anything.
 
 bx_soundlow_midiout_c::bx_soundlow_midiout_c()
@@ -442,18 +791,38 @@ int bx_soundlow_midiout_c::closemidioutput()
   return BX_SOUNDLOW_OK;
 }
 
+<<<<<<< HEAD
 // bx_sound_lowlevel_c class implemenzation
 
 bx_sound_lowlevel_c::bx_sound_lowlevel_c()
+=======
+bx_sound_lowlevel_c *bx_sound_lowlevel_c::all;
+
+// bx_sound_lowlevel_c class implementation
+
+bx_sound_lowlevel_c::bx_sound_lowlevel_c(const char *type)
+>>>>>>> version-2.6.9
 {
   put("soundlow", "SNDLOW");
   waveout = NULL;
   wavein = NULL;
   midiout = NULL;
+<<<<<<< HEAD
+=======
+  // self-registering static objects ported from the network code
+  next = all;
+  all  = this;
+  this->type = type;
+>>>>>>> version-2.6.9
 }
 
 bx_sound_lowlevel_c::~bx_sound_lowlevel_c()
 {
+<<<<<<< HEAD
+=======
+  bx_sound_lowlevel_c *ptr = 0;
+
+>>>>>>> version-2.6.9
   if (waveout != NULL) {
     delete waveout;
   }
@@ -463,6 +832,7 @@ bx_sound_lowlevel_c::~bx_sound_lowlevel_c()
   if (midiout != NULL) {
     delete midiout;
   }
+<<<<<<< HEAD
 }
 
 // bx_sound_dummy_c class implemenzation
@@ -489,6 +859,55 @@ bx_soundlow_midiout_c* bx_sound_dummy_c::get_midiout()
     midiout = new bx_soundlow_midiout_c();
   }
   return midiout;
+=======
+  // unregister sound driver
+  if (this == all) {
+    all = all->next;
+  } else {
+    ptr = all;
+    while (ptr != NULL) {
+      if (ptr->next != this) {
+        ptr = ptr->next;
+      } else {
+        break;
+      }
+    }
+  }
+  if (ptr) {
+    ptr->next = this->next;
+  }
+}
+
+bx_bool bx_sound_lowlevel_c::module_present(const char *type)
+{
+  bx_sound_lowlevel_c *ptr = 0;
+
+  for (ptr = all; ptr != NULL; ptr = ptr->next) {
+    if (strcmp(type, ptr->type) == 0)
+      return 1;
+  }
+  return 0;
+}
+
+bx_sound_lowlevel_c* bx_sound_lowlevel_c::get_module(const char *type)
+{
+  bx_sound_lowlevel_c *ptr = 0;
+
+  for (ptr = all; ptr != NULL; ptr = ptr->next) {
+    if (strcmp(type, ptr->type) == 0)
+      return ptr;
+  }
+  return NULL;
+}
+
+void bx_sound_lowlevel_c::cleanup()
+{
+#if BX_PLUGINS
+  while (all != NULL) {
+    PLUG_unload_snd_plugin(all->type);
+  }
+#endif
+>>>>>>> version-2.6.9
 }
 
 #endif

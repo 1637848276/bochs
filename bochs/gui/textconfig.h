@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: textconfig.h 12050 2013-12-20 17:53:00Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2009-2013  The Bochs Project
+=======
+// $Id: textconfig.h 13030 2017-01-10 21:40:05Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2009-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -45,5 +52,9 @@ enum {
 };
 
 int init_text_config_interface();
+<<<<<<< HEAD
+=======
+int bx_text_config_interface(int menu);
+>>>>>>> version-2.6.9
 
 #endif

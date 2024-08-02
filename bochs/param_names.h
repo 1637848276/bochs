@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: param_names.h 12681 2015-03-06 22:54:30Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2009-2015  The Bochs Project
+=======
+// $Id: param_names.h 13071 2017-02-14 20:11:58Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2009-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -80,6 +87,7 @@
 #define BXPN_CPUID_SMAP                  "cpuid.smap"
 #define BXPN_MEM_SIZE                    "memory.standard.ram.size"
 #define BXPN_HOST_MEM_SIZE               "memory.standard.ram.host_size"
+<<<<<<< HEAD
 #define BXPN_ROM_PATH                    "memory.standard.rom.path"
 #define BXPN_ROM_ADDRESS                 "memory.standard.rom.addr"
 #define BXPN_VGA_ROM_PATH                "memory.standard.vgarom.path"
@@ -99,6 +107,16 @@
 #define BXPN_OPTRAM3_ADDRESS             "memory.optram.3.addr"
 #define BXPN_OPTRAM4_PATH                "memory.optram.4.path"
 #define BXPN_OPTRAM4_ADDRESS             "memory.optram.4.addr"
+=======
+#define BXPN_ROMIMAGE                    "memory.standard.rom"
+#define BXPN_ROM_PATH                    "memory.standard.rom.file"
+#define BXPN_ROM_ADDRESS                 "memory.standard.rom.address"
+#define BXPN_ROM_OPTIONS                 "memory.standard.rom.options"
+#define BXPN_VGA_ROMIMAGE                "memory.standard.vgarom"
+#define BXPN_VGA_ROM_PATH                "memory.standard.vgarom.file"
+#define BXPN_OPTROM_BASE                 "memory.optrom"
+#define BXPN_OPTRAM_BASE                 "memory.optram"
+>>>>>>> version-2.6.9
 #define BXPN_CLOCK_SYNC                  "clock_cmos.clock_sync"
 #define BXPN_CLOCK_TIME0                 "clock_cmos.time0"
 #define BXPN_CLOCK_RTC_SYNC              "clock_cmos.rtc_sync"
@@ -165,6 +183,11 @@
 #define BXPN_UHCI_ENABLED                "ports.usb.uhci.enabled"
 #define BXPN_USB_OHCI                    "ports.usb.ohci"
 #define BXPN_OHCI_ENABLED                "ports.usb.ohci.enabled"
+<<<<<<< HEAD
+=======
+#define BXPN_USB_EHCI                    "ports.usb.ehci"
+#define BXPN_EHCI_ENABLED                "ports.usb.ehci.enabled"
+>>>>>>> version-2.6.9
 #define BXPN_USB_XHCI                    "ports.usb.xhci"
 #define BXPN_XHCI_ENABLED                "ports.usb.xhci.enabled"
 #define BXPN_NE2K                        "network.ne2k"

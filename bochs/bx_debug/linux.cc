@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: linux.cc 10209 2011-02-24 22:05:47Z sshwarts $
+=======
+// $Id: linux.cc 12909 2016-04-29 21:09:18Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 #include <stdio.h>
@@ -20,7 +24,11 @@ void bx_dbg_info_linux_command(void)
 {
   BX_INFO (("Info linux"));
   bx_dbg_sreg_t cs;
+<<<<<<< HEAD
   BX_CPU(dbg_cpu)->dbg_get_sreg(&cs, BX_DBG_SREG_CS);
+=======
+  BX_CPU(dbg_cpu)->dbg_get_sreg(&cs, BX_SEG_REG_CS);
+>>>>>>> version-2.6.9
   int cpu_mode = BX_CPU(dbg_cpu)->get_cpu_mode();
 
   int mode;

@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: shift8.cc 12613 2015-01-25 20:55:10Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
+=======
+// $Id: shift8.cc 13165 2017-03-31 07:34:08Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -72,7 +79,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ROL_EbM(bxInstruction_c *i)
   else
     count = i->Ib();
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   /* pointer, segment address pair */
   Bit8u op1_8 = read_RMW_virtual_byte(i->seg(), eaddr);
 
@@ -151,7 +162,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ROR_EbM(bxInstruction_c *i)
   else
     count = i->Ib();
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   /* pointer, segment address pair */
   Bit8u op1_8 = read_RMW_virtual_byte(i->seg(), eaddr);
 
@@ -201,11 +216,21 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::RCL_EbR(bxInstruction_c *i)
 
   Bit8u op1_8 = BX_READ_8BIT_REGx(i->dst(), i->extend8bitL());
 
+<<<<<<< HEAD
   if (count==1) {
     result_8 = (op1_8 << 1) | getB_CF();
   }
   else {
     result_8 = (op1_8 << count) | (getB_CF() << (count - 1)) |
+=======
+  unsigned temp_CF = getB_CF();
+
+  if (count==1) {
+    result_8 = (op1_8 << 1) | temp_CF;
+  }
+  else {
+    result_8 = (op1_8 << count) | (temp_CF << (count - 1)) |
+>>>>>>> version-2.6.9
                (op1_8 >> (9 - count));
   }
 
@@ -229,7 +254,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::RCL_EbM(bxInstruction_c *i)
   else
     count = i->Ib();
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   /* pointer, segment address pair */
   Bit8u op1_8 = read_RMW_virtual_byte(i->seg(), eaddr);
 
@@ -239,11 +268,21 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::RCL_EbM(bxInstruction_c *i)
     BX_NEXT_INSTR(i);
   }
 
+<<<<<<< HEAD
   if (count==1) {
     result_8 = (op1_8 << 1) | getB_CF();
   }
   else {
     result_8 = (op1_8 << count) | (getB_CF() << (count - 1)) |
+=======
+  unsigned temp_CF = getB_CF();
+
+  if (count==1) {
+    result_8 = (op1_8 << 1) | temp_CF;
+  }
+  else {
+    result_8 = (op1_8 << count) | (temp_CF << (count - 1)) |
+>>>>>>> version-2.6.9
                (op1_8 >> (9 - count));
   }
 
@@ -271,7 +310,13 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::RCR_EbR(bxInstruction_c *i)
   if (count) {
     Bit8u op1_8 = BX_READ_8BIT_REGx(i->dst(), i->extend8bitL());
 
+<<<<<<< HEAD
     Bit8u result_8 = (op1_8 >> count) | (getB_CF() << (8 - count)) |
+=======
+    unsigned temp_CF = getB_CF();
+
+    Bit8u result_8 = (op1_8 >> count) | (temp_CF << (8 - count)) |
+>>>>>>> version-2.6.9
                      (op1_8 << (9 - count));
 
     BX_WRITE_8BIT_REGx(i->dst(), i->extend8bitL(), result_8);
@@ -294,14 +339,24 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::RCR_EbM(bxInstruction_c *i)
   else
     count = i->Ib();
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   /* pointer, segment address pair */
   Bit8u op1_8 = read_RMW_virtual_byte(i->seg(), eaddr);
 
   count = (count & 0x1f) % 9;
 
   if (count) {
+<<<<<<< HEAD
     Bit8u result_8 = (op1_8 >> count) | (getB_CF() << (8 - count)) |
+=======
+    unsigned temp_CF = getB_CF();
+
+    Bit8u result_8 = (op1_8 >> count) | (temp_CF << (8 - count)) |
+>>>>>>> version-2.6.9
                      (op1_8 << (9 - count));
 
     write_RMW_linear_byte(result_8);
@@ -363,7 +418,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SHL_EbM(bxInstruction_c *i)
 
   count &= 0x1f;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   /* pointer, segment address pair */
   Bit8u op1_8 = read_RMW_virtual_byte(i->seg(), eaddr);
 
@@ -427,7 +486,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SHR_EbM(bxInstruction_c *i)
 
   count &= 0x1f;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   /* pointer, segment address pair */
   Bit8u op1_8 = read_RMW_virtual_byte(i->seg(), eaddr);
 
@@ -485,7 +548,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SAR_EbM(bxInstruction_c *i)
 
   count &= 0x1f;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   /* pointer, segment address pair */
   Bit8u op1_8 = read_RMW_virtual_byte(i->seg(), eaddr);
 

@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: macintosh.cc 12081 2013-12-29 12:56:52Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2013  The Bochs Project
+=======
+// $Id: macintosh.cc 13042 2017-01-15 11:44:43Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -183,7 +190,10 @@ void CreateVGAFont(void);
 BitMap *CreateBitMap(unsigned width,  unsigned height);
 PixMapHandle CreatePixMap(unsigned left, unsigned top, unsigned width,
         unsigned height, unsigned depth, CTabHandle clut);
+<<<<<<< HEAD
 unsigned char reverse_bitorder(unsigned char);
+=======
+>>>>>>> version-2.6.9
 
 //this routine moves the initial window position so that it is entirely onscreen
 //it is needed for os 8.x with appearance managaer
@@ -381,6 +391,7 @@ void CreateWindows(void)
   SetPort(win);
 }
 
+<<<<<<< HEAD
 // ::SPECIFIC_INIT()
 //
 // Called from gui.cc, once upon program startup, to allow for the
@@ -393,6 +404,9 @@ void CreateWindows(void)
 //     VGA window, showing floppy status, and other information.  It
 //     always assumes the width of the current VGA mode width, but
 //     it's height is defined by this parameter.
+=======
+// MACINTOSH implementation of the bx_gui_c methods (see nogui.cc for details)
+>>>>>>> version-2.6.9
 
 void bx_macintosh_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
 {
@@ -723,12 +737,15 @@ void UpdateWindow(WindowPtr window)
   SetPort(oldPort);
 }
 
+<<<<<<< HEAD
 // ::HANDLE_EVENTS()
 //
 // Called periodically (vga_update_interval in .bochsrc) so the
 // the gui code can poll for keyboard, mouse, and other
 // relevant events.
 
+=======
+>>>>>>> version-2.6.9
 void bx_macintosh_gui_c::handle_events(void)
 {
   EventRecord event;
@@ -830,22 +847,28 @@ void bx_macintosh_gui_c::handle_events(void)
   SetPort(oldport);
 }
 
+<<<<<<< HEAD
 // ::FLUSH()
 //
 // Called periodically, requesting that the gui code flush all pending
 // screen update requests.
 
+=======
+>>>>>>> version-2.6.9
 void bx_macintosh_gui_c::flush(void)
 {
   // an opportunity to make the Window Manager happy.
   // not needed on the macintosh....
 }
 
+<<<<<<< HEAD
 // ::CLEAR_SCREEN()
 //
 // Called to request that the VGA region is cleared.    Don't
 // clear the area that defines the headerbar.
 
+=======
+>>>>>>> version-2.6.9
 void bx_macintosh_gui_c::clear_screen(void)
 {
   SetPort(win);
@@ -856,6 +879,7 @@ void bx_macintosh_gui_c::clear_screen(void)
   FillRect(&win->portRect, &qd.black);
 }
 
+<<<<<<< HEAD
 // ::TEXT_UPDATE()
 //
 // Called in a VGA text mode, to update the screen with
@@ -875,6 +899,8 @@ void bx_macintosh_gui_c::clear_screen(void)
 // tm_info:  this structure contains information for additional
 //           features in text mode (cursor shape, line offset,...)
 
+=======
+>>>>>>> version-2.6.9
 void bx_macintosh_gui_c::text_update(Bit8u *old_text, Bit8u *new_text,
                  unsigned long cursor_x, unsigned long cursor_y,
                  bx_vga_tminfo_t *tm_info)
@@ -959,6 +985,7 @@ int bx_macintosh_gui_c::set_clipboard_text(char *text_snapshot, Bit32u len)
   return 0;
 }
 
+<<<<<<< HEAD
 // ::PALETTE_CHANGE()
 //
 // Allocate a color in the native GUI, for this color, and put
@@ -966,6 +993,8 @@ int bx_macintosh_gui_c::set_clipboard_text(char *text_snapshot, Bit32u len)
 // returns: 0=no screen update needed (color map change has direct effect)
 //          1=screen updated needed (redraw using current colormap)
 
+=======
+>>>>>>> version-2.6.9
 bx_bool bx_macintosh_gui_c::palette_change(Bit8u index, Bit8u red, Bit8u green, Bit8u blue)
 {
   PaletteHandle thePal, oldpal;
@@ -1015,6 +1044,7 @@ bx_bool bx_macintosh_gui_c::palette_change(Bit8u index, Bit8u red, Bit8u green, 
   return((**gTile).pixelType != RGBDirect);
 }
 
+<<<<<<< HEAD
 // ::GRAPHICS_TILE_UPDATE()
 //
 // Called to request that a tile of graphics be drawn to the
@@ -1030,6 +1060,8 @@ bx_bool bx_macintosh_gui_c::palette_change(Bit8u index, Bit8u red, Bit8u green, 
 // note: origin of tile and of window based on (0,0) being in the upper
 //       left of the window.
 
+=======
+>>>>>>> version-2.6.9
 void bx_macintosh_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned y0)
 {
   Rect      destRect;
@@ -1074,6 +1106,7 @@ void bx_macintosh_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned
 //SetGWorld(savePort, saveDevice);
 }
 
+<<<<<<< HEAD
 // ::DIMENSION_UPDATE()
 //
 // Called when the VGA mode changes it's X,Y dimensions.
@@ -1086,6 +1119,8 @@ void bx_macintosh_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned
 // fwidth : new VGA character width in text mode
 // bpp : bits per pixel in graphics mode
 
+=======
+>>>>>>> version-2.6.9
 void bx_macintosh_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, unsigned fwidth, unsigned bpp)
 {
   if ((bpp != 1) && (bpp != 2) && (bpp != 4) && (bpp != 8) && (bpp != 15) && (bpp != 16) && (bpp != 24) && (bpp != 32)) {
@@ -1130,6 +1165,7 @@ void bx_macintosh_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheig
 
 // ::CREATE_BITMAP()
 //
+<<<<<<< HEAD
 // Create a monochrome bitmap of size 'xdim' by 'ydim', which will
 // be drawn in the headerbar.  Return an integer ID to the bitmap,
 // with which the bitmap can be referenced later.
@@ -1139,6 +1175,8 @@ void bx_macintosh_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheig
 // xdim: x dimension of bitmap
 // ydim: y dimension of bitmap
 
+=======
+>>>>>>> version-2.6.9
 // rewritten by tim senecal to use the cicn (color icon) resources instead
 
 unsigned bx_macintosh_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim, unsigned ydim)
@@ -1155,6 +1193,7 @@ unsigned bx_macintosh_gui_c::create_bitmap(const unsigned char *bmap, unsigned x
   return(numPixMaps-1);
 }
 
+<<<<<<< HEAD
 // ::HEADERBAR_BITMAP()
 //
 // Called to install a bitmap in the bochs headerbar (toolbar).
@@ -1166,6 +1205,8 @@ unsigned bx_macintosh_gui_c::create_bitmap(const unsigned char *bmap, unsigned x
 // f: a 'C' function pointer to callback when the mouse is clicked in
 //     the boundaries of this bitmap.
 
+=======
+>>>>>>> version-2.6.9
 unsigned bx_macintosh_gui_c::headerbar_bitmap(unsigned bmap_id, unsigned alignment, void (*f)(void))
 {
   unsigned hb_index;
@@ -1194,11 +1235,14 @@ unsigned bx_macintosh_gui_c::headerbar_bitmap(unsigned bmap_id, unsigned alignme
   return(hb_index);
 }
 
+<<<<<<< HEAD
 // ::SHOW_HEADERBAR()
 //
 // Show (redraw) the current headerbar, which is composed of
 // currently installed bitmaps.
 
+=======
+>>>>>>> version-2.6.9
 void bx_macintosh_gui_c::show_headerbar(void)
 {
   Rect destRect;
@@ -1223,6 +1267,7 @@ void bx_macintosh_gui_c::show_headerbar(void)
 
 }
 
+<<<<<<< HEAD
 // ::REPLACE_BITMAP()
 //
 // Replace the bitmap installed in the headerbar ID slot 'hbar_id',
@@ -1236,6 +1281,8 @@ void bx_macintosh_gui_c::show_headerbar(void)
 // hbar_id: headerbar slot ID
 // bmap_id: bitmap ID
 
+=======
+>>>>>>> version-2.6.9
 void bx_macintosh_gui_c::replace_bitmap(unsigned hbar_id, unsigned bmap_id)
 {
 //bx_tool_pixmap[hbar_id].pm = bx_pixmap[bmap_id];
@@ -1243,11 +1290,14 @@ void bx_macintosh_gui_c::replace_bitmap(unsigned hbar_id, unsigned bmap_id)
   show_headerbar();
 }
 
+<<<<<<< HEAD
 // ::EXIT()
 //
 // Called before bochs terminates, to allow for a graceful
 // exit from the native GUI mechanism.
 
+=======
+>>>>>>> version-2.6.9
 void bx_macintosh_gui_c::exit(void)
 {
   if (!menubarVisible)
@@ -1672,6 +1722,7 @@ PixMapHandle CreatePixMap(unsigned left, unsigned top, unsigned width,
   return pm;
 }
 
+<<<<<<< HEAD
 unsigned char reverse_bitorder(unsigned char b)
 {
   unsigned char ret=0;
@@ -1685,6 +1736,8 @@ unsigned char reverse_bitorder(unsigned char b)
   return(ret);
 }
 
+=======
+>>>>>>> version-2.6.9
 void bx_macintosh_gui_c::mouse_enabled_changed_specific (bx_bool val)
 {
 }

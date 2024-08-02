@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: cdrom_misc.cc 12728 2015-04-26 15:59:08Z vruppert $
+=======
+// $Id: cdrom_misc.cc 12870 2015-10-25 17:02:12Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2015  The Bochs Project
@@ -387,7 +391,11 @@ Bit32u cdrom_misc_c::capacity()
   if (fstat(fd, &stat_buf)) {
     BX_PANIC(("fstat() returns error!"));
   }
+<<<<<<< HEAD
   if (stat_buf.st_rdev) { // Is this a special device file (e.g. /dev/sr0) ?
+=======
+  if (S_ISBLK(stat_buf.st_mode)) { // Is this a special device file (e.g. /dev/sr0) ?
+>>>>>>> version-2.6.9
     ioctl(fd, BLKGETSIZE64, &fsize);
   } else {
     fsize = (Bit64u)stat_buf.st_size;

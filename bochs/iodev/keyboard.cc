@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: keyboard.cc 12582 2014-12-27 09:43:05Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2014  The Bochs Project
+=======
+// $Id: keyboard.cc 13167 2017-03-31 21:32:58Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2002-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -56,7 +63,11 @@
 
 bx_keyb_c *theKeyboard = NULL;
 
+<<<<<<< HEAD
 int CDECL libkeyboard_LTX_plugin_init(plugin_t *plugin, plugintype_t type, int argc, char *argv[])
+=======
+int CDECL libkeyboard_LTX_plugin_init(plugin_t *plugin, plugintype_t type)
+>>>>>>> version-2.6.9
 {
   // Create one instance of the keyboard device object.
   theKeyboard = new bx_keyb_c();
@@ -115,7 +126,11 @@ void bx_keyb_c::resetinternals(bx_bool powerup)
 
 void bx_keyb_c::init(void)
 {
+<<<<<<< HEAD
   BX_DEBUG(("Init $Id: keyboard.cc 12582 2014-12-27 09:43:05Z vruppert $"));
+=======
+  BX_DEBUG(("Init $Id: keyboard.cc 13167 2017-03-31 21:32:58Z vruppert $"));
+>>>>>>> version-2.6.9
   Bit32u   i;
 
   DEV_register_irq(1, "8042 Keyboard controller");
@@ -129,7 +144,11 @@ void bx_keyb_c::init(void)
                                       0x0060, "8042 Keyboard controller", 1);
   DEV_register_iowrite_handler(this, write_handler,
                                       0x0064, "8042 Keyboard controller", 1);
+<<<<<<< HEAD
   BX_KEY_THIS timer_handle = bx_pc_system.register_timer(this, timer_handler,
+=======
+  BX_KEY_THIS timer_handle = DEV_register_timer(this, timer_handler,
+>>>>>>> version-2.6.9
                                  SIM->get_param_num(BXPN_KBD_SERIAL_DELAY)->get(), 1, 1,
                                  "8042 Keyboard controller");
 
@@ -226,10 +245,13 @@ void bx_keyb_c::reset(unsigned type)
 
 void bx_keyb_c::register_state(void)
 {
+<<<<<<< HEAD
   int i;
   char name[4];
   bx_list_c *buffer;
 
+=======
+>>>>>>> version-2.6.9
   bx_list_c *list = new bx_list_c(SIM->get_bochs_root(), "keyboard", "Keyboard State");
   bx_list_c *ctrl = new bx_list_c(list, "controller");
   BXRS_PARAM_BOOL(ctrl, tim, BX_KEY_THIS s.kbd_controller.tim);
@@ -270,11 +292,16 @@ void bx_keyb_c::register_state(void)
   BXRS_PARAM_BOOL(mouse, im_mode, BX_KEY_THIS s.mouse.im_mode);
   bx_list_c *kbdbuf = new bx_list_c(list, "kbd_internal_buffer");
   BXRS_DEC_PARAM_FIELD(kbdbuf, num_elements, BX_KEY_THIS s.kbd_internal_buffer.num_elements);
+<<<<<<< HEAD
   buffer = new bx_list_c(kbdbuf, "buffer");
   for (i=0; i<BX_KBD_ELEMENTS; i++) {
     sprintf(name, "%d", i);
     new bx_shadow_num_c(buffer, name, &BX_KEY_THIS s.kbd_internal_buffer.buffer[i], BASE_HEX);
   }
+=======
+  new bx_shadow_data_c(kbdbuf, "buffer", BX_KEY_THIS s.kbd_internal_buffer.buffer,
+                       BX_KBD_ELEMENTS, 1);
+>>>>>>> version-2.6.9
   BXRS_DEC_PARAM_FIELD(kbdbuf, head, BX_KEY_THIS s.kbd_internal_buffer.head);
   BXRS_PARAM_BOOL(kbdbuf, expecting_typematic, BX_KEY_THIS s.kbd_internal_buffer.expecting_typematic);
   BXRS_PARAM_BOOL(kbdbuf, expecting_led_write, BX_KEY_THIS s.kbd_internal_buffer.expecting_led_write);
@@ -284,6 +311,7 @@ void bx_keyb_c::register_state(void)
   BXRS_PARAM_BOOL(kbdbuf, scanning_enabled, BX_KEY_THIS s.kbd_internal_buffer.scanning_enabled);
   bx_list_c *mousebuf = new bx_list_c(list, "mouse_internal_buffer");
   BXRS_DEC_PARAM_FIELD(mousebuf, num_elements, BX_KEY_THIS s.mouse_internal_buffer.num_elements);
+<<<<<<< HEAD
   buffer = new bx_list_c(mousebuf, "buffer");
   for (i=0; i<BX_MOUSE_BUFF_SIZE; i++) {
     sprintf(name, "%d", i);
@@ -295,6 +323,13 @@ void bx_keyb_c::register_state(void)
     sprintf(name, "%d", i);
     new bx_shadow_num_c(buffer, name, &BX_KEY_THIS s.controller_Q[i], BASE_HEX);
   }
+=======
+  new bx_shadow_data_c(mousebuf, "buffer", BX_KEY_THIS s.mouse_internal_buffer.buffer,
+                       BX_MOUSE_BUFF_SIZE, 1);
+  BXRS_DEC_PARAM_FIELD(mousebuf, head, BX_KEY_THIS s.mouse_internal_buffer.head);
+  new bx_shadow_data_c(list, "controller_Q", BX_KEY_THIS s.controller_Q,
+                       BX_KBD_CONTROLLER_QSIZE, 1);
+>>>>>>> version-2.6.9
   BXRS_DEC_PARAM_FIELD(list, controller_Qsize, BX_KEY_THIS s.controller_Qsize);
   BXRS_DEC_PARAM_FIELD(list, controller_Qsource, BX_KEY_THIS s.controller_Qsource);
 }
@@ -817,11 +852,14 @@ void bx_keyb_c::gen_scancode(Bit32u key)
   else
     scancode=(unsigned char *)scancodes[(key&0xFF)][BX_KEY_THIS s.kbd_controller.current_scancodes_set].make;
 
+<<<<<<< HEAD
   // if we have a removable keyboard installed, we need to call its handler first
   if (DEV_optional_key_enq(scancode)) {
     return;
   }
 
+=======
+>>>>>>> version-2.6.9
   if (BX_KEY_THIS s.kbd_controller.scancodes_translate) {
     // Translate before send
     Bit8u escaped=0x00;

@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: eth_slirp.cc 12472 2014-08-30 07:14:19Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2014  The Bochs Project
+=======
+// $Id: eth_slirp.cc 13160 2017-03-30 18:08:15Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2014-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -31,12 +38,34 @@
 #include "slirp/slirp.h"
 #include "slirp/libslirp.h"
 
+<<<<<<< HEAD
+=======
+static unsigned int bx_slirp_instances = 0;
+
+// network driver plugin entry points
+
+int CDECL libslirp_net_plugin_init(plugin_t *plugin, plugintype_t type)
+{
+  return 0; // Success
+}
+
+void CDECL libslirp_net_plugin_fini(void)
+{
+  // Nothing here yet
+}
+
+// network driver implementation
+
+>>>>>>> version-2.6.9
 #define LOG_THIS netdev->
 
 #define MAX_HOSTFWD 5
 
 static int rx_timer_index = BX_NULL_TIMER_HANDLE;
+<<<<<<< HEAD
 static unsigned int bx_slirp_instances = 0;
+=======
+>>>>>>> version-2.6.9
 fd_set rfds, wfds, xfds;
 int nfds;
 
@@ -296,7 +325,11 @@ bx_slirp_pktmover_c::bx_slirp_pktmover_c(const char *netif,
 
   this->netdev = dev;
   if (sizeof(struct arphdr) != 28) {
+<<<<<<< HEAD
     BX_PANIC(("system error: invalid ARP header structure size"));
+=======
+    BX_FATAL(("system error: invalid ARP header structure size"));
+>>>>>>> version-2.6.9
   }
   BX_INFO(("slirp network driver"));
 
@@ -307,8 +340,13 @@ bx_slirp_pktmover_c::bx_slirp_pktmover_c(const char *netif,
                        (status == BX_NETDEV_100MBIT) ? 100 : 10;
   if (bx_slirp_instances == 0) {
     rx_timer_index =
+<<<<<<< HEAD
       bx_pc_system.register_timer(this, this->rx_timer_handler, 1000,
                                 1, 1, "eth_slirp");
+=======
+      DEV_register_timer(this, this->rx_timer_handler, 1000, 1, 1,
+                         "eth_slirp");
+>>>>>>> version-2.6.9
 #ifndef WIN32
     signal(SIGPIPE, SIG_IGN);
 #endif
@@ -382,7 +420,11 @@ void slirp_output(void *this_ptr, const Bit8u *pkt, int pkt_len)
 void bx_slirp_pktmover_c::receive(void *pkt, unsigned pkt_len)
 {
   if (this->rxstat(this->netdev) & BX_NETDEV_RXREADY) {
+<<<<<<< HEAD
     if (pkt_len < 60) pkt_len = 60;
+=======
+    if (pkt_len < MIN_RX_PACKET_LEN) pkt_len = MIN_RX_PACKET_LEN;
+>>>>>>> version-2.6.9
     this->rxh(this->netdev, pkt, pkt_len);
   } else {
     BX_ERROR(("device not ready to receive data"));

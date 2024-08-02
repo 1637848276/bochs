@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: shift16.cc 12613 2015-01-25 20:55:10Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
+=======
+// $Id: shift16.cc 13165 2017-03-31 07:34:08Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -38,7 +45,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SHLD_EwGwM(bxInstruction_c *i)
 
   count &= 0x1f; // use only 5 LSB's
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   Bit32u op1_16 = (Bit32u) read_RMW_virtual_word(i->seg(), eaddr);
 
@@ -132,7 +143,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SHRD_EwGwM(bxInstruction_c *i)
 
   count &= 0x1f; /* use only 5 LSB's */
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   Bit32u op1_16 = (Bit32u) read_RMW_virtual_word(i->seg(), eaddr);
 
@@ -161,6 +176,10 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SHRD_EwGwM(bxInstruction_c *i)
 
     cf = (op1_16 >> (count - 1)) & 0x1;
     of = ((Bit16u)((result_16 << 1) ^ result_16) >> 15) & 0x1; // of = result14 ^ result15
+<<<<<<< HEAD
+=======
+    if (count > 16) cf = (op2_16 >> (count - 17)) & 0x1; // undefined flags behavior matching real HW
+>>>>>>> version-2.6.9
     SET_FLAGS_OxxxxC(of, cf);
   }
 
@@ -206,6 +225,10 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SHRD_EwGwR(bxInstruction_c *i)
 
     cf = (op1_16 >> (count - 1)) & 0x1;
     of = ((Bit16u)((result_16 << 1) ^ result_16) >> 15) & 0x1; // of = result14 ^ result15
+<<<<<<< HEAD
+=======
+    if (count > 16) cf = (op2_16 >> (count - 17)) & 0x1; // undefined flags behavior matching real HW
+>>>>>>> version-2.6.9
     SET_FLAGS_OxxxxC(of, cf);
   }
 
@@ -222,7 +245,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ROL_EwM(bxInstruction_c *i)
   else
     count = i->Ib();
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   /* pointer, segment address pair */
   Bit16u op1_16 = read_RMW_virtual_word(i->seg(), eaddr);
 
@@ -296,7 +323,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ROR_EwM(bxInstruction_c *i)
   else
     count = i->Ib();
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   /* pointer, segment address pair */
   Bit16u op1_16 = read_RMW_virtual_word(i->seg(), eaddr);
 
@@ -373,6 +404,7 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::RCL_EwM(bxInstruction_c *i)
 
   count = (count & 0x1f) % 17;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
   /* pointer, segment address pair */
   Bit16u op1_16 = read_RMW_virtual_word(i->seg(), eaddr);
@@ -386,6 +418,23 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::RCL_EwM(bxInstruction_c *i)
     }
     else { // 2..15
       result_16 = (op1_16 << count) | (getB_CF() << (count - 1)) |
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+  /* pointer, segment address pair */
+  Bit16u op1_16 = read_RMW_virtual_word(i->seg(), eaddr);
+
+  unsigned temp_CF = getB_CF();
+
+  if (count) {
+    if (count==1) {
+      result_16 = (op1_16 << 1) | temp_CF;
+    }
+    else if (count==16) {
+      result_16 = (temp_CF << 15) | (op1_16 >> 1);
+    }
+    else { // 2..15
+      result_16 = (op1_16 << count) | (temp_CF << (count - 1)) |
+>>>>>>> version-2.6.9
                   (op1_16 >> (17 - count));
     }
 
@@ -412,10 +461,16 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::RCL_EwR(bxInstruction_c *i)
 
   count = (count & 0x1f) % 17;
 
+<<<<<<< HEAD
+=======
+  unsigned temp_CF = getB_CF();
+
+>>>>>>> version-2.6.9
   if (count) {
     Bit16u op1_16 = BX_READ_16BIT_REG(i->dst());
 
     if (count==1) {
+<<<<<<< HEAD
       result_16 = (op1_16 << 1) | getB_CF();
     }
     else if (count==16) {
@@ -423,6 +478,15 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::RCL_EwR(bxInstruction_c *i)
     }
     else { // 2..15
       result_16 = (op1_16 << count) | (getB_CF() << (count - 1)) |
+=======
+      result_16 = (op1_16 << 1) | temp_CF;
+    }
+    else if (count==16) {
+      result_16 = (temp_CF << 15) | (op1_16 >> 1);
+    }
+    else { // 2..15
+      result_16 = (op1_16 << count) | (temp_CF << (count - 1)) |
+>>>>>>> version-2.6.9
                   (op1_16 >> (17 - count));
     }
 
@@ -448,12 +512,22 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::RCR_EwM(bxInstruction_c *i)
 
   count = (count & 0x1f) % 17;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   /* pointer, segment address pair */
   Bit16u op1_16 = read_RMW_virtual_word(i->seg(), eaddr);
 
   if (count) {
+<<<<<<< HEAD
     Bit16u result_16 = (op1_16 >> count) | (getB_CF() << (16 - count)) |
+=======
+    unsigned temp_CF = getB_CF();
+
+    Bit16u result_16 = (op1_16 >> count) | (temp_CF << (16 - count)) |
+>>>>>>> version-2.6.9
                        (op1_16 << (17 - count));
 
     write_RMW_linear_word(result_16);
@@ -481,7 +555,13 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::RCR_EwR(bxInstruction_c *i)
   if (count) {
     Bit16u op1_16 = BX_READ_16BIT_REG(i->dst());
 
+<<<<<<< HEAD
     Bit16u result_16 = (op1_16 >> count) | (getB_CF() << (16 - count)) |
+=======
+    unsigned temp_CF = getB_CF();
+
+    Bit16u result_16 = (op1_16 >> count) | (temp_CF << (16 - count)) |
+>>>>>>> version-2.6.9
                        (op1_16 << (17 - count));
 
     BX_WRITE_16BIT_REG(i->dst(), result_16);
@@ -507,7 +587,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SHL_EwM(bxInstruction_c *i)
 
   count &= 0x1f; /* use only 5 LSB's */
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   /* pointer, segment address pair */
   Bit16u op1_16 = read_RMW_virtual_word(i->seg(), eaddr);
 
@@ -576,7 +660,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SHR_EwM(bxInstruction_c *i)
 
   count &= 0x1f; /* use only 5 LSB's */
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   /* pointer, segment address pair */
   Bit16u op1_16 = read_RMW_virtual_word(i->seg(), eaddr);
 
@@ -637,8 +725,12 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SAR_EwM(bxInstruction_c *i)
 
   count &= 0x1f;  /* use only 5 LSB's */
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
   /* pointer, segment address pair */
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   Bit16u op1_16 = read_RMW_virtual_word(i->seg(), eaddr);
 
   if (count) {

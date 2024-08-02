@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: init.cc 12697 2015-03-27 21:39:24Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
+=======
+// $Id: init.cc 13165 2017-03-31 07:34:08Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -51,7 +58,11 @@ BX_CPU_C::BX_CPU_C(unsigned id): bx_cpuid(id)
 
   ia_extensions_bitmask[0] = (1 << BX_ISA_386);
   if (BX_SUPPORT_FPU)
+<<<<<<< HEAD
     ia_extensions_bitmask[0] = (1 << BX_ISA_X87);
+=======
+    ia_extensions_bitmask[0] |= (1 << BX_ISA_X87);
+>>>>>>> version-2.6.9
 
 #if BX_SUPPORT_VMX
   vmx_extensions_bitmask = 0;
@@ -152,7 +163,15 @@ void BX_CPU_C::init_statistics(void)
 
 #if InstrumentTLB
   new bx_shadow_num_c(cpu, "tlbLookups", &stats->tlbLookups);
+<<<<<<< HEAD
   new bx_shadow_num_c(cpu, "tlbMisses", &stats->tlbMisses);
+=======
+  new bx_shadow_num_c(cpu, "tlbExecuteLookups", &stats->tlbExecuteLookups);
+  new bx_shadow_num_c(cpu, "tlbWriteLookups", &stats->tlbWriteLookups);
+  new bx_shadow_num_c(cpu, "tlbMisses", &stats->tlbMisses);
+  new bx_shadow_num_c(cpu, "tlbExecuteMisses", &stats->tlbExecuteMisses);
+  new bx_shadow_num_c(cpu, "tlbWriteMisses", &stats->tlbWriteMisses);
+>>>>>>> version-2.6.9
 #endif
 
 #if InstrumentTLBFlush
@@ -262,6 +281,13 @@ void BX_CPU_C::register_state(void)
 #endif
 #endif
 
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_PKEYS
+  BXRS_HEX_PARAM_FIELD(cpu, pkru, pkru);
+#endif
+
+>>>>>>> version-2.6.9
   for(n=0; n<6; n++) {
     bx_segment_reg_t *segment = &BX_CPU_THIS_PTR sregs[n];
     bx_list_c *sreg = new bx_list_c(cpu, strseg(segment));
@@ -379,6 +405,13 @@ void BX_CPU_C::register_state(void)
 
   BXRS_HEX_PARAM_FIELD(MSR, pat, msr.pat.u64);
   BXRS_HEX_PARAM_FIELD(MSR, mtrr_deftype, msr.mtrr_deftype);
+<<<<<<< HEAD
+=======
+
+  if (BX_CPUID_SUPPORT_ISA_EXTENSION(BX_ISA_XSAVES)) {
+    BXRS_HEX_PARAM_FIELD(MSR, msr_xss, msr.msr_xss);
+  }
+>>>>>>> version-2.6.9
 #endif
 #if BX_CONFIGURE_MSRS
   bx_list_c *MSRS = new bx_list_c(cpu, "USER_MSR");
@@ -477,6 +510,15 @@ void BX_CPU_C::register_state(void)
     BXRS_HEX_PARAM_FIELD(tlb_entry, lpf_mask, TLB.entry[n].lpf_mask);
     BXRS_HEX_PARAM_FIELD(tlb_entry, ppf, TLB.entry[n].ppf);
     BXRS_HEX_PARAM_FIELD(tlb_entry, accessBits, TLB.entry[n].accessBits);
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_PKEYS
+    BXRS_HEX_PARAM_FIELD(tlb_entry, pkey, TLB.entry[n].pkey);
+#endif
+#if BX_SUPPORT_MEMTYPE
+    BXRS_HEX_PARAM_FIELD(tlb_entry, memtype, TLB.entry[n].memtype);
+#endif
+>>>>>>> version-2.6.9
   }
 #endif
 }
@@ -591,6 +633,13 @@ void BX_CPU_C::after_restore_state(void)
   set_VMCSPTR(BX_CPU_THIS_PTR vmcsptr);
 #endif
 
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_PKEYS
+  set_PKRU(BX_CPU_THIS_PTR pkru);
+#endif
+
+>>>>>>> version-2.6.9
   assert_checks();
   debug(RIP);
 }
@@ -798,7 +847,13 @@ void BX_CPU_C::reset(unsigned source)
 #endif
 
 #if BX_CPU_LEVEL >= 6
+<<<<<<< HEAD
   BX_CPU_THIS_PTR xcr0.set32(0x1);
+=======
+  if (source == BX_RESET_HARDWARE) {
+    BX_CPU_THIS_PTR xcr0.set32(0x1);
+  }
+>>>>>>> version-2.6.9
   BX_CPU_THIS_PTR xcr0_suppmask = 0x3;
 #if BX_SUPPORT_AVX
   if (BX_CPUID_SUPPORT_ISA_EXTENSION(BX_ISA_AVX))
@@ -808,6 +863,14 @@ void BX_CPU_C::reset(unsigned source)
     BX_CPU_THIS_PTR xcr0_suppmask |= BX_XCR0_OPMASK_MASK | BX_XCR0_ZMM_HI256_MASK | BX_XCR0_HI_ZMM_MASK;
 #endif
 #endif // BX_SUPPORT_AVX
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_PKEYS
+  if (BX_CPUID_SUPPORT_ISA_EXTENSION(BX_ISA_PKU))
+    BX_CPU_THIS_PTR xcr0_suppmask |= BX_XCR0_PKRU_MASK;
+#endif
+  BX_CPU_THIS_PTR msr.msr_xss = 0;
+>>>>>>> version-2.6.9
 #endif // BX_CPU_LEVEL >= 6
 
 /* initialise MSR registers to defaults */
@@ -837,17 +900,34 @@ void BX_CPU_C::reset(unsigned source)
       BX_CPU_THIS_PTR efer_suppmask |= BX_EFER_FFXSR_MASK;
     if (BX_CPUID_SUPPORT_ISA_EXTENSION(BX_ISA_SVM))
       BX_CPU_THIS_PTR efer_suppmask |= BX_EFER_SVME_MASK;
+<<<<<<< HEAD
+=======
+    if (BX_CPUID_SUPPORT_ISA_EXTENSION(BX_ISA_TCE))
+      BX_CPU_THIS_PTR efer_suppmask |= BX_EFER_TCE_MASK;
+>>>>>>> version-2.6.9
   }
 #endif
 
   BX_CPU_THIS_PTR msr.star = 0;
 #if BX_SUPPORT_X86_64
   if (BX_CPUID_SUPPORT_ISA_EXTENSION(BX_ISA_LONG_MODE)) {
+<<<<<<< HEAD
     BX_CPU_THIS_PTR msr.lstar = 0;
     BX_CPU_THIS_PTR msr.cstar = 0;
     BX_CPU_THIS_PTR msr.fmask = 0x00020200;
     BX_CPU_THIS_PTR msr.kernelgsbase = 0;
     BX_CPU_THIS_PTR msr.tsc_aux = 0;
+=======
+    if (source == BX_RESET_HARDWARE) {
+      BX_CPU_THIS_PTR msr.lstar = 0;
+      BX_CPU_THIS_PTR msr.cstar = 0;
+    }
+    BX_CPU_THIS_PTR msr.fmask = 0x00020200;
+    BX_CPU_THIS_PTR msr.kernelgsbase = 0;
+    if (source == BX_RESET_HARDWARE) {
+      BX_CPU_THIS_PTR msr.tsc_aux = 0;
+    }
+>>>>>>> version-2.6.9
   }
 #endif
 
@@ -859,15 +939,31 @@ void BX_CPU_C::reset(unsigned source)
   }
 #endif // BX_CPU_LEVEL >= 5
 
+<<<<<<< HEAD
 #if BX_CPU_LEVEL >= 6
   BX_CPU_THIS_PTR msr.sysenter_cs_msr  = 0;
   BX_CPU_THIS_PTR msr.sysenter_esp_msr = 0;
   BX_CPU_THIS_PTR msr.sysenter_eip_msr = 0;
+=======
+  if (source == BX_RESET_HARDWARE) {
+
+#if BX_SUPPORT_PKEYS
+    BX_CPU_THIS_PTR set_PKRU(0);
+#endif
+
+#if BX_CPU_LEVEL >= 6
+    BX_CPU_THIS_PTR msr.sysenter_cs_msr  = 0;
+    BX_CPU_THIS_PTR msr.sysenter_esp_msr = 0;
+    BX_CPU_THIS_PTR msr.sysenter_eip_msr = 0;
+>>>>>>> version-2.6.9
 #endif
 
   // Do not change MTRR on INIT
 #if BX_CPU_LEVEL >= 6
+<<<<<<< HEAD
   if (source == BX_RESET_HARDWARE) {
+=======
+>>>>>>> version-2.6.9
     for (n=0; n<16; n++)
       BX_CPU_THIS_PTR msr.mtrrphys[n] = 0;
 
@@ -879,19 +975,33 @@ void BX_CPU_C::reset(unsigned source)
 
     BX_CPU_THIS_PTR msr.pat = (Bit64u) BX_CONST64(0x0007040600070406);
     BX_CPU_THIS_PTR msr.mtrr_deftype = 0;
+<<<<<<< HEAD
   }
 #endif
 
   // All configurable MSRs do not change on INIT
 #if BX_CONFIGURE_MSRS
   if (source == BX_RESET_HARDWARE) {
+=======
+#endif
+
+    // All configurable MSRs do not change on INIT
+#if BX_CONFIGURE_MSRS
+>>>>>>> version-2.6.9
     for (n=0; n < BX_MSR_MAX_INDEX; n++) {
       if (BX_CPU_THIS_PTR msrs[n])
         BX_CPU_THIS_PTR msrs[n]->reset();
     }
+<<<<<<< HEAD
   }
 #endif
 
+=======
+#endif
+
+  }
+
+>>>>>>> version-2.6.9
   BX_CPU_THIS_PTR EXT = 0;
   BX_CPU_THIS_PTR last_exception_type = 0;
 
@@ -907,6 +1017,12 @@ void BX_CPU_C::reset(unsigned source)
 #if BX_SUPPORT_MEMTYPE
   BX_CPU_THIS_PTR espPageMemtype = BX_MEMTYPE_UC;
 #endif
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_SMP == 0
+  BX_CPU_THIS_PTR espPageFineGranularityMapping = 0;
+#endif
+>>>>>>> version-2.6.9
 
 #if BX_DEBUGGER
   BX_CPU_THIS_PTR stop_reason = STOP_NO_REASON;
@@ -936,8 +1052,14 @@ void BX_CPU_C::reset(unsigned source)
 #if BX_SUPPORT_EVEX
   BX_CPU_THIS_PTR opmask_ok = BX_CPU_THIS_PTR evex_ok = 0;
 
+<<<<<<< HEAD
   for (n=0; n<8; n++)
     BX_WRITE_OPMASK(n, 0);
+=======
+  if (source == BX_RESET_HARDWARE) {
+    for (n=0; n<8; n++) BX_WRITE_OPMASK(n, 0);
+  }
+>>>>>>> version-2.6.9
 #endif
 
   // Reset XMM state - unchanged on #INIT

@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: ctrl_xfer16.cc 12613 2015-01-25 20:55:10Z sshwarts $
+=======
+// $Id: ctrl_xfer16.cc 12769 2015-05-16 21:06:59Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
@@ -272,7 +276,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CALL_EwR(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CALL16_Ep(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   Bit16u op1_16 = read_virtual_word(i->seg(), eaddr);
   Bit16u cs_raw = read_virtual_word(i->seg(), (eaddr+2) & i->asize_mask());
@@ -511,7 +519,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::JMP_EwR(bxInstruction_c *i)
 /* Far indirect jump */
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::JMP16_Ep(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   Bit16u op1_16 = read_virtual_word(i->seg(), eaddr);
   Bit16u cs_raw = read_virtual_word(i->seg(), (eaddr+2) & i->asize_mask());

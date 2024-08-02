@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: cpustats.h 12501 2014-10-14 15:59:10Z sshwarts $
+=======
+// $Id: cpustats.h 12846 2015-09-28 19:09:32Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2014 Stanislav Shwartsman
@@ -42,7 +46,15 @@ struct bx_cpu_statistics
 
   // tlb lookup statistics
   Bit64u tlbLookups;
+<<<<<<< HEAD
   Bit64u tlbMisses;
+=======
+  Bit64u tlbExecuteLookups;
+  Bit64u tlbWriteLookups;
+  Bit64u tlbMisses;
+  Bit64u tlbExecuteMisses;
+  Bit64u tlbWriteMisses;
+>>>>>>> version-2.6.9
 
   // tlb flush statistics
   Bit64u tlbGlobalFlushes;
@@ -56,7 +68,12 @@ struct bx_cpu_statistics
 
   bx_cpu_statistics():
       iCacheLookups(0), iCachePrefetch(0), iCacheMisses(0),
+<<<<<<< HEAD
       tlbLookups(0), tlbMisses(0),
+=======
+      tlbLookups(0), tlbExecuteLookups(0), tlbWriteLookups(0),
+      tlbMisses(0), tlbExecuteMisses(0), tlbWriteMisses(0),
+>>>>>>> version-2.6.9
       tlbGlobalFlushes(0), tlbNonGlobalFlushes(0),
       stackPrefetch(0), smc(0) {}
   

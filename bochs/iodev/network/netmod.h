@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: netmod.h 12278 2014-04-13 13:32:52Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2013  The Bochs Project
+=======
+// $Id: netmod.h 13109 2017-03-12 07:48:08Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -27,6 +34,7 @@
 #ifndef BX_NETMOD_H
 #define BX_NETMOD_H
 
+<<<<<<< HEAD
 // Pseudo device that loads the lowlevel networking module
 class bx_netmod_ctl_c : public bx_netmod_ctl_stub_c {
 public:
@@ -35,6 +43,22 @@ public:
   virtual void* init_module(bx_list_c *base, void* rxh, void* rxstat, bx_devmodel_c *dev);
 };
 
+=======
+#ifndef BXHUB
+// Pseudo device that loads the lowlevel networking module
+class BOCHSAPI bx_netmod_ctl_c : public logfunctions {
+public:
+  bx_netmod_ctl_c();
+  virtual ~bx_netmod_ctl_c() {}
+  void init(void);
+  void exit(void);
+  virtual void* init_module(bx_list_c *base, void* rxh, void* rxstat, bx_devmodel_c *dev);
+};
+
+BOCHSAPI extern bx_netmod_ctl_c bx_netmod_ctl;
+#endif
+
+>>>>>>> version-2.6.9
 #define BX_PACKET_BUFSIZE 2048 // Enough for an ether frame
 
 // device receive status definitions
@@ -47,6 +71,7 @@ public:
 // this should not be smaller than an arp reply with an ethernet header
 #define MIN_RX_PACKET_LEN 60
 
+<<<<<<< HEAD
 #define ETHERNET_MAC_ADDR_LEN   6
 #define ETHERNET_TYPE_IPV4 0x0800
 #define ETHERNET_TYPE_ARP  0x0806
@@ -134,6 +159,17 @@ static const Bit8u broadcast_macaddr[6] = {0xff,0xff,0xff,0xff,0xff,0xff};
 
 int execute_script(bx_devmodel_c *netdev, const char *name, char* arg1);
 void write_pktlog_txt(FILE *pktlog_txt, const Bit8u *buf, unsigned len, bx_bool host_to_guest);
+=======
+typedef void (*eth_rx_handler_t)(void *arg, const void *buf, unsigned len);
+typedef Bit32u (*eth_rx_status_t)(void *arg);
+
+static const Bit8u broadcast_macaddr[6] = {0xff,0xff,0xff,0xff,0xff,0xff};
+
+#ifndef BXHUB
+int execute_script(bx_devmodel_c *netdev, const char *name, char* arg1);
+void BOCHSAPI_MSVCONLY write_pktlog_txt(FILE *pktlog_txt, const Bit8u *buf, unsigned len, bx_bool host_to_guest);
+#endif
+>>>>>>> version-2.6.9
 
 BX_CPP_INLINE Bit16u get_net2(const Bit8u *buf)
 {
@@ -163,10 +199,14 @@ BX_CPP_INLINE void put_net4(Bit8u *buf,Bit32u data)
   *(buf+3) = (Bit8u)(data & 0xff);
 }
 
+<<<<<<< HEAD
 Bit16u ip_checksum(const Bit8u *buf, unsigned buf_len);
 int process_dhcp(bx_devmodel_c *netdev, const Bit8u *data, unsigned data_len, Bit8u *reply, dhcp_cfg_t *dhcp);
 int process_tftp(bx_devmodel_c *netdev, const Bit8u *data, unsigned data_len, Bit16u req_tid, Bit8u *reply, const char *tftp_rootdir);
 
+=======
+#ifndef BXHUB
+>>>>>>> version-2.6.9
 //
 //  The eth_pktmover class is used by ethernet chip emulations
 // to interface to the outside world. An instance of this
@@ -191,8 +231,15 @@ protected:
 // their name. Chip emulations use the static 'create' method
 // to locate and instantiate a pktmover class.
 //
+<<<<<<< HEAD
 class eth_locator_c {
 public:
+=======
+class BOCHSAPI_MSVCONLY eth_locator_c {
+public:
+  static bx_bool module_present(const char *type);
+  static void cleanup();
+>>>>>>> version-2.6.9
   static eth_pktmover_c *create(const char *type, const char *netif,
                                 const char *macaddr,
                                 eth_rx_handler_t rxh,
@@ -201,7 +248,11 @@ public:
                                 const char *script);
 protected:
   eth_locator_c(const char *type);
+<<<<<<< HEAD
   virtual ~eth_locator_c() {}
+=======
+  virtual ~eth_locator_c();
+>>>>>>> version-2.6.9
   virtual eth_pktmover_c *allocate(const char *netif,
                                    const char *macaddr,
                                    eth_rx_handler_t rxh,
@@ -215,3 +266,8 @@ private:
 };
 
 #endif
+<<<<<<< HEAD
+=======
+
+#endif
+>>>>>>> version-2.6.9

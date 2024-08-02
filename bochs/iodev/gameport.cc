@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: gameport.cc 12366 2014-06-08 08:40:08Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2003-2014  The Bochs Project
+=======
+// $Id: gameport.cc 13051 2017-01-28 09:52:09Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2003-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -32,7 +39,13 @@
 
 #ifdef __linux__
 
+<<<<<<< HEAD
 #include <linux/joystick.h>
+=======
+#ifndef ANDROID
+#include <linux/joystick.h>
+#endif
+>>>>>>> version-2.6.9
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -55,7 +68,11 @@ UINT STDCALL joyGetPos(UINT, LPJOYINFO);
 
 bx_gameport_c *theGameport = NULL;
 
+<<<<<<< HEAD
 int CDECL libgameport_LTX_plugin_init(plugin_t *plugin, plugintype_t type, int argc, char *argv[])
+=======
+int CDECL libgameport_LTX_plugin_init(plugin_t *plugin, plugintype_t type)
+>>>>>>> version-2.6.9
 {
   theGameport = new bx_gameport_c();
   bx_devices.pluginGameport = theGameport;
@@ -133,6 +150,10 @@ void bx_gameport_c::register_state(void)
 
 void bx_gameport_c::poll_joydev(void)
 {
+<<<<<<< HEAD
+=======
+#ifndef ANDROID
+>>>>>>> version-2.6.9
 #ifdef __linux__
   struct js_event e;
   fd_set joyfds;
@@ -177,6 +198,10 @@ void bx_gameport_c::poll_joydev(void)
     BX_GAMEPORT_THIS delay_y = 25 + (joypos.wYpos / 60);
   }
 #endif
+<<<<<<< HEAD
+=======
+#endif //ANDROID
+>>>>>>> version-2.6.9
 }
 
 // static IO port read callback handler

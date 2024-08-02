@@ -1,11 +1,19 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: svga_cirrus.h 12049 2013-12-18 17:55:32Z vruppert $
+=======
+// $Id: svga_cirrus.h 13147 2017-03-24 19:57:25Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (c) 2004 Makoto Suzuki (suzu)
 //                     Volker Ruppert (vruppert)
 //                     Robin Kay (komadori)
+<<<<<<< HEAD
 //  Copyright (C) 2004-2013  The Bochs Project
+=======
+//  Copyright (C) 2004-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -81,11 +89,18 @@ public:
   virtual void after_restore_state(void);
 
 #if BX_SUPPORT_PCI
+<<<<<<< HEAD
   virtual Bit32u pci_read_handler(Bit8u address, unsigned io_len);
   virtual void   pci_write_handler(Bit8u address, Bit32u value, unsigned io_len);
 #endif
 #if BX_DEBUGGER
   virtual void   debug_dump(int argc, char **argv);
+=======
+  virtual void pci_write_handler(Bit8u address, Bit32u value, unsigned io_len);
+#endif
+#if BX_DEBUGGER
+  virtual void debug_dump(int argc, char **argv);
+>>>>>>> version-2.6.9
 #endif
 
 private:

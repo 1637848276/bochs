@@ -1,8 +1,15 @@
 ///////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: pit.cc 12559 2014-12-01 17:06:00Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2014  The Bochs Project
+=======
+// $Id: pit.cc 13150 2017-03-26 08:09:28Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -33,11 +40,18 @@
 
 bx_pit_c *thePit = NULL;
 
+<<<<<<< HEAD
 int CDECL libpit_LTX_plugin_init(plugin_t *plugin, plugintype_t type, int argc, char *argv[])
 {
   if (type == PLUGTYPE_CORE) {
     thePit = new bx_pit_c();
     bx_devices.pluginPitDevice = thePit;
+=======
+int CDECL libpit_LTX_plugin_init(plugin_t *plugin, plugintype_t type)
+{
+  if (type == PLUGTYPE_CORE) {
+    thePit = new bx_pit_c();
+>>>>>>> version-2.6.9
     BX_REGISTER_DEVICE_DEVMODEL(plugin, type, thePit, BX_PLUGIN_PIT);
     return 0; // Success
   } else {

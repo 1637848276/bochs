@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: string.cc 12515 2014-10-20 21:08:29Z sshwarts $
+=======
+// $Id: string.cc 12843 2015-09-28 18:37:35Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2014  The Bochs Project
@@ -39,6 +43,7 @@ Bit32u BX_CPU_C::FastRepMOVSB(bxInstruction_c *i, unsigned srcSeg, Bit32u srcOff
   BX_ASSERT(BX_CPU_THIS_PTR cpu_mode != BX_MODE_LONG_64);
 
   bx_segment_reg_t *srcSegPtr = &BX_CPU_THIS_PTR sregs[srcSeg];
+<<<<<<< HEAD
   if (!(srcSegPtr->cache.valid & SegAccessROK))
     return 0;
   if ((srcOff | 0xfff) > srcSegPtr->cache.u.segment.limit_scaled)
@@ -58,6 +63,38 @@ Bit32u BX_CPU_C::FastRepMOVSB(bxInstruction_c *i, unsigned srcSeg, Bit32u srcOff
   laddrDst = get_laddr32(dstSeg, dstOff);
 
   hostAddrDst = v2h_write_byte(laddrDst, BX_CPU_THIS_PTR user_pl);
+=======
+  if (srcSegPtr->cache.valid & SegAccessROK4G) {
+    laddrSrc = srcOff;
+  }
+  else {
+    if (!(srcSegPtr->cache.valid & SegAccessROK))
+      return 0;
+    if ((srcOff | 0xfff) > srcSegPtr->cache.u.segment.limit_scaled)
+      return 0;
+
+    laddrSrc = get_laddr32(srcSeg, srcOff);
+  }
+
+  hostAddrSrc = v2h_read_byte(laddrSrc, USER_PL);
+  // Check that native host access was not vetoed for that page
+  if (! hostAddrSrc) return 0;
+
+  bx_segment_reg_t *dstSegPtr = &BX_CPU_THIS_PTR sregs[dstSeg];
+  if (dstSegPtr->cache.valid & SegAccessWOK4G) {
+    laddrDst = dstOff;
+  }
+  else {
+    if (!(dstSegPtr->cache.valid & SegAccessWOK))
+      return 0;
+    if ((dstOff | 0xfff) > dstSegPtr->cache.u.segment.limit_scaled)
+      return 0;
+
+    laddrDst = get_laddr32(dstSeg, dstOff);
+  }
+
+  hostAddrDst = v2h_write_byte(laddrDst, USER_PL);
+>>>>>>> version-2.6.9
   // Check that native host access was not vetoed for that page
   if (!hostAddrDst) return 0;
 
@@ -109,6 +146,7 @@ Bit32u BX_CPU_C::FastRepMOVSW(bxInstruction_c *i, unsigned srcSeg, Bit32u srcOff
   BX_ASSERT(BX_CPU_THIS_PTR cpu_mode != BX_MODE_LONG_64);
 
   bx_segment_reg_t *srcSegPtr = &BX_CPU_THIS_PTR sregs[srcSeg];
+<<<<<<< HEAD
   if (!(srcSegPtr->cache.valid & SegAccessROK))
     return 0;
   if ((srcOff | 0xfff) > srcSegPtr->cache.u.segment.limit_scaled)
@@ -128,6 +166,38 @@ Bit32u BX_CPU_C::FastRepMOVSW(bxInstruction_c *i, unsigned srcSeg, Bit32u srcOff
   laddrDst = get_laddr32(dstSeg, dstOff);
 
   hostAddrDst = v2h_write_byte(laddrDst, BX_CPU_THIS_PTR user_pl);
+=======
+  if (srcSegPtr->cache.valid & SegAccessROK4G) {
+    laddrSrc = srcOff;
+  }
+  else {
+    if (!(srcSegPtr->cache.valid & SegAccessROK))
+      return 0;
+    if ((srcOff | 0xfff) > srcSegPtr->cache.u.segment.limit_scaled)
+      return 0;
+
+    laddrSrc = get_laddr32(srcSeg, srcOff);
+  }
+
+  hostAddrSrc = v2h_read_byte(laddrSrc, USER_PL);
+  // Check that native host access was not vetoed for that page
+  if (! hostAddrSrc) return 0;
+
+  bx_segment_reg_t *dstSegPtr = &BX_CPU_THIS_PTR sregs[dstSeg];
+  if (dstSegPtr->cache.valid & SegAccessWOK4G) {
+    laddrDst = dstOff;
+  }
+  else {
+    if (!(dstSegPtr->cache.valid & SegAccessWOK))
+      return 0;
+    if ((dstOff | 0xfff) > dstSegPtr->cache.u.segment.limit_scaled)
+      return 0;
+
+    laddrDst = get_laddr32(dstSeg, dstOff);
+  }
+
+  hostAddrDst = v2h_write_byte(laddrDst, USER_PL);
+>>>>>>> version-2.6.9
   // Check that native host access was not vetoed for that page
   if (!hostAddrDst) return 0;
 
@@ -182,6 +252,7 @@ Bit32u BX_CPU_C::FastRepMOVSD(bxInstruction_c *i, unsigned srcSeg, Bit32u srcOff
   BX_ASSERT(BX_CPU_THIS_PTR cpu_mode != BX_MODE_LONG_64);
 
   bx_segment_reg_t *srcSegPtr = &BX_CPU_THIS_PTR sregs[srcSeg];
+<<<<<<< HEAD
   if (!(srcSegPtr->cache.valid & SegAccessROK))
     return 0;
   if ((srcOff | 0xfff) > srcSegPtr->cache.u.segment.limit_scaled)
@@ -201,6 +272,38 @@ Bit32u BX_CPU_C::FastRepMOVSD(bxInstruction_c *i, unsigned srcSeg, Bit32u srcOff
   laddrDst = get_laddr32(dstSeg, dstOff);
 
   hostAddrDst = v2h_write_byte(laddrDst, BX_CPU_THIS_PTR user_pl);
+=======
+  if (srcSegPtr->cache.valid & SegAccessROK4G) {
+    laddrSrc = srcOff;
+  }
+  else {
+    if (!(srcSegPtr->cache.valid & SegAccessROK))
+      return 0;
+    if ((srcOff | 0xfff) > srcSegPtr->cache.u.segment.limit_scaled)
+      return 0;
+
+    laddrSrc = get_laddr32(srcSeg, srcOff);
+  }
+
+  hostAddrSrc = v2h_read_byte(laddrSrc, USER_PL);
+  // Check that native host access was not vetoed for that page
+  if (! hostAddrSrc) return 0;
+
+  bx_segment_reg_t *dstSegPtr = &BX_CPU_THIS_PTR sregs[dstSeg];
+  if (dstSegPtr->cache.valid & SegAccessWOK4G) {
+    laddrDst = dstOff;
+  }
+  else {
+    if (!(dstSegPtr->cache.valid & SegAccessWOK))
+      return 0;
+    if ((dstOff | 0xfff) > dstSegPtr->cache.u.segment.limit_scaled)
+      return 0;
+
+    laddrDst = get_laddr32(dstSeg, dstOff);
+  }
+
+  hostAddrDst = v2h_write_byte(laddrDst, USER_PL);
+>>>>>>> version-2.6.9
   // Check that native host access was not vetoed for that page
   if (!hostAddrDst) return 0;
 
@@ -255,6 +358,7 @@ Bit32u BX_CPU_C::FastRepSTOSB(bxInstruction_c *i, unsigned dstSeg, Bit32u dstOff
   BX_ASSERT(BX_CPU_THIS_PTR cpu_mode != BX_MODE_LONG_64);
 
   bx_segment_reg_t *dstSegPtr = &BX_CPU_THIS_PTR sregs[dstSeg];
+<<<<<<< HEAD
   if (!(dstSegPtr->cache.valid & SegAccessWOK))
     return 0;
   if ((dstOff | 0xfff) > dstSegPtr->cache.u.segment.limit_scaled)
@@ -263,6 +367,21 @@ Bit32u BX_CPU_C::FastRepSTOSB(bxInstruction_c *i, unsigned dstSeg, Bit32u dstOff
   laddrDst = get_laddr32(dstSeg, dstOff);
 
   hostAddrDst = v2h_write_byte(laddrDst, BX_CPU_THIS_PTR user_pl);
+=======
+  if (dstSegPtr->cache.valid & SegAccessWOK4G) {
+    laddrDst = dstOff;
+  }
+  else {
+    if (!(dstSegPtr->cache.valid & SegAccessWOK))
+      return 0;
+    if ((dstOff | 0xfff) > dstSegPtr->cache.u.segment.limit_scaled)
+      return 0;
+
+    laddrDst = get_laddr32(dstSeg, dstOff);
+  }
+
+  hostAddrDst = v2h_write_byte(laddrDst, USER_PL);
+>>>>>>> version-2.6.9
   // Check that native host access was not vetoed for that page
   if (!hostAddrDst) return 0;
 
@@ -309,6 +428,7 @@ Bit32u BX_CPU_C::FastRepSTOSW(bxInstruction_c *i, unsigned dstSeg, Bit32u dstOff
   BX_ASSERT(BX_CPU_THIS_PTR cpu_mode != BX_MODE_LONG_64);
 
   bx_segment_reg_t *dstSegPtr = &BX_CPU_THIS_PTR sregs[dstSeg];
+<<<<<<< HEAD
   if (!(dstSegPtr->cache.valid & SegAccessWOK))
     return 0;
   if ((dstOff | 0xfff) > dstSegPtr->cache.u.segment.limit_scaled)
@@ -317,6 +437,21 @@ Bit32u BX_CPU_C::FastRepSTOSW(bxInstruction_c *i, unsigned dstSeg, Bit32u dstOff
   laddrDst = get_laddr32(dstSeg, dstOff);
 
   hostAddrDst = v2h_write_byte(laddrDst, BX_CPU_THIS_PTR user_pl);
+=======
+  if (dstSegPtr->cache.valid & SegAccessWOK4G) {
+    laddrDst = dstOff;
+  }
+  else {
+    if (!(dstSegPtr->cache.valid & SegAccessWOK))
+      return 0;
+    if ((dstOff | 0xfff) > dstSegPtr->cache.u.segment.limit_scaled)
+      return 0;
+
+    laddrDst = get_laddr32(dstSeg, dstOff);
+  }
+
+  hostAddrDst = v2h_write_byte(laddrDst, USER_PL);
+>>>>>>> version-2.6.9
   // Check that native host access was not vetoed for that page
   if (!hostAddrDst) return 0;
 
@@ -365,6 +500,7 @@ Bit32u BX_CPU_C::FastRepSTOSD(bxInstruction_c *i, unsigned dstSeg, Bit32u dstOff
   BX_ASSERT(BX_CPU_THIS_PTR cpu_mode != BX_MODE_LONG_64);
 
   bx_segment_reg_t *dstSegPtr = &BX_CPU_THIS_PTR sregs[dstSeg];
+<<<<<<< HEAD
   if (!(dstSegPtr->cache.valid & SegAccessWOK))
     return 0;
   if ((dstOff | 0xfff) > dstSegPtr->cache.u.segment.limit_scaled)
@@ -373,6 +509,21 @@ Bit32u BX_CPU_C::FastRepSTOSD(bxInstruction_c *i, unsigned dstSeg, Bit32u dstOff
   laddrDst = get_laddr32(dstSeg, dstOff);
 
   hostAddrDst = v2h_write_byte(laddrDst, BX_CPU_THIS_PTR user_pl);
+=======
+  if (dstSegPtr->cache.valid & SegAccessWOK4G) {
+    laddrDst = dstOff;
+  }
+  else {
+    if (!(dstSegPtr->cache.valid & SegAccessWOK))
+      return 0;
+    if ((dstOff | 0xfff) > dstSegPtr->cache.u.segment.limit_scaled)
+      return 0;
+
+    laddrDst = get_laddr32(dstSeg, dstOff);
+  }
+
+  hostAddrDst = v2h_write_byte(laddrDst, USER_PL);
+>>>>>>> version-2.6.9
   // Check that native host access was not vetoed for that page
   if (!hostAddrDst) return 0;
 

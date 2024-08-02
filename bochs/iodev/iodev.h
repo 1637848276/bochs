@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: iodev.h 12681 2015-03-06 22:54:30Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
+=======
+// $Id: iodev.h 13167 2017-03-31 21:32:58Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  I/O port handlers API Copyright (C) 2003 by Frank Cornelis
 //
@@ -45,7 +52,11 @@
 typedef Bit32u (*bx_read_handler_t)(void *, Bit32u, unsigned);
 typedef void   (*bx_write_handler_t)(void *, Bit32u, Bit32u, unsigned);
 
+<<<<<<< HEAD
 typedef bx_bool (*bx_keyb_enq_t)(void *, Bit8u *);
+=======
+typedef bx_bool (*bx_kbd_gen_scancode_t)(void *, Bit32u);
+>>>>>>> version-2.6.9
 typedef void (*bx_mouse_enq_t)(void *, int, int, int, unsigned, bx_bool);
 typedef void (*bx_mouse_enabled_changed_t)(void *, bx_bool);
 
@@ -81,6 +92,7 @@ class BOCHSAPI bx_devmodel_c : public logfunctions {
 class bx_list_c;
 class device_image_t;
 class cdrom_base_c;
+<<<<<<< HEAD
 class bx_soundlow_waveout_c;
 class bx_soundlow_wavein_c;
 class bx_soundlow_midiout_c;
@@ -102,6 +114,22 @@ public:
     return 0;
   }
 
+=======
+
+//////////////////////////////////////////////////////////////////////
+// bx_pci_device_c declaration
+//////////////////////////////////////////////////////////////////////
+
+#if BX_SUPPORT_PCI
+class BOCHSAPI bx_pci_device_c : public bx_devmodel_c {
+public:
+  bx_pci_device_c(): pci_rom(NULL), pci_rom_size(0) {}
+  virtual ~bx_pci_device_c() {
+    if (pci_rom != NULL) delete [] pci_rom;
+  }
+
+  virtual Bit32u pci_read_handler(Bit8u address, unsigned io_len);
+>>>>>>> version-2.6.9
   virtual void pci_write_handler(Bit8u address, Bit32u value, unsigned io_len) {}
 
   void init_pci_conf(Bit16u vid, Bit16u did, Bit8u rev, Bit32u classc, Bit8u headt);
@@ -115,6 +143,10 @@ protected:
   Bit32u pci_rom_address;
   Bit32u pci_rom_size;
 };
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> version-2.6.9
 
 //////////////////////////////////////////////////////////////////////
 // declare stubs for devices
@@ -127,7 +159,10 @@ protected:
 
 class BOCHSAPI bx_keyb_stub_c : public bx_devmodel_c {
 public:
+<<<<<<< HEAD
   virtual ~bx_keyb_stub_c() {}
+=======
+>>>>>>> version-2.6.9
   // stubs for bx_keyb_c methods
   virtual void gen_scancode(Bit32u key) {
     STUBFUNC(keyboard, gen_scancode);
@@ -142,6 +177,7 @@ public:
 
 class BOCHSAPI bx_hard_drive_stub_c : public bx_devmodel_c {
 public:
+<<<<<<< HEAD
   virtual void   init() {
     STUBFUNC(HD, init);
   }
@@ -166,6 +202,20 @@ public:
   {
     STUBFUNC(HD, virt_write_handler);
   }
+=======
+  virtual Bit32u get_first_cd_handle(void) {
+    return BX_MAX_ATA_CHANNEL*2;
+  }
+
+  virtual bx_bool  get_cd_media_status(Bit32u handle) { return 0; }
+  virtual bx_bool  set_cd_media_status(Bit32u handle, bx_bool status) {
+    STUBFUNC(HD, set_cd_media_status); return 0;
+  }
+
+  virtual Bit32u virt_read_handler(Bit32u address, unsigned io_len) { return 0; }
+  virtual void virt_write_handler(Bit32u address, Bit32u value, unsigned io_len) {}
+
+>>>>>>> version-2.6.9
   virtual bx_bool bmdma_read_sector(Bit8u channel, Bit8u *buffer, Bit32u *sector_size) {
     STUBFUNC(HD, bmdma_read_sector); return 0;
   }
@@ -192,9 +242,12 @@ public:
   virtual void set_reg(unsigned reg, Bit32u val) {
     STUBFUNC(cmos, set_reg);
   }
+<<<<<<< HEAD
   virtual time_t get_timeval() {
     return 0;
   }
+=======
+>>>>>>> version-2.6.9
   virtual void checksum_cmos(void) {
     STUBFUNC(cmos, checksum);
   }
@@ -248,7 +301,17 @@ public:
   }
 };
 
+<<<<<<< HEAD
 class BOCHSAPI bx_vga_stub_c : public bx_devmodel_c {
+=======
+class BOCHSAPI bx_vga_stub_c
+#if BX_SUPPORT_PCI
+: public bx_pci_device_c
+#else
+: public bx_devmodel_c
+#endif
+{
+>>>>>>> version-2.6.9
 public:
   virtual void redraw_area(unsigned x0, unsigned y0,
                            unsigned width, unsigned height) {
@@ -272,14 +335,33 @@ public:
   }
 };
 
+<<<<<<< HEAD
 class BOCHSAPI bx_pci2isa_stub_c : public bx_devmodel_c, public bx_pci_device_stub_c {
+=======
+class BOCHSAPI bx_speaker_stub_c : public bx_devmodel_c {
+public:
+  virtual void beep_on(float frequency) {
+    bx_gui->beep_on(frequency);
+  }
+  virtual void beep_off() {
+    bx_gui->beep_off();
+  }
+};
+
+#if BX_SUPPORT_PCI
+class BOCHSAPI bx_pci2isa_stub_c : public bx_pci_device_c {
+>>>>>>> version-2.6.9
 public:
   virtual void pci_set_irq (Bit8u devfunc, unsigned line, bx_bool level) {
     STUBFUNC(pci2isa, pci_set_irq);
   }
 };
 
+<<<<<<< HEAD
 class BOCHSAPI bx_pci_ide_stub_c : public bx_devmodel_c, public bx_pci_device_stub_c {
+=======
+class BOCHSAPI bx_pci_ide_stub_c : public bx_pci_device_c {
+>>>>>>> version-2.6.9
 public:
   virtual bx_bool bmdma_present(void) {
     return 0;
@@ -288,6 +370,7 @@ public:
   virtual void bmdma_set_irq(Bit8u channel) {}
 };
 
+<<<<<<< HEAD
 class BOCHSAPI bx_speaker_stub_c : public bx_devmodel_c {
 public:
   virtual void beep_on(float frequency) {
@@ -300,6 +383,9 @@ public:
 
 #if BX_SUPPORT_PCI
 class BOCHSAPI bx_acpi_ctrl_stub_c : public bx_devmodel_c, public bx_pci_device_stub_c {
+=======
+class BOCHSAPI bx_acpi_ctrl_stub_c : public bx_pci_device_c {
+>>>>>>> version-2.6.9
 public:
   virtual void generate_smi(Bit8u value) {}
 };
@@ -351,6 +437,7 @@ public:
   }
 };
 
+<<<<<<< HEAD
 #if BX_SUPPORT_SOUNDLOW
 class BOCHSAPI bx_soundmod_ctl_stub_c : public bx_devmodel_c {
 public:
@@ -375,6 +462,8 @@ public:
 };
 #endif
 
+=======
+>>>>>>> version-2.6.9
 class BOCHSAPI bx_devices_c : public logfunctions {
 public:
   bx_devices_c();
@@ -420,18 +509,30 @@ public:
   Bit32u inp(Bit16u addr, unsigned io_len) BX_CPP_AttrRegparmN(2);
   void   outp(Bit16u addr, Bit32u value, unsigned io_len) BX_CPP_AttrRegparmN(3);
 
+<<<<<<< HEAD
   void register_removable_keyboard(void *dev, bx_keyb_enq_t keyb_enq);
+=======
+  void register_removable_keyboard(void *dev, bx_kbd_gen_scancode_t kbd_gen_scancode);
+>>>>>>> version-2.6.9
   void unregister_removable_keyboard(void *dev);
   void register_default_mouse(void *dev, bx_mouse_enq_t mouse_enq, bx_mouse_enabled_changed_t mouse_enabled_changed);
   void register_removable_mouse(void *dev, bx_mouse_enq_t mouse_enq, bx_mouse_enabled_changed_t mouse_enabled_changed);
   void unregister_removable_mouse(void *dev);
+<<<<<<< HEAD
   bx_bool optional_key_enq(Bit8u *scan_code);
+=======
+  void gen_scancode(Bit32u key);
+>>>>>>> version-2.6.9
   void mouse_enabled_changed(bx_bool enabled);
   void mouse_motion(int delta_x, int delta_y, int delta_z, unsigned button_state, bx_bool absxy);
 
 #if BX_SUPPORT_PCI
   Bit32u pci_get_confAddr(void) {return pci.confAddr;}
+<<<<<<< HEAD
   bx_bool register_pci_handlers(bx_pci_device_stub_c *device, Bit8u *devfunc,
+=======
+  bx_bool register_pci_handlers(bx_pci_device_c *device, Bit8u *devfunc,
+>>>>>>> version-2.6.9
                                 const char *name, const char *descr);
   bx_bool pci_set_base_mem(void *this_ptr, memory_handler_t f1, memory_handler_t f2,
                            Bit32u *addr, Bit8u *pci_conf, unsigned size);
@@ -443,6 +544,7 @@ public:
   static void timer_handler(void *);
   void timer(void);
 
+<<<<<<< HEAD
   bx_pci2isa_stub_c *pluginPci2IsaBridge;
   bx_pci_ide_stub_c *pluginPciIdeController;
 #if BX_SUPPORT_PCI
@@ -458,6 +560,17 @@ public:
   bx_hard_drive_stub_c *pluginHardDrive;
   bx_hdimage_ctl_stub_c *pluginHDImageCtl;
   bx_speaker_stub_c *pluginSpeaker;
+=======
+  bx_cmos_stub_c    *pluginCmosDevice;
+  bx_dma_stub_c     *pluginDmaDevice;
+  bx_floppy_stub_c  *pluginFloppyDevice;
+  bx_hard_drive_stub_c *pluginHardDrive;
+  bx_hdimage_ctl_stub_c *pluginHDImageCtl;
+  bx_keyb_stub_c    *pluginKeyboard;
+  bx_pic_stub_c     *pluginPicDevice;
+  bx_speaker_stub_c *pluginSpeaker;
+  bx_vga_stub_c     *pluginVgaDevice;
+>>>>>>> version-2.6.9
 #if BX_SUPPORT_IODEBUG
   bx_iodebug_stub_c *pluginIODebug;
 #endif
@@ -467,6 +580,7 @@ public:
 #if BX_SUPPORT_GAMEPORT
   bx_game_stub_c  *pluginGameport;
 #endif
+<<<<<<< HEAD
 #if BX_SUPPORT_PCIUSB
   bx_usb_devctl_stub_c  *pluginUsbDevCtl;
 #endif
@@ -476,10 +590,21 @@ public:
 #if BX_NETWORKING
   bx_netmod_ctl_stub_c  *pluginNetModCtl;
 #endif
+=======
+#if BX_SUPPORT_PCI
+  bx_pci2isa_stub_c *pluginPci2IsaBridge;
+  bx_pci_ide_stub_c *pluginPciIdeController;
+  bx_acpi_ctrl_stub_c *pluginACPIController;
+#endif
+#if BX_SUPPORT_PCIUSB
+  bx_usb_devctl_stub_c  *pluginUsbDevCtl;
+#endif
+>>>>>>> version-2.6.9
 
   // stub classes that the pointers (above) can point to until a plugin is
   // loaded
   bx_cmos_stub_c stubCmos;
+<<<<<<< HEAD
   bx_keyb_stub_c stubKeyboard;
   bx_hard_drive_stub_c stubHardDrive;
   bx_hdimage_ctl_stub_c stubHDImage;
@@ -493,6 +618,16 @@ public:
 #if BX_SUPPORT_PCI
   bx_acpi_ctrl_stub_c stubACPIController;
 #endif
+=======
+  bx_dma_stub_c  stubDma;
+  bx_floppy_stub_c  stubFloppy;
+  bx_hard_drive_stub_c stubHardDrive;
+  bx_hdimage_ctl_stub_c stubHDImage;
+  bx_keyb_stub_c stubKeyboard;
+  bx_pic_stub_c  stubPic;
+  bx_speaker_stub_c stubSpeaker;
+  bx_vga_stub_c  stubVga;
+>>>>>>> version-2.6.9
 #if BX_SUPPORT_IODEBUG
   bx_iodebug_stub_c stubIODebug;
 #endif
@@ -502,6 +637,7 @@ public:
 #if BX_SUPPORT_GAMEPORT
   bx_game_stub_c stubGameport;
 #endif
+<<<<<<< HEAD
 #if BX_SUPPORT_PCIUSB
   bx_usb_devctl_stub_c stubUsbDevCtl;
 #endif
@@ -511,6 +647,16 @@ public:
 #if BX_NETWORKING
   bx_netmod_ctl_stub_c  stubNetModCtl;
 #endif
+=======
+#if BX_SUPPORT_PCI
+  bx_pci2isa_stub_c stubPci2Isa;
+  bx_pci_ide_stub_c stubPciIde;
+  bx_acpi_ctrl_stub_c stubACPIController;
+#endif
+#if BX_SUPPORT_PCIUSB
+  bx_usb_devctl_stub_c stubUsbDevCtl;
+#endif
+>>>>>>> version-2.6.9
 
   // Some info to pass to devices which can handled bulk IO.  This allows
   // the interface to remain the same for IO devices which can't handle
@@ -560,7 +706,11 @@ private:
   } bx_mouse[2];
   struct {
     void *dev;
+<<<<<<< HEAD
     bx_keyb_enq_t enq_event;
+=======
+    bx_kbd_gen_scancode_t gen_scancode;
+>>>>>>> version-2.6.9
   } bx_keyboard;
 
   struct {
@@ -568,7 +718,11 @@ private:
 #if BX_SUPPORT_PCI
     Bit8u handler_id[0x100];  // 256 devices/functions
     struct {
+<<<<<<< HEAD
       bx_pci_device_stub_c *handler;
+=======
+      bx_pci_device_c *handler;
+>>>>>>> version-2.6.9
     } pci_handler[BX_MAX_PCI_DEVICES];
     unsigned num_pci_handlers;
 

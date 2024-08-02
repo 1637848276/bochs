@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: soundalsa.h 12672 2015-02-23 21:32:34Z vruppert $
+=======
+// $Id: soundalsa.h 13116 2017-03-14 18:21:05Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2013-2015  The Bochs Project
@@ -87,12 +91,20 @@ private:
 
 class bx_sound_alsa_c : public bx_sound_lowlevel_c {
 public:
+<<<<<<< HEAD
   bx_sound_alsa_c();
+=======
+  bx_sound_alsa_c() : bx_sound_lowlevel_c("alsa") {}
+>>>>>>> version-2.6.9
   virtual ~bx_sound_alsa_c() {}
 
   virtual bx_soundlow_waveout_c* get_waveout();
   virtual bx_soundlow_wavein_c* get_wavein();
   virtual bx_soundlow_midiout_c* get_midiout();
+<<<<<<< HEAD
 };
+=======
+} bx_sound_alsa;
+>>>>>>> version-2.6.9
 
 #endif

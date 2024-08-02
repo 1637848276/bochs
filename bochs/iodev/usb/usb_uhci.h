@@ -1,9 +1,17 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: usb_uhci.h 11220 2012-06-17 07:14:27Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2009       Benjamin D Lunt (fys at frontiernet net)
 //                2009-2012  The Bochs Project
+=======
+// $Id: usb_uhci.h 12971 2016-12-02 17:30:16Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2009-2016  Benjamin D Lunt (fys [at] fysnet [dot] net)
+//                2009-2016  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -30,6 +38,7 @@
 #  define BX_UHCI_THIS_PTR this
 #endif
 
+<<<<<<< HEAD
 // defined in bochs.h: UHCI supports 2 ports per root hub
 
 typedef struct {
@@ -182,6 +191,9 @@ struct HCSTACK {
 };
 
 class bx_usb_uhci_c : public bx_devmodel_c, public bx_pci_device_stub_c {
+=======
+class bx_usb_uhci_c : public bx_uhci_core_c {
+>>>>>>> version-2.6.9
 public:
   bx_usb_uhci_c();
   virtual ~bx_usb_uhci_c();
@@ -189,13 +201,17 @@ public:
   virtual void reset(unsigned);
   virtual void register_state(void);
   virtual void after_restore_state(void);
+<<<<<<< HEAD
   virtual Bit32u  pci_read_handler(Bit8u address, unsigned io_len);
   virtual void    pci_write_handler(Bit8u address, Bit32u value, unsigned io_len);
+=======
+>>>>>>> version-2.6.9
 
   static const char *usb_param_handler(bx_param_string_c *param, int set,
                                        const char *oldval, const char *val, int maxlen);
 
 private:
+<<<<<<< HEAD
   bx_usb_uhci_t hub;
   Bit8u         global_reset;
   bx_bool       busy;
@@ -222,6 +238,13 @@ private:
   Bit32u read(Bit32u address, unsigned io_len);
   void   write(Bit32u address, Bit32u value, unsigned io_len);
 #endif
+=======
+  Bit8u device_change;
+  int rt_conf_id;
+
+  void init_device(Bit8u port, bx_list_c *portconf);
+  static void remove_device(Bit8u port);
+>>>>>>> version-2.6.9
 
   static void runtime_config_handler(void *);
   void runtime_config(void);

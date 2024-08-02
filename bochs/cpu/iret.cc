@@ -1,8 +1,15 @@
 ////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: iret.cc 11106 2012-03-25 11:54:32Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2005-2012 Stanislav Shwartsman
+=======
+// $Id: iret.cc 13168 2017-04-01 05:49:01Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//   Copyright (c) 2005-2017 Stanislav Shwartsman
+>>>>>>> version-2.6.9
 //          Written by Stanislav Shwartsman [sshwarts at sourceforge net]
 //
 //  This library is free software; you can redistribute it and/or
@@ -99,7 +106,10 @@ BX_CPU_C::iret_protected(bxInstruction_c *i)
   /* NT = 0: INTERRUPT RETURN ON STACK -or STACK_RETURN_TO_V86 */
   unsigned top_nbytes_same;
   Bit32u new_eip = 0, new_esp, temp_ESP, new_eflags = 0;
+<<<<<<< HEAD
   Bit16u new_ip = 0, new_flags = 0;
+=======
+>>>>>>> version-2.6.9
 
   /* 16bit opsize  |   32bit opsize
    * ==============================
@@ -138,9 +148,15 @@ BX_CPU_C::iret_protected(bxInstruction_c *i)
     }
   }
   else {
+<<<<<<< HEAD
     new_flags       = stack_read_word(temp_ESP + 4);
     raw_cs_selector = stack_read_word(temp_ESP + 2);
     new_ip          = stack_read_word(temp_ESP + 0);
+=======
+    new_eflags      = stack_read_word(temp_ESP + 4);
+    raw_cs_selector = stack_read_word(temp_ESP + 2);
+    new_eip         = stack_read_word(temp_ESP + 0);
+>>>>>>> version-2.6.9
   }
 
   parse_selector(raw_cs_selector, &cs_selector);
@@ -166,12 +182,22 @@ BX_CPU_C::iret_protected(bxInstruction_c *i)
   check_cs(&cs_descriptor, raw_cs_selector, 0, cs_selector.rpl);
 
   if (cs_selector.rpl == CPL) { /* INTERRUPT RETURN TO SAME LEVEL */
+<<<<<<< HEAD
     /* top 6/12 bytes on stack must be within limits, else #SS(0) */
     /* satisfied above */
     if (i->os32L()) {
       /* load CS-cache with new code segment descriptor */
       branch_far32(&cs_selector, &cs_descriptor, new_eip, cs_selector.rpl);
 
+=======
+
+    /* load CS-cache with new code segment descriptor */
+    branch_far32(&cs_selector, &cs_descriptor, new_eip, cs_selector.rpl);
+
+    /* top 6/12 bytes on stack must be within limits, else #SS(0) */
+    /* satisfied above */
+    if (i->os32L()) {
+>>>>>>> version-2.6.9
       // ID,VIP,VIF,AC,VM,RF,x,NT,IOPL,OF,DF,IF,TF,SF,ZF,x,AF,x,PF,x,CF
       Bit32u changeMask = EFlagsOSZAPCMask | EFlagsTFMask |
                               EFlagsDFMask | EFlagsNTMask | EFlagsRFMask;
@@ -189,11 +215,16 @@ BX_CPU_C::iret_protected(bxInstruction_c *i)
       writeEFlags(new_eflags, changeMask);
     }
     else {
+<<<<<<< HEAD
       /* load CS-cache with new code segment descriptor */
       branch_far32(&cs_selector, &cs_descriptor, (Bit32u) new_ip, cs_selector.rpl);
 
       /* load flags with third word on stack */
       write_flags(new_flags, CPL==0, CPL<=BX_CPU_THIS_PTR get_IOPL());
+=======
+      /* load flags with third word on stack */
+      write_flags((Bit16u) new_eflags, CPL==0, CPL<=BX_CPU_THIS_PTR get_IOPL());
+>>>>>>> version-2.6.9
     }
 
     /* increment stack by 6/12 */
@@ -267,6 +298,7 @@ BX_CPU_C::iret_protected(bxInstruction_c *i)
     }
 
     if (i->os32L()) {
+<<<<<<< HEAD
       new_esp    = stack_read_dword(temp_ESP + 12);
       new_eflags = stack_read_dword(temp_ESP +  8);
       new_eip    = stack_read_dword(temp_ESP +  0);
@@ -275,6 +307,12 @@ BX_CPU_C::iret_protected(bxInstruction_c *i)
       new_esp    = stack_read_word(temp_ESP + 6);
       new_eflags = stack_read_word(temp_ESP + 4);
       new_eip    = stack_read_word(temp_ESP + 0);
+=======
+      new_esp = stack_read_dword(temp_ESP + 12);
+    }
+    else {
+      new_esp = stack_read_word(temp_ESP + 6);
+>>>>>>> version-2.6.9
     }
 
     // ID,VIP,VIF,AC,VM,RF,x,NT,IOPL,OF,DF,IF,TF,SF,ZF,x,AF,x,PF,x,CF

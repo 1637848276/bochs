@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: bit64.cc 12619 2015-01-26 20:01:25Z sshwarts $
+=======
+// $Id: bit64.cc 12769 2015-05-16 21:06:59Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
@@ -76,7 +80,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::BT_EqGqM(bxInstruction_c *i)
   Bit64s displacement64;
   Bit64u index;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR_64(i);
+>>>>>>> version-2.6.9
 
   op2_64 = BX_READ_64BIT_REG(i->src());
   index = op2_64 & 0x3f;
@@ -112,7 +120,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::BTS_EqGqM(bxInstruction_c *i)
   Bit64s displacement64;
   bx_bool bit_i;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR_64(i);
+>>>>>>> version-2.6.9
 
   op2_64 = BX_READ_64BIT_REG(i->src());
   index = op2_64 & 0x3f;
@@ -154,7 +166,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::BTR_EqGqM(bxInstruction_c *i)
   Bit64u op1_64, op2_64, index;
   Bit64s displacement64;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR_64(i);
+>>>>>>> version-2.6.9
 
   op2_64 = BX_READ_64BIT_REG(i->src());
   index = op2_64 & 0x3f;
@@ -198,7 +214,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::BTC_EqGqM(bxInstruction_c *i)
   Bit64s displacement64;
   Bit64u index;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR_64(i);
+>>>>>>> version-2.6.9
 
   op2_64 = BX_READ_64BIT_REG(i->src());
   index = op2_64 & 0x3f;
@@ -236,7 +256,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::BTC_EqGqR(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::BT_EqIbM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR_64(i);
+>>>>>>> version-2.6.9
 
   Bit64u op1_64 = read_linear_qword(i->seg(), get_laddr64(i->seg(), eaddr));
   Bit8u  op2_8  = i->Ib() & 0x3f;
@@ -260,7 +284,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::BTS_EqIbM(bxInstruction_c *i)
 {
   Bit8u op2_8 = i->Ib() & 0x3f;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR_64(i);
+>>>>>>> version-2.6.9
 
   Bit64u op1_64 = read_RMW_linear_qword(i->seg(), get_laddr64(i->seg(), eaddr));
   bx_bool temp_CF = (op1_64 >> op2_8) & 0x01;
@@ -290,7 +318,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::BTC_EqIbM(bxInstruction_c *i)
 {
   Bit8u op2_8 = i->Ib() & 0x3f;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR_64(i);
+>>>>>>> version-2.6.9
 
   Bit64u op1_64 = read_RMW_linear_qword(i->seg(), get_laddr64(i->seg(), eaddr));
   bx_bool temp_CF = (op1_64 >> op2_8) & 0x01;
@@ -320,7 +352,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::BTR_EqIbM(bxInstruction_c *i)
 {
   Bit8u op2_8 = i->Ib() & 0x3f;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR_64(i);
+>>>>>>> version-2.6.9
 
   Bit64u op1_64 = read_RMW_linear_qword(i->seg(), get_laddr64(i->seg(), eaddr));
   bx_bool temp_CF = (op1_64 >> op2_8) & 0x01;

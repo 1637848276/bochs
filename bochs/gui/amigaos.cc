@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: amigaos.cc 12081 2013-12-29 12:56:52Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2000-2013  The Bochs Project
+=======
+// $Id: amigaos.cc 13042 2017-01-15 11:44:43Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2000-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -202,7 +209,11 @@ bx_bool open_screen(void)
     h = GetCyberIDAttr(CYBRIDATTR_HEIGHT, id);
     w = GetCyberIDAttr(CYBRIDATTR_WIDTH, id);
     d = GetCyberIDAttr(CYBRIDATTR_DEPTH, id);
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> version-2.6.9
     //sprintf(scrmode, "%d", id);
     //setenv("env:bochs/screenmode", scrmode, 1);
 
@@ -302,6 +313,11 @@ bx_bool open_screen(void)
   black = ObtainBestPen(window->WScreen->ViewPort.ColorMap, 0x00000000, 0x00000000, 0x00000000, NULL);
 }
 
+<<<<<<< HEAD
+=======
+// AmigaOS implementation of the bx_gui_c methods (see nogui.cc for details)
+
+>>>>>>> version-2.6.9
 void bx_amigaos_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
 {
   put("AMGUI");

@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: disasm.h 12697 2015-03-27 21:39:24Z sshwarts $
+=======
+// $Id: disasm.h 12925 2016-06-12 21:23:48Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2005-2014 Stanislav Shwartsman
@@ -26,6 +30,11 @@
 
 #include "config.h"
 
+<<<<<<< HEAD
+=======
+#include "cpu/decoder/decoder.h"
+
+>>>>>>> version-2.6.9
 #define BX_DECODE_MODRM(modrm_byte, mod, opcode, rm) { \
   mod    = (modrm_byte >> 6) & 0x03; \
   opcode = (modrm_byte >> 3) & 0x07; \
@@ -38,6 +47,7 @@
   base  =  sib_byte & 0x07;        \
 }
 
+<<<<<<< HEAD
 /* Instruction set attributes (duplicated in cpu.h) */
 enum {
   IA_386 = 0,                 /* 386 or earlier instruction */
@@ -147,6 +157,8 @@ enum {
         INVALID_SEG2
 };
 
+=======
+>>>>>>> version-2.6.9
 class disassembler;
 struct x86_insn;
 

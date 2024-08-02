@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: acpi.cc 12366 2014-06-08 08:40:08Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2006-2014  Volker Ruppert
+=======
+// $Id: acpi.cc 13160 2017-03-30 18:08:15Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2006-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -66,7 +73,11 @@ const Bit8u acpi_sm_iomask[16] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 2, 0, 0, 0
 
 extern void apic_bus_deliver_smi(void);
 
+<<<<<<< HEAD
 int CDECL libacpi_LTX_plugin_init(plugin_t *plugin, plugintype_t type, int argc, char *argv[])
+=======
+int CDECL libacpi_LTX_plugin_init(plugin_t *plugin, plugintype_t type)
+>>>>>>> version-2.6.9
 {
   theACPIController = new bx_acpi_ctrl_c();
   bx_devices.pluginACPIController = theACPIController;
@@ -130,7 +141,11 @@ void bx_acpi_ctrl_c::init(void)
 
   if (BX_ACPI_THIS s.timer_index == BX_NULL_TIMER_HANDLE) {
     BX_ACPI_THIS s.timer_index =
+<<<<<<< HEAD
       bx_pc_system.register_timer(this, timer_handler, 1000, 0, 0, "ACPI");
+=======
+      DEV_register_timer(this, timer_handler, 1000, 0, 0, "ACPI");
+>>>>>>> version-2.6.9
   }
   DEV_register_iowrite_handler(this, write_handler, ACPI_DBG_IO_ADDR, "ACPI", 4);
 
@@ -206,12 +221,16 @@ void bx_acpi_ctrl_c::register_state(void)
   BXRS_HEX_PARAM_FIELD(smbus, data0, BX_ACPI_THIS s.smbus.data0);
   BXRS_HEX_PARAM_FIELD(smbus, data1, BX_ACPI_THIS s.smbus.data1);
   BXRS_HEX_PARAM_FIELD(smbus, index, BX_ACPI_THIS s.smbus.index);
+<<<<<<< HEAD
   bx_list_c *data = new bx_list_c(smbus, "data", "ACPI SMBus data");
   for (unsigned i = 0; i < 32; i++) {
     char name[6];
     sprintf(name, "0x%02x", i);
     new bx_shadow_num_c(data, name, &BX_ACPI_THIS s.smbus.data[i], BASE_HEX);
   }
+=======
+  new bx_shadow_data_c(smbus, "data", BX_ACPI_THIS s.smbus.data, 32, 1);
+>>>>>>> version-2.6.9
   register_pci_state(list);
 }
 
@@ -409,8 +428,12 @@ void bx_acpi_ctrl_c::write(Bit32u address, Bit32u value, unsigned io_len)
             switch (sus_typ) {
               case 0: // soft power off
                 bx_user_quit = 1;
+<<<<<<< HEAD
                 LOG_THIS setonoff(LOGLEV_PANIC, ACT_FATAL);
                 BX_PANIC(("ACPI control: soft power off"));
+=======
+                BX_FATAL(("ACPI control: soft power off"));
+>>>>>>> version-2.6.9
                 break;
               case 1:
                 BX_INFO(("ACPI control: suspend to ram"));
@@ -479,6 +502,7 @@ void bx_acpi_ctrl_c::timer()
   BX_ACPI_THIS pm_update_sci();
 }
 
+<<<<<<< HEAD
 // pci configuration space read callback handler
 Bit32u bx_acpi_ctrl_c::pci_read_handler(Bit8u address, unsigned io_len)
 {
@@ -498,6 +522,8 @@ Bit32u bx_acpi_ctrl_c::pci_read_handler(Bit8u address, unsigned io_len)
   return value;
 }
 
+=======
+>>>>>>> version-2.6.9
 
 // static pci configuration space write callback handler
 void bx_acpi_ctrl_c::pci_write_handler(Bit8u address, Bit32u value, unsigned io_len)

@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: soft_int.cc 12600 2015-01-11 20:50:26Z sshwarts $
+=======
+// $Id: soft_int.cc 12769 2015-05-16 21:06:59Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
@@ -28,7 +32,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::BOUND_GwMa(bxInstruction_c *i)
 {
   Bit16s op1_16 = BX_READ_16BIT_REG(i->dst());
 
+<<<<<<< HEAD
   Bit32u eaddr = (Bit32u) BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  Bit32u eaddr = (Bit32u) BX_CPU_RESOLVE_ADDR_32(i);
+>>>>>>> version-2.6.9
 
   Bit16s bound_min = (Bit16s) read_virtual_word_32(i->seg(), eaddr);
   Bit16s bound_max = (Bit16s) read_virtual_word_32(i->seg(), (eaddr+2) & i->asize_mask());
@@ -45,7 +53,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::BOUND_GdMa(bxInstruction_c *i)
 {
   Bit32s op1_32 = BX_READ_32BIT_REG(i->dst());
 
+<<<<<<< HEAD
   Bit32u eaddr = (Bit32u) BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  Bit32u eaddr = (Bit32u) BX_CPU_RESOLVE_ADDR_32(i);
+>>>>>>> version-2.6.9
 
   Bit32s bound_min = (Bit32s) read_virtual_dword_32(i->seg(), eaddr);
   Bit32s bound_max = (Bit32s) read_virtual_dword_32(i->seg(), (eaddr+4) & i->asize_mask());

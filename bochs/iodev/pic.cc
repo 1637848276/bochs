@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: pic.cc 12366 2014-06-08 08:40:08Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2014  The Bochs Project
+=======
+// $Id: pic.cc 13051 2017-01-28 09:52:09Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2002-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -31,7 +38,11 @@
 
 bx_pic_c *thePic = NULL;
 
+<<<<<<< HEAD
 int CDECL libpic_LTX_plugin_init(plugin_t *plugin, plugintype_t type, int argc, char *argv[])
+=======
+int CDECL libpic_LTX_plugin_init(plugin_t *plugin, plugintype_t type)
+>>>>>>> version-2.6.9
 {
   if (type == PLUGTYPE_CORE) {
     thePic = new bx_pic_c();

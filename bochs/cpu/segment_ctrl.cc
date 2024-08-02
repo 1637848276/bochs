@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: segment_ctrl.cc 12516 2014-10-20 21:10:52Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2014  The Bochs Project
+=======
+// $Id: segment_ctrl.cc 12931 2016-07-05 19:37:37Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2015  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -25,6 +32,7 @@
 #include "cpu.h"
 #define LOG_THIS BX_CPU_THIS_PTR
 
+<<<<<<< HEAD
 // LES/LDS can't be called from long64 mode
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LES_GwMp(bxInstruction_c *i)
 {
@@ -72,11 +80,56 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LDS_GwMp(bxInstruction_c *i)
   load_seg_reg(&BX_CPU_THIS_PTR sregs[BX_SEG_REG_DS], ds);
 
   BX_WRITE_16BIT_REG(i->dst(), reg_16);
+=======
+void BX_CPP_AttrRegparmN(2) BX_CPU_C::load_segw(bxInstruction_c *i, unsigned seg)
+{
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+
+  Bit16u segsel = read_virtual_word(i->seg(), (eaddr + 2) & i->asize_mask());
+  Bit16u reg_16 = read_virtual_word(i->seg(),  eaddr);
+
+  load_seg_reg(&BX_CPU_THIS_PTR sregs[seg], segsel);
+
+  BX_WRITE_16BIT_REG(i->dst(), reg_16);
+}
+
+void BX_CPP_AttrRegparmN(2) BX_CPU_C::load_segd(bxInstruction_c *i, unsigned seg)
+{
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+
+  Bit16u segsel = read_virtual_word(i->seg(), (eaddr + 4) & i->asize_mask());
+  Bit32u reg_32 = read_virtual_dword(i->seg(), eaddr);
+
+  load_seg_reg(&BX_CPU_THIS_PTR sregs[seg], segsel);
+
+  BX_WRITE_32BIT_REGZ(i->dst(), reg_32);
+}
+
+#if BX_SUPPORT_X86_64
+void BX_CPP_AttrRegparmN(2) BX_CPU_C::load_segq(bxInstruction_c *i, unsigned seg)
+{
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR_64(i);
+
+  Bit16u segsel = read_linear_word(i->seg(), get_laddr64(i->seg(), (eaddr + 8) & i->asize_mask()));
+  Bit64u reg_64 = read_linear_qword(i->seg(), get_laddr64(i->seg(), eaddr));
+
+  load_seg_reg(&BX_CPU_THIS_PTR sregs[seg], segsel);
+
+  BX_WRITE_64BIT_REG(i->dst(), reg_64);
+}
+#endif
+
+// LES/LDS can't be called from long64 mode
+BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LES_GwMp(bxInstruction_c *i)
+{
+  load_segw(i, BX_SEG_REG_ES);
+>>>>>>> version-2.6.9
 
   BX_NEXT_INSTR(i);
 }
 
 // LES/LDS can't be called from long64 mode
+<<<<<<< HEAD
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LDS_GdMp(bxInstruction_c *i)
 {
   BX_ASSERT(BX_CPU_THIS_PTR cpu_mode != BX_MODE_LONG_64);
@@ -89,12 +142,34 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LDS_GdMp(bxInstruction_c *i)
   load_seg_reg(&BX_CPU_THIS_PTR sregs[BX_SEG_REG_DS], ds);
 
   BX_WRITE_32BIT_REGZ(i->dst(), reg_32);
+=======
+BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LES_GdMp(bxInstruction_c *i)
+{
+  load_segd(i, BX_SEG_REG_ES);
+
+  BX_NEXT_INSTR(i);
+}
+
+// LES/LDS can't be called from long64 mode
+BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LDS_GwMp(bxInstruction_c *i)
+{
+  load_segw(i, BX_SEG_REG_DS);
+
+  BX_NEXT_INSTR(i);
+}
+
+// LES/LDS can't be called from long64 mode
+BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LDS_GdMp(bxInstruction_c *i)
+{
+  load_segd(i, BX_SEG_REG_DS);
+>>>>>>> version-2.6.9
 
   BX_NEXT_INSTR(i);
 }
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LFS_GwMp(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
 
   Bit16u reg_16 = read_virtual_word(i->seg(), eaddr);
@@ -103,12 +178,16 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LFS_GwMp(bxInstruction_c *i)
   load_seg_reg(&BX_CPU_THIS_PTR sregs[BX_SEG_REG_FS], fs);
 
   BX_WRITE_16BIT_REG(i->dst(), reg_16);
+=======
+  load_segw(i, BX_SEG_REG_FS);
+>>>>>>> version-2.6.9
 
   BX_NEXT_INSTR(i);
 }
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LFS_GdMp(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
 
   Bit16u fs = read_virtual_word(i->seg(), (eaddr + 4) & i->asize_mask());
@@ -117,6 +196,9 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LFS_GdMp(bxInstruction_c *i)
   load_seg_reg(&BX_CPU_THIS_PTR sregs[BX_SEG_REG_FS], fs);
 
   BX_WRITE_32BIT_REGZ(i->dst(), reg_32);
+=======
+  load_segd(i, BX_SEG_REG_FS);
+>>>>>>> version-2.6.9
 
   BX_NEXT_INSTR(i);
 }
@@ -124,6 +206,7 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LFS_GdMp(bxInstruction_c *i)
 #if BX_SUPPORT_X86_64
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LFS_GqMp(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
 
   Bit16u fs = read_linear_word(i->seg(), get_laddr64(i->seg(), (eaddr + 8) & i->asize_mask()));
@@ -132,6 +215,9 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LFS_GqMp(bxInstruction_c *i)
   load_seg_reg(&BX_CPU_THIS_PTR sregs[BX_SEG_REG_FS], fs);
 
   BX_WRITE_64BIT_REG(i->dst(), reg_64);
+=======
+  load_segq(i, BX_SEG_REG_FS);
+>>>>>>> version-2.6.9
 
   BX_NEXT_INSTR(i);
 }
@@ -139,6 +225,7 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LFS_GqMp(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LGS_GwMp(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
 
   Bit16u reg_16 = read_virtual_word(i->seg(), eaddr);
@@ -147,12 +234,16 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LGS_GwMp(bxInstruction_c *i)
   load_seg_reg(&BX_CPU_THIS_PTR sregs[BX_SEG_REG_GS], gs);
 
   BX_WRITE_16BIT_REG(i->dst(), reg_16);
+=======
+  load_segw(i, BX_SEG_REG_GS);
+>>>>>>> version-2.6.9
 
   BX_NEXT_INSTR(i);
 }
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LGS_GdMp(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
 
   Bit16u gs = read_virtual_word(i->seg(), (eaddr + 4) & i->asize_mask());
@@ -161,6 +252,9 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LGS_GdMp(bxInstruction_c *i)
   load_seg_reg(&BX_CPU_THIS_PTR sregs[BX_SEG_REG_GS], gs);
 
   BX_WRITE_32BIT_REGZ(i->dst(), reg_32);
+=======
+  load_segd(i, BX_SEG_REG_GS);
+>>>>>>> version-2.6.9
 
   BX_NEXT_INSTR(i);
 }
@@ -168,6 +262,7 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LGS_GdMp(bxInstruction_c *i)
 #if BX_SUPPORT_X86_64
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LGS_GqMp(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
 
   Bit16u gs = read_linear_word(i->seg(), get_laddr64(i->seg(), (eaddr + 8) & i->asize_mask()));
@@ -176,6 +271,9 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LGS_GqMp(bxInstruction_c *i)
   load_seg_reg(&BX_CPU_THIS_PTR sregs[BX_SEG_REG_GS], gs);
 
   BX_WRITE_64BIT_REG(i->dst(), reg_64);
+=======
+  load_segq(i, BX_SEG_REG_GS);
+>>>>>>> version-2.6.9
 
   BX_NEXT_INSTR(i);
 }
@@ -183,6 +281,7 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LGS_GqMp(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LSS_GwMp(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
 
   Bit16u reg_16 = read_virtual_word(i->seg(), eaddr);
@@ -191,12 +290,16 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LSS_GwMp(bxInstruction_c *i)
   load_seg_reg(&BX_CPU_THIS_PTR sregs[BX_SEG_REG_SS], ss);
 
   BX_WRITE_16BIT_REG(i->dst(), reg_16);
+=======
+  load_segw(i, BX_SEG_REG_SS);
+>>>>>>> version-2.6.9
 
   BX_NEXT_INSTR(i);
 }
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LSS_GdMp(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
 
   Bit16u ss = read_virtual_word(i->seg(), (eaddr + 4) & i->asize_mask());
@@ -205,6 +308,9 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LSS_GdMp(bxInstruction_c *i)
   load_seg_reg(&BX_CPU_THIS_PTR sregs[BX_SEG_REG_SS], ss);
 
   BX_WRITE_32BIT_REGZ(i->dst(), reg_32);
+=======
+  load_segd(i, BX_SEG_REG_SS);
+>>>>>>> version-2.6.9
 
   BX_NEXT_INSTR(i);
 }
@@ -212,6 +318,7 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LSS_GdMp(bxInstruction_c *i)
 #if BX_SUPPORT_X86_64
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LSS_GqMp(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
 
   Bit16u ss = read_linear_word(i->seg(), get_laddr64(i->seg(), (eaddr + 8) & i->asize_mask()));
@@ -220,6 +327,9 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LSS_GqMp(bxInstruction_c *i)
   load_seg_reg(&BX_CPU_THIS_PTR sregs[BX_SEG_REG_SS], ss);
 
   BX_WRITE_64BIT_REG(i->dst(), reg_64);
+=======
+  load_segq(i, BX_SEG_REG_SS);
+>>>>>>> version-2.6.9
 
   BX_NEXT_INSTR(i);
 }

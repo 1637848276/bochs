@@ -31,7 +31,13 @@ export LDFLAGS
             --enable-voodoo \
             --enable-usb \
             --enable-usb-ohci \
+<<<<<<< HEAD
             --enable-usb-xhci \
+=======
+            --enable-usb-ehci \
+            --enable-usb-xhci \
+            --enable-busmouse \
+>>>>>>> version-2.6.9
             --enable-es1370 \
             --enable-e1000 \
 	    --enable-plugins \

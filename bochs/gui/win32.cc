@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: win32.cc 12588 2014-12-30 16:31:17Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2014  The Bochs Project
+=======
+// $Id: win32.cc 13144 2017-03-23 19:09:37Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2002-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -75,7 +82,11 @@ IMPLEMENT_GUI_PLUGIN_CODE(win32)
 // Keyboard/mouse stuff
 #define SCANCODE_BUFSIZE    20
 #define MOUSE_PRESSED       0x20000000
+<<<<<<< HEAD
 #define HEADERBAR_CLICKED   0x08000000
+=======
+#define TOOLBAR_CLICKED     0x08000000
+>>>>>>> version-2.6.9
 #define MOUSE_MOTION        0x22000000
 #define FOCUS_CHANGED       0x44000000
 #define BX_SYSKEY           (KF_UP|KF_REPEAT|KF_ALTDOWN)
@@ -143,9 +154,15 @@ static struct {
   unsigned bmap_id;
   void (*f)(void);
   const char *tooltip;
+<<<<<<< HEAD
 } bx_headerbar_entry[BX_MAX_HEADERBAR_ENTRIES];
 
 static int bx_headerbar_entries;
+=======
+} win32_toolbar_entry[BX_MAX_HEADERBAR_ENTRIES];
+
+static int win32_toolbar_entries;
+>>>>>>> version-2.6.9
 static unsigned bx_hb_separator;
 
 // Status Bar stuff
@@ -203,10 +220,16 @@ DWORD WINAPI UIThread(PVOID);
 void SetStatusText(unsigned Num, const char *Text, bx_bool active, bx_bool w=0);
 void terminateEmul(int);
 void create_vga_font(void);
+<<<<<<< HEAD
 static unsigned char reverse_bitorder(unsigned char);
 void DrawBitmap(HDC, HBITMAP, int, int, int, int, int, int, DWORD, unsigned char);
 void updateUpdated(int,int,int,int);
 static void headerbar_click(int x);
+=======
+void DrawBitmap(HDC, HBITMAP, int, int, int, int, int, int, DWORD, unsigned char);
+void updateUpdated(int,int,int,int);
+static void win32_toolbar_click(int x);
+>>>>>>> version-2.6.9
 
 
 Bit32u win32_to_bx_key[2][0x100] =
@@ -540,13 +563,18 @@ void terminateEmul(int reason)
   if (MemoryDC) DeleteDC (MemoryDC);
   if (MemoryBitmap) DeleteObject (MemoryBitmap);
 
+<<<<<<< HEAD
   if (bitmap_info) delete[] (char*)bitmap_info;
+=======
+  delete[] (char*)bitmap_info;
+>>>>>>> version-2.6.9
 
   for (unsigned b=0; b<bx_bitmap_entries; b++)
     if (bx_bitmaps[b].bmap) DeleteObject(bx_bitmaps[b].bmap);
   for (unsigned c=0; c<256; c++)
     if (vgafont[c]) DeleteObject(vgafont[c]);
 
+<<<<<<< HEAD
   LOG_THIS setonoff(LOGLEV_PANIC, ACT_FATAL);
 
   switch (reason) {
@@ -561,6 +589,20 @@ void terminateEmul(int reason)
     break;
   case EXIT_HEADER_BITMAP_ERROR:
     BX_PANIC(("Header bitmap creation failure!"));
+=======
+  switch (reason) {
+  case EXIT_GUI_SHUTDOWN:
+    BX_FATAL(("Window closed, exiting!"));
+    break;
+  case EXIT_GMH_FAILURE:
+    BX_FATAL(("GetModuleHandle failure!"));
+    break;
+  case EXIT_FONT_BITMAP_ERROR:
+    BX_FATAL(("Font bitmap creation failure!"));
+    break;
+  case EXIT_HEADER_BITMAP_ERROR:
+    BX_FATAL(("Header bitmap creation failure!"));
+>>>>>>> version-2.6.9
     break;
   case EXIT_NORMAL:
     break;
@@ -568,6 +610,11 @@ void terminateEmul(int reason)
 }
 
 
+<<<<<<< HEAD
+=======
+// WIN32 implementation of the bx_gui_c methods (see nogui.cc for details)
+
+>>>>>>> version-2.6.9
 bx_win32_gui_c::bx_win32_gui_c()
 {
   // prepare for possible fullscreen mode
@@ -578,6 +625,7 @@ bx_win32_gui_c::bx_win32_gui_c()
 }
 
 
+<<<<<<< HEAD
 // ::SPECIFIC_INIT()
 //
 // Called from gui.cc, once upon program startup, to allow for the
@@ -591,6 +639,8 @@ bx_win32_gui_c::bx_win32_gui_c()
 //     always assumes the width of the current VGA mode width, but
 //     it's height is defined by this parameter.
 
+=======
+>>>>>>> version-2.6.9
 void bx_win32_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
 {
   int i;
@@ -615,7 +665,11 @@ void bx_win32_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
   win32_max_yres = this->max_yres;
 
   bx_bitmap_entries = 0;
+<<<<<<< HEAD
   bx_headerbar_entries = 0;
+=======
+  win32_toolbar_entries = 0;
+>>>>>>> version-2.6.9
   bx_hb_separator = 0;
   mouseCaptureMode = FALSE;
   mouseCaptureNew = FALSE;
@@ -628,8 +682,11 @@ void bx_win32_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
       if (!strcmp(argv[i], "nokeyrepeat")) {
         BX_INFO(("disabled host keyboard repeat"));
         win32_nokeyrepeat = 1;
+<<<<<<< HEAD
       } else if (!strcmp(argv[i], "legacyF12")) {
         BX_PANIC(("The option 'legacyF12' is now deprecated - use 'mouse: toggle=f12' instead"));
+=======
+>>>>>>> version-2.6.9
 #if BX_DEBUGGER && BX_DEBUGGER_GUI
       } else if (!strcmp(argv[i], "gui_debug")) {
         if (gui_ci) {
@@ -677,8 +734,12 @@ void bx_win32_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
   for(unsigned c=0; c<256; c++) vgafont[c] = NULL;
   create_vga_font();
 
+<<<<<<< HEAD
   bitmap_info=(BITMAPINFO*)new char[sizeof(BITMAPINFOHEADER)+
     259*sizeof(RGBQUAD)]; // 256 + 3 entries for 16 bpp mode
+=======
+  bitmap_info=(BITMAPINFO*)new char[sizeof(BITMAPINFOHEADER)+259*sizeof(RGBQUAD)]; // 256 + 3 entries for 16 bpp mode
+>>>>>>> version-2.6.9
   bitmap_info->bmiHeader.biSize=sizeof(BITMAPINFOHEADER);
   bitmap_info->bmiHeader.biWidth=x_tilesize;
   // Height is negative for top-down bitmap
@@ -1021,7 +1082,11 @@ LRESULT CALLBACK mainWndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
   case WM_COMMAND:
     if (LOWORD(wParam) >= 101) {
       EnterCriticalSection(&stInfo.keyCS);
+<<<<<<< HEAD
       enq_key_event(LOWORD(wParam)-101, HEADERBAR_CLICKED);
+=======
+      enq_key_event(LOWORD(wParam)-101, TOOLBAR_CLICKED);
+>>>>>>> version-2.6.9
       LeaveCriticalSection(&stInfo.keyCS);
     }
     break;
@@ -1090,8 +1155,13 @@ LRESULT CALLBACK mainWndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
       lpttt = (LPTOOLTIPTEXT)lParam;
       idTT = (int)wParam;
       hbar_id = idTT - 101;
+<<<<<<< HEAD
       if (SendMessage(hwndTB, TB_GETSTATE, idTT, 0) && bx_headerbar_entry[hbar_id].tooltip != NULL) {
         lstrcpy(lpttt->szText, bx_headerbar_entry[hbar_id].tooltip);
+=======
+      if (SendMessage(hwndTB, TB_GETSTATE, idTT, 0) && win32_toolbar_entry[hbar_id].tooltip != NULL) {
+        lstrcpy(lpttt->szText, win32_toolbar_entry[hbar_id].tooltip);
+>>>>>>> version-2.6.9
       }
     }
     return FALSE;
@@ -1479,12 +1549,15 @@ QueueEvent* deq_key_event(void)
 }
 
 
+<<<<<<< HEAD
 // ::HANDLE_EVENTS()
 //
 // Called periodically (vga_update_interval in .bochsrc) so the
 // the gui code can poll for keyboard, mouse, and other
 // relevant events.
 
+=======
+>>>>>>> version-2.6.9
 void bx_win32_gui_c::handle_events(void)
 {
   Bit32u key;
@@ -1519,8 +1592,13 @@ void bx_win32_gui_c::handle_events(void)
     else if (key & MOUSE_PRESSED) {
       DEV_mouse_motion(0, 0, 0, LOWORD(key), 0);
     }
+<<<<<<< HEAD
     else if (key & HEADERBAR_CLICKED) {
       headerbar_click(LOWORD(key));
+=======
+    else if (key & TOOLBAR_CLICKED) {
+      win32_toolbar_click(LOWORD(key));
+>>>>>>> version-2.6.9
     }
     else {
       key_event = win32_to_bx_key[(key & 0x100) ? 1 : 0][key & 0xff];
@@ -1538,11 +1616,14 @@ void bx_win32_gui_c::handle_events(void)
 }
 
 
+<<<<<<< HEAD
 // ::FLUSH()
 //
 // Called periodically, requesting that the gui code flush all pending
 // screen update requests.
 
+=======
+>>>>>>> version-2.6.9
 void bx_win32_gui_c::flush(void)
 {
   EnterCriticalSection(&stInfo.drawCS);
@@ -1556,11 +1637,14 @@ void bx_win32_gui_c::flush(void)
   LeaveCriticalSection(&stInfo.drawCS);
 }
 
+<<<<<<< HEAD
 // ::CLEAR_SCREEN()
 //
 // Called to request that the VGA region is cleared.  Don't
 // clear the area that defines the headerbar.
 
+=======
+>>>>>>> version-2.6.9
 void bx_win32_gui_c::clear_screen(void)
 {
   HGDIOBJ oldObj;
@@ -1579,6 +1663,7 @@ void bx_win32_gui_c::clear_screen(void)
 }
 
 
+<<<<<<< HEAD
 // ::TEXT_UPDATE()
 //
 // Called in a VGA text mode, to update the screen with
@@ -1598,6 +1683,8 @@ void bx_win32_gui_c::clear_screen(void)
 // tm_info:  this structure contains information for additional
 //           features in text mode (cursor shape, line offset,...)
 
+=======
+>>>>>>> version-2.6.9
 void bx_win32_gui_c::text_update(Bit8u *old_text, Bit8u *new_text,
                                  unsigned long cursor_x, unsigned long cursor_y,
                                  bx_vga_tminfo_t *tm_info)
@@ -1843,6 +1930,7 @@ int bx_win32_gui_c::set_clipboard_text(char *text_snapshot, Bit32u len)
 }
 
 
+<<<<<<< HEAD
 // ::PALETTE_CHANGE()
 //
 // Allocate a color in the native GUI, for this color, and put
@@ -1850,6 +1938,8 @@ int bx_win32_gui_c::set_clipboard_text(char *text_snapshot, Bit32u len)
 // returns: 0=no screen update needed (color map change has direct effect)
 //          1=screen updated needed (redraw using current colormap)
 
+=======
+>>>>>>> version-2.6.9
 bx_bool bx_win32_gui_c::palette_change(Bit8u index, Bit8u red, Bit8u green,
                                        Bit8u blue) {
   if ((current_bpp == 16) && (index < 3)) {
@@ -1866,6 +1956,7 @@ bx_bool bx_win32_gui_c::palette_change(Bit8u index, Bit8u red, Bit8u green,
 }
 
 
+<<<<<<< HEAD
 // ::GRAPHICS_TILE_UPDATE()
 //
 // Called to request that a tile of graphics be drawn to the
@@ -1881,6 +1972,8 @@ bx_bool bx_win32_gui_c::palette_change(Bit8u index, Bit8u red, Bit8u green,
 // note: origin of tile and of window based on (0,0) being in the upper
 //       left of the window.
 
+=======
+>>>>>>> version-2.6.9
 void bx_win32_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned y0)
 {
   HDC hdc;
@@ -1904,6 +1997,7 @@ void bx_win32_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned y0)
 
 
 
+<<<<<<< HEAD
 // ::DIMENSION_UPDATE()
 //
 // Called when the VGA mode changes it's X,Y dimensions.
@@ -1919,6 +2013,16 @@ void bx_win32_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned y0)
 void bx_win32_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, unsigned fwidth, unsigned bpp)
 {
   guest_textmode = (fheight > 0);
+=======
+void bx_win32_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, unsigned fwidth, unsigned bpp)
+{
+  guest_textmode = (fheight > 0);
+  if (guest_textmode && (fwidth > 9)) {
+    // use existing stretching feature for text mode CO40
+    x >>= 1;
+    fwidth >>= 1;
+  }
+>>>>>>> version-2.6.9
   xChar = fwidth;
   yChar = fheight;
   guest_xres = x;
@@ -1984,6 +2088,7 @@ void bx_win32_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, 
 }
 
 
+<<<<<<< HEAD
 // ::CREATE_BITMAP()
 //
 // Create a monochrome bitmap of size 'xdim' by 'ydim', which will
@@ -1997,6 +2102,9 @@ void bx_win32_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, 
 
 unsigned bx_win32_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim,
 				 unsigned ydim)
+=======
+unsigned bx_win32_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim, unsigned ydim)
+>>>>>>> version-2.6.9
 {
   unsigned char *data;
   TBADDBITMAP tbab;
@@ -2027,6 +2135,7 @@ unsigned bx_win32_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim,
 }
 
 
+<<<<<<< HEAD
 // ::HEADERBAR_BITMAP()
 //
 // Called to install a bitmap in the bochs headerbar (toolbar).
@@ -2043,15 +2152,25 @@ unsigned bx_win32_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim,
 
 unsigned bx_win32_gui_c::headerbar_bitmap(unsigned bmap_id, unsigned alignment,
 				    void (*f)(void))
+=======
+unsigned bx_win32_gui_c::headerbar_bitmap(unsigned bmap_id, unsigned alignment, void (*f)(void))
+>>>>>>> version-2.6.9
 {
   unsigned hb_index;
   TBBUTTON tbb[1];
 
+<<<<<<< HEAD
   if ((bx_headerbar_entries+1) > BX_MAX_HEADERBAR_ENTRIES)
     terminateEmul(EXIT_HEADER_BITMAP_ERROR);
 
   bx_headerbar_entries++;
   hb_index = bx_headerbar_entries - 1;
+=======
+  if ((win32_toolbar_entries+1) > BX_MAX_HEADERBAR_ENTRIES)
+    terminateEmul(EXIT_HEADER_BITMAP_ERROR);
+
+  hb_index = win32_toolbar_entries++;
+>>>>>>> version-2.6.9
 
   memset(tbb,0,sizeof(tbb));
   if (bx_hb_separator==0) {
@@ -2072,19 +2191,28 @@ unsigned bx_win32_gui_c::headerbar_bitmap(unsigned bmap_id, unsigned alignment,
     SendMessage(hwndTB, TB_INSERTBUTTON, bx_hb_separator+1, (LPARAM)(LPTBBUTTON)&tbb);
   }
 
+<<<<<<< HEAD
   bx_headerbar_entry[hb_index].bmap_id = bmap_id;
   bx_headerbar_entry[hb_index].f = f;
   bx_headerbar_entry[hb_index].tooltip = NULL;
+=======
+  win32_toolbar_entry[hb_index].bmap_id = bmap_id;
+  win32_toolbar_entry[hb_index].f = f;
+  win32_toolbar_entry[hb_index].tooltip = NULL;
+>>>>>>> version-2.6.9
 
   return(hb_index);
 }
 
 
+<<<<<<< HEAD
 // ::SHOW_HEADERBAR()
 //
 // Show (redraw) the current headerbar, which is composed of
 // currently installed bitmaps.
 
+=======
+>>>>>>> version-2.6.9
 void bx_win32_gui_c::show_headerbar(void)
 {
   if (!IsWindowVisible(hwndTB)) {
@@ -2096,6 +2224,7 @@ void bx_win32_gui_c::show_headerbar(void)
 }
 
 
+<<<<<<< HEAD
 // ::REPLACE_BITMAP()
 //
 // Replace the bitmap installed in the headerbar ID slot 'hbar_id',
@@ -2113,6 +2242,12 @@ void bx_win32_gui_c::replace_bitmap(unsigned hbar_id, unsigned bmap_id)
 {
   if (bmap_id != bx_headerbar_entry[hbar_id].bmap_id) {
     bx_headerbar_entry[hbar_id].bmap_id = bmap_id;
+=======
+void bx_win32_gui_c::replace_bitmap(unsigned hbar_id, unsigned bmap_id)
+{
+  if (bmap_id != win32_toolbar_entry[hbar_id].bmap_id) {
+    win32_toolbar_entry[hbar_id].bmap_id = bmap_id;
+>>>>>>> version-2.6.9
     bx_bool is_visible = IsWindowVisible(hwndTB);
     if (is_visible) {
       ShowWindow(hwndTB, SW_HIDE);
@@ -2127,10 +2262,13 @@ void bx_win32_gui_c::replace_bitmap(unsigned hbar_id, unsigned bmap_id)
 }
 
 
+<<<<<<< HEAD
 // ::EXIT()
 //
 // Called before bochs terminates, to allow for a graceful
 // exit from the native GUI mechanism.
+=======
+>>>>>>> version-2.6.9
 void bx_win32_gui_c::exit(void)
 {
 #if BX_DEBUGGER && BX_DEBUGGER_GUI
@@ -2165,6 +2303,7 @@ void create_vga_font(void)
 }
 
 
+<<<<<<< HEAD
 unsigned char reverse_bitorder(unsigned char b)
 {
   unsigned char ret=0;
@@ -2178,6 +2317,8 @@ unsigned char reverse_bitorder(unsigned char b)
 }
 
 
+=======
+>>>>>>> version-2.6.9
 COLORREF GetColorRef(unsigned char attr)
 {
   Bit8u pal_idx = text_pal_idx[attr];
@@ -2248,10 +2389,17 @@ void updateUpdated(int x1, int y1, int x2, int y2)
 }
 
 
+<<<<<<< HEAD
 void headerbar_click(int x)
 {
   if (x < bx_headerbar_entries) {
     bx_headerbar_entry[x].f();
+=======
+void win32_toolbar_click(int x)
+{
+  if (x < win32_toolbar_entries) {
+    win32_toolbar_entry[x].f();
+>>>>>>> version-2.6.9
   }
 }
 
@@ -2278,7 +2426,11 @@ void bx_win32_gui_c::get_capabilities(Bit16u *xres, Bit16u *yres, Bit16u *bpp)
 
 void bx_win32_gui_c::set_tooltip(unsigned hbar_id, const char *tip)
 {
+<<<<<<< HEAD
   bx_headerbar_entry[hbar_id].tooltip = tip;
+=======
+  win32_toolbar_entry[hbar_id].tooltip = tip;
+>>>>>>> version-2.6.9
 }
 
 void bx_win32_gui_c::set_mouse_mode_absxy(bx_bool mode)

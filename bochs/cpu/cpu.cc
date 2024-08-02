@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: cpu.cc 12509 2014-10-15 18:00:04Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2013  The Bochs Project
+=======
+// $Id: cpu.cc 12894 2016-02-22 19:57:24Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2015  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -207,7 +214,11 @@ bxICacheEntry_c* BX_CPU_C::getICacheEntry(void)
     // iCache miss. No validated instruction with matching fetch parameters
     // is in the iCache.
     INC_ICACHE_STAT(iCacheMisses);
+<<<<<<< HEAD
     entry = serveICacheMiss(entry, (Bit32u) eipBiased, pAddr);
+=======
+    entry = serveICacheMiss((Bit32u) eipBiased, pAddr);
+>>>>>>> version-2.6.9
   }
 
   return entry;
@@ -242,11 +253,14 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::linkTrace(bxInstruction_c *i)
 
   bxInstruction_c *next = i->getNextTrace(BX_CPU_THIS_PTR iCache.traceLinkTimeStamp);
   if (next) {
+<<<<<<< HEAD
     bx_address eipBiased = RIP + BX_CPU_THIS_PTR eipPageBias;
     if (eipBiased >= BX_CPU_THIS_PTR eipPageWindowSize) {
       prefetch();
     }
 
+=======
+>>>>>>> version-2.6.9
     BX_EXECUTE_INSTRUCTION(next);
     return;
   }
@@ -599,8 +613,12 @@ void BX_CPU_C::prefetch(void)
   BX_CPU_THIS_PTR clear_RF();
 
   bx_address lpf = LPFOf(laddr);
+<<<<<<< HEAD
   unsigned TLB_index = BX_TLB_INDEX_OF(lpf, 0);
   bx_TLB_entry *tlbEntry = &BX_CPU_THIS_PTR TLB.entry[TLB_index];
+=======
+  bx_TLB_entry *tlbEntry = BX_TLB_ENTRY_OF(laddr, 0);
+>>>>>>> version-2.6.9
   Bit8u *fetchPtr = 0;
 
   if ((tlbEntry->lpf == lpf) && (tlbEntry->accessBits & (0x10 << USER_PL)) != 0) {

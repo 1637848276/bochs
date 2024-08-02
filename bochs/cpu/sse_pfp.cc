@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: sse_pfp.cc 12735 2015-05-02 19:54:48Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2003-2014 Stanislav Shwartsman
+=======
+// $Id: sse_pfp.cc 12769 2015-05-16 21:06:59Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//   Copyright (c) 2003-2015 Stanislav Shwartsman
+>>>>>>> version-2.6.9
 //          Written by Stanislav Shwartsman [sshwarts at sourceforge net]
 //
 //  This library is free software; you can redistribute it and/or
@@ -125,7 +132,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CVTPI2PS_VpsQqM(bxInstruction_c *i
 {
 #if BX_CPU_LEVEL >= 6
   // do not cause transition to MMX state because no MMX register touched
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   BxPackedMmxRegister op = read_virtual_qword(i->seg(), eaddr);
 
   float_status_t status = mxcsr_to_softfloat_status_word(MXCSR);
@@ -171,7 +182,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CVTPI2PD_VpdQqM(bxInstruction_c *i
   BxPackedXmmRegister result;
 
   // do not cause transition to MMX state because no MMX register touched
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   BxPackedMmxRegister op = read_virtual_qword(i->seg(), eaddr);
 
   result.xmm64u(0) = int32_to_float64(MMXSD0(op));
@@ -202,9 +217,13 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CVTSI2SD_VsdEdR(bxInstruction_c *i
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CVTSI2SD_VsdEqR(bxInstruction_c *i)
 {
   float_status_t status = mxcsr_to_softfloat_status_word(MXCSR);
+<<<<<<< HEAD
 
   float64 result = int64_to_float64(BX_READ_64BIT_REG(i->src()), status);
 
+=======
+  float64 result = int64_to_float64(BX_READ_64BIT_REG(i->src()), status);
+>>>>>>> version-2.6.9
   check_exceptionsSSE(get_exception_flags(status));
   BX_WRITE_XMM_REG_LO_QWORD(i->dst(), result);
 
@@ -223,9 +242,13 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CVTSI2SS_VssEdR(bxInstruction_c *i
 {
 #if BX_CPU_LEVEL >= 6
   float_status_t status = mxcsr_to_softfloat_status_word(MXCSR);
+<<<<<<< HEAD
 
   float32 result = int32_to_float32(BX_READ_32BIT_REG(i->src()), status);
 
+=======
+  float32 result = int32_to_float32(BX_READ_32BIT_REG(i->src()), status);
+>>>>>>> version-2.6.9
   check_exceptionsSSE(get_exception_flags(status));
   BX_WRITE_XMM_REG_LO_DWORD(i->dst(), result);
 #endif
@@ -266,7 +289,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CVTTPS2PI_PqWps(bxInstruction_c *i
     op = BX_READ_XMM_REG_LO_QWORD(i->src());
   }
   else {
+<<<<<<< HEAD
     bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+    bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
     /* pointer, segment address pair */
     op = read_virtual_qword(i->seg(), eaddr);
   }
@@ -304,7 +331,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CVTTPD2PI_PqWpd(bxInstruction_c *i
     op = BX_READ_XMM_REG(i->src());
   }
   else {
+<<<<<<< HEAD
     bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+    bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
     if (BX_CPU_THIS_PTR mxcsr.get_MM())
       read_virtual_xmmword(i->seg(), eaddr, &op);
@@ -419,7 +450,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CVTPS2PI_PqWps(bxInstruction_c *i)
     op = BX_READ_XMM_REG_LO_QWORD(i->src());
   }
   else {
+<<<<<<< HEAD
     bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+    bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
     /* pointer, segment address pair */
     op = read_virtual_qword(i->seg(), eaddr);
   }
@@ -458,7 +493,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CVTPD2PI_PqWpd(bxInstruction_c *i)
     op = BX_READ_XMM_REG(i->src());
   }
   else {
+<<<<<<< HEAD
     bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+    bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
 #if BX_SUPPORT_MISALIGNED_SSE
     if (BX_CPU_THIS_PTR mxcsr.get_MM())
@@ -886,6 +925,7 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SQRTPS_VpsWpsR(bxInstruction_c *i)
 {
 #if BX_CPU_LEVEL >= 6
   BxPackedXmmRegister op = BX_READ_XMM_REG(i->src());
+<<<<<<< HEAD
 
   float_status_t status = mxcsr_to_softfloat_status_word(MXCSR);
 
@@ -894,6 +934,10 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SQRTPS_VpsWpsR(bxInstruction_c *i)
   op.xmm32u(2) = float32_sqrt(op.xmm32u(2), status);
   op.xmm32u(3) = float32_sqrt(op.xmm32u(3), status);
 
+=======
+  float_status_t status = mxcsr_to_softfloat_status_word(MXCSR);
+  xmm_sqrtps(&op, status);
+>>>>>>> version-2.6.9
   check_exceptionsSSE(get_exception_flags(status));
   BX_WRITE_XMM_REG(i->dst(), op);
 #endif
@@ -910,12 +954,17 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SQRTPD_VpdWpdR(bxInstruction_c *i)
 {
 #if BX_CPU_LEVEL >= 6
   BxPackedXmmRegister op = BX_READ_XMM_REG(i->src());
+<<<<<<< HEAD
 
   float_status_t status = mxcsr_to_softfloat_status_word(MXCSR);
 
   op.xmm64u(0) = float64_sqrt(op.xmm64u(0), status);
   op.xmm64u(1) = float64_sqrt(op.xmm64u(1), status);
 
+=======
+  float_status_t status = mxcsr_to_softfloat_status_word(MXCSR);
+  xmm_sqrtpd(&op, status);
+>>>>>>> version-2.6.9
   check_exceptionsSSE(get_exception_flags(status));
   BX_WRITE_XMM_REG(i->dst(), op);
 #endif

@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: debug.h 12655 2015-02-19 20:23:08Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2013  The Bochs Project
+=======
+// $Id: debug.h 12925 2016-06-12 21:23:48Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2016  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -40,6 +47,7 @@ extern Bit32u dbg_cpu;
 
 void dbg_printf (const char *fmt, ...);
 
+<<<<<<< HEAD
 typedef enum {
   BX_DBG_SREG_ES,
   BX_DBG_SREG_CS,
@@ -183,6 +191,9 @@ typedef enum {
   BX_DBG_REG_MASK_K6,
   BX_DBG_REG_MASK_K7
 } OpmaskRegs;
+=======
+#include "cpu/decoder/decoder.h"
+>>>>>>> version-2.6.9
 
 typedef enum
 {

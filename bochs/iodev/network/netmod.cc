@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: netmod.cc 12615 2015-01-25 21:24:13Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2014  The Bochs Project
+=======
+// $Id: netmod.cc 13110 2017-03-12 20:26:42Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -24,17 +31,21 @@
 // Peter Grehan (grehan@iprg.nokia.com) coded the initial version of the
 // NE2000/ether stuff.
 
+<<<<<<< HEAD
 // Define BX_PLUGGABLE in files that can be compiled into plugins.  For
 // platforms that require a special tag on exported symbols, BX_PLUGGABLE
 // is used to know when we are exporting symbols and when we are importing.
 #define BX_PLUGGABLE
 
+=======
+>>>>>>> version-2.6.9
 #include "iodev.h"
 
 #if BX_NETWORKING
 
 #include "netmod.h"
 
+<<<<<<< HEAD
 #if !defined(WIN32) || defined(__CYGWIN__)
 #include <arpa/inet.h> /* ntohs, htons */
 #else
@@ -64,6 +75,25 @@ void CDECL libnetmod_LTX_plugin_fini(void)
 bx_netmod_ctl_c::bx_netmod_ctl_c()
 {
   put("netmodctl", "NETCTL");
+=======
+#define LOG_THIS bx_netmod_ctl.
+
+bx_netmod_ctl_c bx_netmod_ctl;
+
+bx_netmod_ctl_c::bx_netmod_ctl_c()
+{
+  put("netmodctl", "NETCTL");
+}
+
+void bx_netmod_ctl_c::init(void)
+{
+  // Nothing here yet
+}
+
+void bx_netmod_ctl_c::exit(void)
+{
+  eth_locator_c::cleanup();
+>>>>>>> version-2.6.9
 }
 
 void* bx_netmod_ctl_c::init_module(bx_list_c *base, void *rxh, void *rxstat, bx_devmodel_c *netdev)
@@ -72,6 +102,16 @@ void* bx_netmod_ctl_c::init_module(bx_list_c *base, void *rxh, void *rxstat, bx_
 
   // Attach to the selected ethernet module
   const char *modname = SIM->get_param_enum("ethmod", base)->get_selected();
+<<<<<<< HEAD
+=======
+  if (!eth_locator_c::module_present(modname)) {
+#if BX_PLUGINS
+    PLUG_load_net_plugin(modname);
+#else
+    BX_PANIC(("could not find networking module '%s'", modname));
+#endif
+  }
+>>>>>>> version-2.6.9
   ethmod = eth_locator_c::create(modname,
                                  SIM->get_param_string("ethdev", base)->getptr(),
                                  (const char *) SIM->get_param_string("mac", base)->getptr(),
@@ -79,15 +119,25 @@ void* bx_netmod_ctl_c::init_module(bx_list_c *base, void *rxh, void *rxstat, bx_
                                  SIM->get_param_string("script", base)->getptr());
 
   if (ethmod == NULL) {
+<<<<<<< HEAD
     BX_PANIC(("could not find eth module %s", modname));
     // if they continue, use null.
     BX_INFO(("could not find eth module %s - using null instead", modname));
+=======
+    BX_PANIC(("could not find networking module '%s'", modname));
+    // if they continue, use null.
+    BX_INFO(("could not find networking module '%s' - using 'null' instead", modname));
+>>>>>>> version-2.6.9
 
     ethmod = eth_locator_c::create("null", NULL,
                                    (const char *) SIM->get_param_string("mac", base)->getptr(),
                                    (eth_rx_handler_t)rxh, (eth_rx_status_t)rxstat, netdev, "");
     if (ethmod == NULL)
+<<<<<<< HEAD
       BX_PANIC(("could not locate null module"));
+=======
+      BX_PANIC(("could not locate 'null' module"));
+>>>>>>> version-2.6.9
   }
   return ethmod;
 }
@@ -105,6 +155,7 @@ eth_locator_c::eth_locator_c(const char *type)
   this->type = type;
 }
 
+<<<<<<< HEAD
 extern class bx_null_locator_c bx_null_match;
 #if BX_NETMOD_FBSD
 extern class bx_fbsd_locator_c bx_fbsd_match;
@@ -128,6 +179,48 @@ extern class bx_vde_locator_c bx_vde_match;
 extern class bx_slirp_locator_c bx_slirp_match;
 #endif
 extern class bx_vnet_locator_c bx_vnet_match;
+=======
+eth_locator_c::~eth_locator_c()
+{
+  eth_locator_c *ptr = 0;
+
+  if (this == all) {
+    all = all->next;
+  } else {
+    ptr = all;
+    while (ptr != NULL) {
+      if (ptr->next != this) {
+        ptr = ptr->next;
+      } else {
+        break;
+      }
+    }
+  }
+  if (ptr) {
+    ptr->next = this->next;
+  }
+}
+
+bx_bool eth_locator_c::module_present(const char *type)
+{
+  eth_locator_c *ptr = 0;
+
+  for (ptr = all; ptr != NULL; ptr = ptr->next) {
+    if (strcmp(type, ptr->type) == 0)
+      return 1;
+  }
+  return 0;
+}
+
+void eth_locator_c::cleanup()
+{
+#if BX_PLUGINS
+  while (all != NULL) {
+    PLUG_unload_net_plugin(all->type);
+  }
+#endif
+}
+>>>>>>> version-2.6.9
 
 //
 // Called by ethernet chip emulations to locate and create a pktmover
@@ -139,6 +232,7 @@ eth_locator_c::create(const char *type, const char *netif,
                       eth_rx_handler_t rxh, eth_rx_status_t rxstat,
                       bx_devmodel_c *dev, const char *script)
 {
+<<<<<<< HEAD
 #ifdef eth_static_constructors
   for (eth_locator_c *p = all; p != NULL; p = p->next) {
     if (strcmp(type, p->type) == 0)
@@ -201,6 +295,15 @@ eth_locator_c::create(const char *type, const char *netif,
 #endif
 
   return (NULL);
+=======
+  eth_locator_c *ptr = 0;
+
+  for (ptr = all; ptr != NULL; ptr = ptr->next) {
+    if (strcmp(type, ptr->type) == 0)
+      return (ptr->allocate(netif, macaddr, rxh, rxstat, dev, script));
+  }
+  return NULL;
+>>>>>>> version-2.6.9
 }
 
 #if (BX_NETMOD_TAP==1) || (BX_NETMOD_TUNTAP==1) || (BX_NETMOD_VDE==1)
@@ -276,6 +379,7 @@ void write_pktlog_txt(FILE *pktlog_txt, const Bit8u *buf, unsigned len, bx_bool 
   fflush(pktlog_txt);
 }
 
+<<<<<<< HEAD
 Bit16u ip_checksum(const Bit8u *buf, unsigned buf_len)
 {
   Bit32u sum = 0;
@@ -1036,4 +1140,6 @@ int process_tftp(bx_devmodel_c *netdev, const Bit8u *data, unsigned data_len, Bi
   return 0;
 }
 
+=======
+>>>>>>> version-2.6.9
 #endif /* if BX_NETWORKING */

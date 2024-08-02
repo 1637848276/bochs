@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: wxmain.h 12583 2014-12-27 15:57:30Z vruppert $
 /////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2014  The Bochs Project
+=======
+// $Id: wxmain.h 13014 2016-12-29 09:47:07Z vruppert $
+/////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2002-2016  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -185,7 +192,11 @@ public:
   bx_bool SimThreadControl(bx_bool resume);
   void OnKillSim(wxCommandEvent& event);
   void OnSim2CIEvent(wxCommandEvent& event);
+<<<<<<< HEAD
   void OnLogAsk(BxEvent *be);
+=======
+  void OnLogDlg(BxEvent *be);
+>>>>>>> version-2.6.9
   void OnEditPluginCtrl(wxCommandEvent& event);
   void OnEditCPU(wxCommandEvent& event);
   void OnEditCPUID(wxCommandEvent& event);

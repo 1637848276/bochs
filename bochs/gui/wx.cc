@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: wx.cc 12714 2015-04-11 10:21:03Z vruppert $
 /////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2015  The Bochs Project
+=======
+// $Id: wx.cc 13075 2017-02-18 11:13:56Z vruppert $
+/////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2002-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -955,6 +962,7 @@ DWORD WINAPI DebugGuiThread(LPVOID)
 }
 #endif
 
+<<<<<<< HEAD
 //////////////////////////////////////////////////////////////
 // fill in methods of bx_gui
 //////////////////////////////////////////////////////////////
@@ -963,6 +971,13 @@ void bx_wx_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
 {
   int b,i,j;
   unsigned char fc, vc;
+=======
+// wxWidgets implementation of the bx_gui_c methods (see nogui.cc for details)
+
+void bx_wx_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
+{
+  int i, j;
+>>>>>>> version-2.6.9
   wxDisplay display;
 
   put("WX");
@@ -980,6 +995,7 @@ void bx_wx_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
 
   for(i = 0; i < 256; i++) {
     for(j = 0; j < 16; j++) {
+<<<<<<< HEAD
       vc = bx_vgafont[i].data[j];
       fc = 0;
       for (b = 0; b < 8; b++) {
@@ -987,6 +1003,9 @@ void bx_wx_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
         vc >>= 1;
       }
       vga_charmap[i*32+j] = fc;
+=======
+      vga_charmap[i * 32 + j] = reverse_bitorder(bx_vgafont[i].data[j]);
+>>>>>>> version-2.6.9
     }
   }
 
@@ -995,11 +1014,18 @@ void bx_wx_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
   IFDBG_VGA(wxLogDebug (wxT ("MyPanel::specific_init trying to get lock. wxScreen=%p", wxScreen)));
   wxCriticalSectionLocker lock(wxScreen_lock);
   IFDBG_VGA(wxLogDebug (wxT ("MyPanel::specific_init got lock. wxScreen=%p", wxScreen)));
+<<<<<<< HEAD
   if (wxScreen == NULL) {
     wxScreen = (char *)malloc(wxScreenX * wxScreenY * 3);
   } else {
     wxScreen = (char *)realloc(wxScreen, wxScreenX * wxScreenY * 3);
   }
+=======
+  if (wxScreen != NULL) {
+    delete [] wxScreen;
+  }
+  wxScreen = new char[wxScreenX * wxScreenY * 3];
+>>>>>>> version-2.6.9
   memset(wxScreen, 0, wxScreenX * wxScreenY * 3);
 
   wxTileX = x_tilesize;
@@ -1052,12 +1078,15 @@ void bx_wx_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
   dialog_caps = BX_GUI_DLG_USER | BX_GUI_DLG_SNAPSHOT | BX_GUI_DLG_SAVE_RESTORE;
 }
 
+<<<<<<< HEAD
 // ::HANDLE_EVENTS()
 //
 // Called periodically (vga_update_interval in .bochsrc) so the
 // the gui code can poll for keyboard, mouse, and other
 // relevant events.
 
+=======
+>>>>>>> version-2.6.9
 void bx_wx_gui_c::handle_events(void)
 {
   unsigned tb_button = 0;
@@ -1206,20 +1235,26 @@ void bx_wx_gui_c::statusbar_setitem_specific(int element, bx_bool active, bx_boo
   wxMutexGuiLeave();
 }
 
+<<<<<<< HEAD
 // ::FLUSH()
 //
 // Called periodically, requesting that the gui code flush all pending
 // screen update requests.
 
+=======
+>>>>>>> version-2.6.9
 void bx_wx_gui_c::flush(void)
 {
 }
 
+<<<<<<< HEAD
 // ::CLEAR_SCREEN()
 //
 // Called to request that the VGA region is cleared.  Don't
 // clear the area that defines the headerbar.
 
+=======
+>>>>>>> version-2.6.9
 void bx_wx_gui_c::clear_screen(void)
 {
   IFDBG_VGA(wxLogDebug (wxT ("MyPanel::clear_screen trying to get lock. wxScreen=%p", wxScreen)));
@@ -1261,9 +1296,16 @@ static void UpdateScreen(unsigned char *newBits, int x, int y, int width, int he
 
 static void DrawBochsBitmap(int x, int y, int width, int height, char *bmap, char fgcolor, char bgcolor, int fontx, int fonty, bx_bool gfxchar)
 {
+<<<<<<< HEAD
   static unsigned char newBits[9 * 32];
   unsigned char mask;
   int bytes = width * height;
+=======
+  static unsigned char newBits[18 * 32];
+  unsigned char mask;
+  int bytes = width * height;
+  bx_bool dwidth = (width > 9);
+>>>>>>> version-2.6.9
 
   if (y > wxScreenY) return;
 
@@ -1279,7 +1321,11 @@ static void DrawBochsBitmap(int x, int y, int width, int height, char *bmap, cha
           newBits[i + j] = bgcolor;
         }
       }
+<<<<<<< HEAD
       mask >>= 1;
+=======
+      if (!dwidth || (j & 1)) mask >>= 1;
+>>>>>>> version-2.6.9
     }
     fonty++;
   }
@@ -1287,6 +1333,7 @@ static void DrawBochsBitmap(int x, int y, int width, int height, char *bmap, cha
 }
 
 
+<<<<<<< HEAD
 // ::TEXT_UPDATE()
 //
 // Called in a VGA text mode, to update the screen with
@@ -1306,6 +1353,8 @@ static void DrawBochsBitmap(int x, int y, int width, int height, char *bmap, cha
 // tm_info:  this structure contains information for additional
 //           features in text mode (cursor shape, line offset,...)
 
+=======
+>>>>>>> version-2.6.9
 void bx_wx_gui_c::text_update(Bit8u *old_text, Bit8u *new_text,
                               unsigned long cursor_x, unsigned long cursor_y,
                               bx_vga_tminfo_t *tm_info)
@@ -1491,6 +1540,7 @@ void bx_wx_gui_c::text_update(Bit8u *old_text, Bit8u *new_text,
   thePanel->MyRefresh();
 }
 
+<<<<<<< HEAD
 // ::PALETTE_CHANGE()
 //
 // Allocate a color in the native GUI, for this color, and put
@@ -1498,6 +1548,8 @@ void bx_wx_gui_c::text_update(Bit8u *old_text, Bit8u *new_text,
 // returns: 0=no screen update needed (color map change has direct effect)
 //          1=screen update needed (redraw using current colormap)
 
+=======
+>>>>>>> version-2.6.9
 bx_bool bx_wx_gui_c::palette_change(Bit8u index, Bit8u red, Bit8u green, Bit8u blue)
 {
   IFDBG_VGA(wxLogDebug (wxT ("palette_change")));
@@ -1508,6 +1560,7 @@ bx_bool bx_wx_gui_c::palette_change(Bit8u index, Bit8u red, Bit8u green, Bit8u b
 }
 
 
+<<<<<<< HEAD
 // ::GRAPHICS_TILE_UPDATE()
 //
 // Called to request that a tile of graphics be drawn to the
@@ -1523,6 +1576,8 @@ bx_bool bx_wx_gui_c::palette_change(Bit8u index, Bit8u red, Bit8u green, Bit8u b
 // note: origin of tile and of window based on (0,0) being in the upper
 //       left of the window.
 
+=======
+>>>>>>> version-2.6.9
 void bx_wx_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned y0)
 {
   IFDBG_VGA (wxLogDebug (wxT ("graphics_tile_update")));
@@ -1576,6 +1631,7 @@ void bx_wx_gui_c::graphics_tile_update_in_place(unsigned x0, unsigned y0,
   thePanel->MyRefresh();
 }
 
+<<<<<<< HEAD
 // ::DIMENSION_UPDATE()
 //
 // Called from the simulator when the VGA mode changes it's X,Y dimensions.
@@ -1588,6 +1644,8 @@ void bx_wx_gui_c::graphics_tile_update_in_place(unsigned x0, unsigned y0,
 // fwidth : new VGA character width in text mode
 // bpp : bits per pixel in graphics mode
 
+=======
+>>>>>>> version-2.6.9
 void bx_wx_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, unsigned fwidth, unsigned bpp)
 {
   IFDBG_VGA(wxLogDebug (wxT ("MyPanel::dimension_update trying to get lock. wxScreen=%p", wxScreen)));
@@ -1615,7 +1673,12 @@ void bx_wx_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, uns
   }
   wxScreenX = x;
   wxScreenY = y;
+<<<<<<< HEAD
   wxScreen = (char *)realloc(wxScreen, wxScreenX * wxScreenY * 3);
+=======
+  delete [] wxScreen;
+  wxScreen = new char[wxScreenX * wxScreenY * 3];
+>>>>>>> version-2.6.9
   wxASSERT (wxScreen != NULL);
   wxScreen_lock.Leave ();
   IFDBG_VGA(wxLogDebug (wxT ("MyPanel::dimension_update gave up lock. wxScreen=%p", wxScreen)));
@@ -1638,6 +1701,7 @@ void bx_wx_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, uns
 }
 
 
+<<<<<<< HEAD
 // ::CREATE_BITMAP()
 //
 // Create a monochrome bitmap of size 'xdim' by 'ydim', which will
@@ -1649,6 +1713,8 @@ void bx_wx_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, uns
 // xdim: x dimension of bitmap
 // ydim: y dimension of bitmap
 
+=======
+>>>>>>> version-2.6.9
 unsigned bx_wx_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim, unsigned ydim)
 {
   UNUSED(bmap);
@@ -1658,6 +1724,7 @@ unsigned bx_wx_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim, un
 }
 
 
+<<<<<<< HEAD
 // ::HEADERBAR_BITMAP()
 //
 // Called to install a bitmap in the bochs headerbar (toolbar).
@@ -1672,6 +1739,8 @@ unsigned bx_wx_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim, un
 // f: a 'C' function pointer to callback when the mouse is clicked in
 //     the boundaries of this bitmap.
 
+=======
+>>>>>>> version-2.6.9
 unsigned bx_wx_gui_c::headerbar_bitmap(unsigned bmap_id, unsigned alignment, void (*f)(void))
 {
   UNUSED(bmap_id);
@@ -1680,15 +1749,19 @@ unsigned bx_wx_gui_c::headerbar_bitmap(unsigned bmap_id, unsigned alignment, voi
   return(0);
 }
 
+<<<<<<< HEAD
 // ::SHOW_HEADERBAR()
 //
 // Show (redraw) the current headerbar, which is composed of
 // currently installed bitmaps.
 
+=======
+>>>>>>> version-2.6.9
 void bx_wx_gui_c::show_headerbar(void)
 {
 }
 
+<<<<<<< HEAD
 // ::REPLACE_BITMAP()
 //
 // Replace the bitmap installed in the headerbar ID slot 'hbar_id',
@@ -1704,17 +1777,23 @@ void bx_wx_gui_c::show_headerbar(void)
 
   void
 bx_wx_gui_c::replace_bitmap(unsigned hbar_id, unsigned bmap_id)
+=======
+void bx_wx_gui_c::replace_bitmap(unsigned hbar_id, unsigned bmap_id)
+>>>>>>> version-2.6.9
 {
   UNUSED(hbar_id);
   UNUSED(bmap_id);
 }
 
 
+<<<<<<< HEAD
 // ::EXIT()
 //
 // Called before bochs terminates, to allow for a graceful
 // exit from the native GUI mechanism.
 
+=======
+>>>>>>> version-2.6.9
 void bx_wx_gui_c::exit(void)
 {
   clear_screen();

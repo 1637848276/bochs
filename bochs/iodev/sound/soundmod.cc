@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: soundmod.cc 12683 2015-03-10 20:56:44Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2011-2015  The Bochs Project
+=======
+// $Id: soundmod.cc 13116 2017-03-14 18:21:05Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2011-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -18,12 +25,16 @@
 //  License along with this library; if not, write to the Free Software
 //  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 
+<<<<<<< HEAD
 // Common sound module code and dummy sound lowlevel functions
 
 // Define BX_PLUGGABLE in files that can be compiled into plugins.  For
 // platforms that require a special tag on exported symbols, BX_PLUGGABLE
 // is used to know when we are exporting symbols and when we are importing.
 #define BX_PLUGGABLE
+=======
+// Sound driver loader code
+>>>>>>> version-2.6.9
 
 #include "iodev.h"
 
@@ -31,17 +42,21 @@
 
 #include "soundmod.h"
 #include "soundlow.h"
+<<<<<<< HEAD
 #include "soundlnx.h"
 #include "soundosx.h"
 #include "soundwin.h"
 #include "soundsdl.h"
 #include "soundalsa.h"
 #include "soundfile.h"
+=======
+>>>>>>> version-2.6.9
 
 #if BX_WITH_SDL || BX_WITH_SDL2
 #include <SDL.h>
 #endif
 
+<<<<<<< HEAD
 #define LOG_THIS theSoundModCtl->
 
 bx_soundmod_ctl_c* theSoundModCtl = NULL;
@@ -61,10 +76,17 @@ void CDECL libsoundmod_LTX_plugin_fini(void)
 {
   delete theSoundModCtl;
 }
+=======
+#define LOG_THIS bx_soundmod_ctl.
+
+bx_soundmod_ctl_c bx_soundmod_ctl;
+
+>>>>>>> version-2.6.9
 
 bx_soundmod_ctl_c::bx_soundmod_ctl_c()
 {
   put("soundctl", "SNDCTL");
+<<<<<<< HEAD
   n_sound_drivers = 0;
   soundmod[0].module = NULL;
   waveout = NULL;
@@ -75,6 +97,8 @@ bx_soundmod_ctl_c::~bx_soundmod_ctl_c()
   for (unsigned i = 0; i < n_sound_drivers; i++) {
     delete soundmod[i].module;
   }
+=======
+>>>>>>> version-2.6.9
 }
 
 void bx_soundmod_ctl_c::init()
@@ -83,7 +107,11 @@ void bx_soundmod_ctl_c::init()
   const char *pwavein = SIM->get_param_string(BXPN_SOUND_WAVEIN)->getptr();
   int ret;
 
+<<<<<<< HEAD
   waveout = get_waveout(0);
+=======
+  bx_soundlow_waveout_c *waveout = get_waveout(0);
+>>>>>>> version-2.6.9
   if (waveout != NULL) {
     if (!strlen(pwavein)) {
       SIM->get_param_string(BXPN_SOUND_WAVEIN)->set(pwaveout);
@@ -97,6 +125,7 @@ void bx_soundmod_ctl_c::init()
   }
 }
 
+<<<<<<< HEAD
 bx_sound_lowlevel_c* bx_soundmod_ctl_c::get_driver(int driver_id)
 {
   bx_sound_lowlevel_c *driver = NULL;
@@ -146,6 +175,24 @@ bx_sound_lowlevel_c* bx_soundmod_ctl_c::get_driver(int driver_id)
     n_sound_drivers++;
   }
   return driver;
+=======
+void bx_soundmod_ctl_c::exit()
+{
+  bx_sound_lowlevel_c::cleanup();
+}
+
+bx_sound_lowlevel_c* bx_soundmod_ctl_c::get_driver(int driver_id)
+{
+  const char *modname = sound_driver_names[driver_id];
+  if (!bx_sound_lowlevel_c::module_present(modname)) {
+#if BX_PLUGINS
+    PLUG_load_snd_plugin(modname);
+#else
+    BX_PANIC(("could not find sound driver '%s'", modname));
+#endif
+  }
+  return bx_sound_lowlevel_c::get_module(modname);
+>>>>>>> version-2.6.9
 }
 
 bx_soundlow_waveout_c* bx_soundmod_ctl_c::get_waveout(bx_bool using_file)

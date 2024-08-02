@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: resolve.cc 11863 2013-10-07 19:23:19Z sshwarts $
+=======
+// $Id: resolve.cc 12908 2016-04-29 21:01:28Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2005-2013 Stanislav Shwartsman
@@ -189,7 +193,11 @@ void disassembler::resolve32_mod0(const x86_insn *insn, unsigned datasize)
   if (insn->is_seg_override())
     seg = segment_name[insn->seg_override];
   else
+<<<<<<< HEAD
     seg = segment_name[DS_REG];
+=======
+    seg = segment_name[BX_SEG_REG_DS];
+>>>>>>> version-2.6.9
 
   if (insn->is_64) {
     if (intel_mode) eip_regname = "eip";
@@ -273,7 +281,11 @@ void disassembler::resolve64_mod0(const x86_insn *insn, unsigned datasize)
   if (insn->is_seg_override())
     seg = segment_name[insn->seg_override];
   else
+<<<<<<< HEAD
     seg = segment_name[DS_REG];
+=======
+    seg = segment_name[BX_SEG_REG_DS];
+>>>>>>> version-2.6.9
 
   if (intel_mode) rip_regname = "rip";
   else rip_regname = "%rip";

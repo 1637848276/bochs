@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: apic.h 11404 2012-09-06 15:21:08Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (c) 2002-2012 Zwane Mwaikambo, Stanislav Shwartsman
+=======
+// $Id: apic.h 13152 2017-03-26 19:14:15Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (c) 2002-2017 Zwane Mwaikambo, Stanislav Shwartsman
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -32,10 +39,19 @@
 #define BX_NUM_LOCAL_APICS  BX_SMP_PROCESSORS
 #define BX_LAPIC_MAX_INTS   256
 
+<<<<<<< HEAD
 #define BX_APIC_GLOBALLY_DISABLED 0
 #define BX_APIC_STATE_INVALID     1
 #define BX_APIC_XAPIC_MODE        2
 #define BX_APIC_X2APIC_MODE       3
+=======
+enum {
+  BX_APIC_GLOBALLY_DISABLED = 0,
+  BX_APIC_STATE_INVALID     = 1,
+  BX_APIC_XAPIC_MODE        = 2,
+  BX_APIC_X2APIC_MODE       = 3
+};
+>>>>>>> version-2.6.9
 
 #define BX_XAPIC_EXT_SUPPORT_IER  (1 << 0)
 #define BX_XAPIC_EXT_SUPPORT_SEOI (1 << 1)
@@ -197,6 +213,14 @@ class BOCHSAPI bx_local_apic_c : public logfunctions
   bx_bool vmx_timer_active;
 #endif 
 
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_MONITOR_MWAIT
+  int mwaitx_timer_handle;
+  bx_bool mwaitx_timer_active;
+#endif
+
+>>>>>>> version-2.6.9
   BX_CPU_C *cpu;
 
 public:
@@ -259,6 +283,15 @@ public:
   void deactivate_vmx_preemption_timer(void);
   static void vmx_preemption_timer_expired(void *);
 #endif  
+<<<<<<< HEAD
+=======
+
+#if BX_SUPPORT_MONITOR_MWAIT
+  void set_mwaitx_timer(Bit32u value);
+  void deactivate_mwaitx_timer(void);
+  static void mwaitx_timer_expired(void *);
+#endif
+>>>>>>> version-2.6.9
 };
 
 int apic_bus_deliver_lowest_priority(Bit8u vector, apic_dest_t dest, bx_bool trig_mode, bx_bool broadcast);

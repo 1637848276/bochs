@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: sdl.h 10209 2011-02-24 22:05:47Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2009  The Bochs Project
+=======
+// $Id: sdl.h 13021 2017-01-01 19:37:26Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2002-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -29,7 +36,11 @@
 #define BX_HEADERBAR_BG_GREEN	0xD0
 #define BX_HEADERBAR_BG_BLUE	0xD0
 
+<<<<<<< HEAD
 unsigned char sdl_font8x16[256][16] = {
+=======
+static const Bit8u sdl_font8x16[256][16] = {
+>>>>>>> version-2.6.9
   {   0,   0,   0,   0,   0,   0,   0,   0,    // 0
       0,   0,   0,   0,   0,   0,   0,   0 },
   {   0,   0, 126, 129, 165, 129, 129, 189,    // 1
@@ -543,7 +554,11 @@ unsigned char sdl_font8x16[256][16] = {
   {   0,   0,   0,   0,   0,   0,   0,   0,    // 255
       0,   0,   0,   0,   0,   0,   0,   0 }};
 
+<<<<<<< HEAD
 unsigned char sdl_font8x8[256][8] = {
+=======
+static const Bit8u sdl_font8x8[256][8] = {
+>>>>>>> version-2.6.9
   {   0,   0,   0,   0,   0,   0,   0,   0 },  // 0
   { 126, 129, 165, 129, 189, 153, 129, 126 },  // 1
   { 126, 255, 219, 255, 195, 231, 255, 126 },  // 2

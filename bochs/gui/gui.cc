@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: gui.cc 12594 2015-01-07 16:17:40Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2014  The Bochs Project
+=======
+// $Id: gui.cc 13174 2017-04-02 16:16:53Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2002-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -36,6 +43,13 @@
 #include "gui/bitmaps/userbutton.h"
 #include "gui/bitmaps/saverestore.h"
 
+<<<<<<< HEAD
+=======
+#if BX_USE_GUI_CONSOLE
+#include "sdl.h"
+#endif
+
+>>>>>>> version-2.6.9
 #if BX_WITH_MACOS
 #  include <Disks.h>
 #endif
@@ -45,6 +59,14 @@ bx_gui_c *bx_gui = NULL;
 #define BX_GUI_THIS bx_gui->
 #define LOG_THIS BX_GUI_THIS
 
+<<<<<<< HEAD
+=======
+// Enable this if you want confirm quit after pressing power button.
+//#define BX_GUI_CONFIRM_QUIT
+
+// user button shortcut stuff
+
+>>>>>>> version-2.6.9
 #define BX_KEY_UNKNOWN 0x7fffffff
 #define N_USER_KEYS 38
 
@@ -95,13 +117,51 @@ static user_key_t user_keys[N_USER_KEYS] =
   { "scrlck", BX_KEY_SCRL_LOCK }
 };
 
+<<<<<<< HEAD
 bx_gui_c::bx_gui_c(void): disp_mode(DISP_MODE_SIM)
 {
   put("GUI"); // Init in specific_init
+=======
+Bit32u get_user_key(char *key)
+{
+  int i = 0;
+
+  while (i < N_USER_KEYS) {
+    if (!strcmp(key, user_keys[i].key))
+      return user_keys[i].symbol;
+    i++;
+  }
+  return BX_KEY_UNKNOWN;
+}
+
+// font bitmap helper function
+
+Bit8u reverse_bitorder(Bit8u b)
+{
+  Bit8u ret = 0;
+
+  for (unsigned i = 0; i < 8; i++) {
+    ret |= (b & 0x01) << (7 - i);
+    b >>= 1;
+  }
+  return ret;
+}
+
+// common gui implementation
+
+bx_gui_c::bx_gui_c(void): disp_mode(DISP_MODE_SIM)
+{
+  put("GUI"); // Init in specific_init
+  bx_headerbar_entries = 0;
+>>>>>>> version-2.6.9
   statusitem_count = 0;
   led_timer_index = BX_NULL_TIMER_HANDLE;
   framebuffer = NULL;
   guest_textmode = 1;
+<<<<<<< HEAD
+=======
+  guest_fsize = (16 << 4) | 8;
+>>>>>>> version-2.6.9
   guest_xres = 640;
   guest_yres = 480;
   guest_bpp = 8;
@@ -115,6 +175,14 @@ bx_gui_c::~bx_gui_c()
   if (framebuffer != NULL) {
     delete [] framebuffer;
   }
+<<<<<<< HEAD
+=======
+#if BX_USE_GUI_CONSOLE
+  if (console.running) {
+    console_cleanup();
+  }
+#endif
+>>>>>>> version-2.6.9
 }
 
 void bx_gui_c::init(int argc, char **argv, unsigned max_xres, unsigned max_yres,
@@ -129,7 +197,14 @@ void bx_gui_c::init(int argc, char **argv, unsigned max_xres, unsigned max_yres,
   BX_GUI_THIS x_tilesize = tilewidth;
   BX_GUI_THIS y_tilesize = tileheight;
   BX_GUI_THIS dialog_caps = BX_GUI_DLG_RUNTIME | BX_GUI_DLG_SAVE_RESTORE;
+<<<<<<< HEAD
 
+=======
+#if BX_USE_GUI_CONSOLE
+  BX_GUI_THIS console.present = 0;
+  BX_GUI_THIS console.running = 0;
+#endif
+>>>>>>> version-2.6.9
   BX_GUI_THIS toggle_method = SIM->get_param_enum(BXPN_MOUSE_TOGGLE)->get();
   BX_GUI_THIS toggle_keystate = 0;
   switch (toggle_method) {
@@ -366,6 +441,7 @@ void bx_gui_c::reset_handler(void)
 
 void bx_gui_c::power_handler(void)
 {
+<<<<<<< HEAD
   // test case for yes/no dialog: confirm power off
   //if (!SIM->ask_yes_no("Quit Bochs", "Are you sure ?", 0))
   //  return;
@@ -377,6 +453,19 @@ void bx_gui_c::power_handler(void)
   // shouldn't reach this point, but if you do, QUIT!!!
   fprintf (stderr, "Bochs is exiting because you pressed the power button.\n");
   BX_EXIT (1);
+=======
+#ifdef BX_GUI_CONFIRM_QUIT
+  if (!SIM->ask_yes_no("Quit Bochs", "Are you sure ?", 0))
+    return;
+#endif
+  // the user pressed power button, so there's no doubt they want bochs
+  // to quit.  Change panics to fatal for the GUI and then do a panic.
+  bx_user_quit = 1;
+  BX_FATAL(("POWER button turned off."));
+  // shouldn't reach this point, but if you do, QUIT!!!
+  fprintf (stderr, "Bochs is exiting because you pressed the power button.\n");
+  BX_EXIT(1);
+>>>>>>> version-2.6.9
 }
 
 void bx_gui_c::make_text_snapshot(char **snapshot, Bit32u *length)
@@ -386,7 +475,11 @@ void bx_gui_c::make_text_snapshot(char **snapshot, Bit32u *length)
   unsigned line_addr, txt_addr, txHeight, txWidth;
 
   DEV_vga_get_text_snapshot(&raw_snap, &txHeight, &txWidth);
+<<<<<<< HEAD
   clean_snap = (char*) malloc(txHeight*(txWidth+2)+1);
+=======
+  clean_snap = new char[txHeight*(txWidth+2)+1];
+>>>>>>> version-2.6.9
   txt_addr = 0;
   for (unsigned i=0; i<txHeight; i++) {
     line_addr = i * txWidth * 2;
@@ -414,7 +507,11 @@ Bit32u bx_gui_c::set_snapshot_mode(bx_bool mode)
   if (mode) {
     pixel_bytes = ((BX_GUI_THIS guest_bpp + 1) >> 3);
     bufsize = BX_GUI_THIS guest_xres * BX_GUI_THIS guest_yres * pixel_bytes;
+<<<<<<< HEAD
     BX_GUI_THIS snapshot_buffer = (Bit8u*)malloc(bufsize);
+=======
+    BX_GUI_THIS snapshot_buffer = new Bit8u[bufsize];
+>>>>>>> version-2.6.9
     if (BX_GUI_THIS snapshot_buffer != NULL) {
       memset(BX_GUI_THIS snapshot_buffer, 0, bufsize);
       DEV_vga_refresh(1);
@@ -422,7 +519,11 @@ Bit32u bx_gui_c::set_snapshot_mode(bx_bool mode)
     }
   } else {
     if (BX_GUI_THIS snapshot_buffer != NULL) {
+<<<<<<< HEAD
       free(BX_GUI_THIS snapshot_buffer);
+=======
+      delete [] BX_GUI_THIS snapshot_buffer;
+>>>>>>> version-2.6.9
       BX_GUI_THIS snapshot_buffer = NULL;
       DEV_vga_redraw_area(0, 0, BX_GUI_THIS guest_xres, BX_GUI_THIS guest_yres);
     }
@@ -442,10 +543,19 @@ void bx_gui_c::copy_handler(void)
     if (!BX_GUI_THIS set_clipboard_text(text_snapshot, len)) {
       // platform specific code failed, use portable code instead
       FILE *fp = fopen("copy.txt", "w");
+<<<<<<< HEAD
       fwrite(text_snapshot, 1, len, fp);
       fclose(fp);
     }
     free(text_snapshot);
+=======
+      if (fp != NULL) {
+        fwrite(text_snapshot, 1, len, fp);
+        fclose(fp);
+      }
+    }
+    delete [] text_snapshot;
+>>>>>>> version-2.6.9
   } else {
     BX_ERROR(("copy button failed, graphics mode not implemented"));
   }
@@ -468,21 +578,35 @@ void bx_gui_c::snapshot_handler(void)
                                    "Save snapshot as...", "snapshot.txt",
                                    bx_param_string_c::SAVE_FILE_DIALOG);
       if (ret < 0) { // cancelled
+<<<<<<< HEAD
         free(snapshot_ptr);
+=======
+        delete [] snapshot_ptr;
+>>>>>>> version-2.6.9
         return;
       }
     } else {
       strcpy (filename, "snapshot.txt");
     }
     FILE *fp = fopen(filename, "wb");
+<<<<<<< HEAD
     if (! fp) {
       BX_ERROR(("snapshot button failed: cannot create text file"));
       free(snapshot_ptr);
+=======
+    if (fp == NULL) {
+      BX_ERROR(("snapshot button failed: cannot create text file"));
+      delete [] snapshot_ptr;
+>>>>>>> version-2.6.9
       return;
     }
     fwrite(snapshot_ptr, 1, len, fp);
     fclose(fp);
+<<<<<<< HEAD
     free(snapshot_ptr);
+=======
+    delete [] snapshot_ptr;
+>>>>>>> version-2.6.9
   } else {
     if (BX_GUI_THIS dialog_caps & BX_GUI_DLG_SNAPSHOT) {
       int ret = SIM->ask_filename (filename, sizeof(filename),
@@ -542,7 +666,11 @@ void bx_gui_c::snapshot_handler(void)
       write(fd, BX_GUI_THIS palette, 256 * 4);
     }
     pitch = BX_GUI_THIS guest_xres * ((BX_GUI_THIS guest_bpp + 1) >> 3);
+<<<<<<< HEAD
     row_buffer = (Bit8u*)malloc(rlen);
+=======
+    row_buffer = new Bit8u[rlen];
+>>>>>>> version-2.6.9
     row_ptr = BX_GUI_THIS snapshot_buffer + ((BX_GUI_THIS guest_yres - 1) * pitch);
     for (i = BX_GUI_THIS guest_yres; i > 0; i--) {
       memset(row_buffer, 0, rlen);
@@ -574,7 +702,11 @@ void bx_gui_c::snapshot_handler(void)
       write(fd, row_buffer, rlen);
       row_ptr -= pitch;
     }
+<<<<<<< HEAD
     free(row_buffer);
+=======
+    delete [] row_buffer;
+>>>>>>> version-2.6.9
     close(fd);
     BX_GUI_THIS set_snapshot_mode(0);
   }
@@ -617,6 +749,11 @@ bx_bool bx_gui_c::mouse_toggle_check(Bit32u key, bx_bool pressed)
   Bit32u newstate;
   bx_bool toggle = 0;
 
+<<<<<<< HEAD
+=======
+  if (console_running())
+    return 0;
+>>>>>>> version-2.6.9
   newstate = toggle_keystate;
   if (pressed) {
     newstate |= key;
@@ -650,6 +787,7 @@ const char* bx_gui_c::get_toggle_info(void)
   return mouse_toggle_text;
 }
 
+<<<<<<< HEAD
 Bit32u get_user_key(char *key)
 {
   int i = 0;
@@ -662,6 +800,8 @@ Bit32u get_user_key(char *key)
   return BX_KEY_UNKNOWN;
 }
 
+=======
+>>>>>>> version-2.6.9
 bx_bool bx_gui_c::parse_user_shortcut(const char *val)
 {
   char *ptr, shortcut_tmp[512];
@@ -716,6 +856,10 @@ void bx_gui_c::save_restore_handler(void)
   char sr_path[BX_PATHNAME_LEN];
 
   if (BX_GUI_THIS dialog_caps & BX_GUI_DLG_SAVE_RESTORE) {
+<<<<<<< HEAD
+=======
+    BX_GUI_THIS set_display_mode(DISP_MODE_CONFIG);
+>>>>>>> version-2.6.9
     sr_path[0] = 0;
     ret = SIM->ask_filename(sr_path, sizeof(sr_path),
                             "Save Bochs state to folder...", "none",
@@ -731,6 +875,28 @@ void bx_gui_c::save_restore_handler(void)
         }
       }
     }
+<<<<<<< HEAD
+=======
+    BX_GUI_THIS set_display_mode(DISP_MODE_SIM);
+  }
+}
+
+void bx_gui_c::headerbar_click(int x)
+{
+  int xorigin;
+
+  for (unsigned i=0; i<bx_headerbar_entries; i++) {
+    if (bx_headerbar_entry[i].alignment == BX_GRAVITY_LEFT)
+      xorigin = bx_headerbar_entry[i].xorigin;
+    else
+      xorigin = guest_xres - bx_headerbar_entry[i].xorigin;
+    if ((x>=xorigin) && (x<(xorigin+int(bx_headerbar_entry[i].xdim)))) {
+      if (console_running() && (i != power_hbar_id))
+        return;
+      bx_headerbar_entry[i].f();
+      return;
+    }
+>>>>>>> version-2.6.9
   }
 }
 
@@ -791,6 +957,7 @@ void bx_gui_c::beep_off()
 
 int bx_gui_c::register_statusitem(const char *text, bx_bool auto_off)
 {
+<<<<<<< HEAD
   if (statusitem_count < BX_MAX_STATUSITEMS) {
     strncpy(statusitem[statusitem_count].text, text, 8);
     statusitem[statusitem_count].text[7] = 0;
@@ -801,6 +968,42 @@ int bx_gui_c::register_statusitem(const char *text, bx_bool auto_off)
     return statusitem_count++;
   } else {
    return -1;
+=======
+  unsigned id = statusitem_count;
+
+  for (unsigned i = 0; i < statusitem_count; i++) {
+    if (!statusitem[i].in_use) {
+      id = i;
+      break;
+    }
+  }
+  if (id == statusitem_count) {
+    if (++statusitem_count > BX_MAX_STATUSITEMS) {
+      return -1;
+    }
+  }
+  statusitem[id].in_use = 1;
+  strncpy(statusitem[id].text, text, 8);
+  statusitem[id].text[7] = 0;
+  statusitem[id].auto_off = auto_off;
+  statusitem[id].counter = 0;
+  statusitem[id].active = 0;
+  statusitem[id].mode = 0;
+  statusbar_setitem_specific(id, 0, 0);
+  return id;
+}
+
+void bx_gui_c::unregister_statusitem(int id)
+{
+  if ((id >= 0) && (id < (int)statusitem_count)) {
+    strcpy(statusitem[id].text, "      ");
+    statusbar_setitem_specific(id, 0, 0);
+    if (id == (int)(statusitem_count - 1)) {
+      statusitem_count--;
+    } else {
+      statusitem[id].in_use = 0;
+    }
+>>>>>>> version-2.6.9
   }
 }
 
@@ -849,6 +1052,45 @@ void bx_gui_c::get_capabilities(Bit16u *xres, Bit16u *yres, Bit16u *bpp)
   *bpp = 32;
 }
 
+<<<<<<< HEAD
+=======
+bx_bool bx_gui_c::palette_change_common(Bit8u index, Bit8u red, Bit8u green, Bit8u blue)
+{
+  BX_GUI_THIS palette[index].red = red;
+  BX_GUI_THIS palette[index].green = green;
+  BX_GUI_THIS palette[index].blue = blue;
+  return palette_change(index, red, green, blue);
+}
+
+void bx_gui_c::show_ips(Bit32u ips_count)
+{
+#if BX_SHOW_IPS
+  BX_INFO(("ips = %3.3fM", ips_count / 1000000.0));
+#endif
+}
+
+Bit8u bx_gui_c::get_mouse_headerbar_id()
+{
+  return BX_GUI_THIS mouse_hbar_id;
+}
+
+#if BX_DEBUGGER && BX_DEBUGGER_GUI
+void bx_gui_c::init_debug_dialog()
+{
+  extern void InitDebugDialog();
+  InitDebugDialog();
+}
+
+void bx_gui_c::close_debug_dialog()
+{
+  extern void CloseDebugDialog();
+  CloseDebugDialog();
+}
+#endif
+
+// new graphics API (compatibility code)
+
+>>>>>>> version-2.6.9
 bx_svga_tileinfo_t *bx_gui_c::graphics_tile_info(bx_svga_tileinfo_t *info)
 {
   BX_GUI_THIS host_pitch = BX_GUI_THIS host_xres * ((BX_GUI_THIS host_bpp + 1) >> 3);
@@ -979,7 +1221,11 @@ void bx_gui_c::graphics_tile_update_common(Bit8u *tile, unsigned x, unsigned y)
 bx_svga_tileinfo_t * bx_gui_c::graphics_tile_info_common(bx_svga_tileinfo_t *info)
 {
   if (!info) {
+<<<<<<< HEAD
     info = (bx_svga_tileinfo_t *)malloc(sizeof(bx_svga_tileinfo_t));
+=======
+    info = new bx_svga_tileinfo_t;
+>>>>>>> version-2.6.9
     if (!info) {
       return NULL;
     }
@@ -994,6 +1240,7 @@ bx_svga_tileinfo_t * bx_gui_c::graphics_tile_info_common(bx_svga_tileinfo_t *inf
   return info;
 }
 
+<<<<<<< HEAD
 bx_bool bx_gui_c::palette_change_common(Bit8u index, Bit8u red, Bit8u green, Bit8u blue)
 {
   BX_GUI_THIS palette[index].red = red;
@@ -1025,5 +1272,169 @@ void bx_gui_c::close_debug_dialog()
 {
   extern void CloseDebugDialog();
   CloseDebugDialog();
+=======
+#if BX_USE_GUI_CONSOLE
+
+#define BX_CONSOLE_BUFSIZE 4000
+
+void bx_gui_c::console_init(void)
+{
+  int i;
+
+  console.screen = new Bit8u[BX_CONSOLE_BUFSIZE];
+  console.oldscreen = new Bit8u[BX_CONSOLE_BUFSIZE];
+  for (i = 0; i < BX_CONSOLE_BUFSIZE; i+=2) {
+    console.screen[i] = 0x20;
+    console.screen[i+1] = 0x07;
+  }
+  memset(console.oldscreen, 0xff, BX_CONSOLE_BUFSIZE);
+  console.saved_xres = guest_xres;
+  console.saved_yres = guest_yres;
+  console.saved_bpp = guest_bpp;
+  console.saved_fsize = guest_fsize;
+  for (i = 0; i < 256; i++) {
+    memcpy(&BX_GUI_THIS vga_charmap[0]+i*32, &sdl_font8x16[i], 16);
+    BX_GUI_THIS char_changed[i] = 1;
+  }
+  BX_GUI_THIS charmap_updated = 1;
+  console.cursor_x = 0;
+  console.cursor_y = 0;
+  memset(&console.tminfo, 0, sizeof(bx_vga_tminfo_t));
+  console.tminfo.line_offset = 160;
+  console.tminfo.line_compare = 1023;
+  console.tminfo.cs_start = 0x2e;
+  console.tminfo.cs_end = 0x0f;
+  console.tminfo.actl_palette[7] = 0x07;
+  memcpy(console.saved_palette, palette, 32);
+  palette_change_common(0x00, 0x00, 0x00, 0x00);
+  palette_change_common(0x07, 0xa8, 0xa8, 0xa8);
+  dimension_update(720, 400, 16, 9, 8);
+  console.n_keys = 0;
+  console.running = 1;
+}
+
+void bx_gui_c::console_cleanup(void)
+{
+  delete [] console.screen;
+  delete [] console.oldscreen;
+  palette_change_common(0x00, console.saved_palette[2], console.saved_palette[1],
+                        console.saved_palette[0]);
+  palette_change_common(0x07, console.saved_palette[30], console.saved_palette[29],
+                        console.saved_palette[28]);
+  unsigned fheight = (console.saved_fsize >> 4);
+  unsigned fwidth = (console.saved_fsize & 0x0f);
+  dimension_update(console.saved_xres, console.saved_yres, fheight, fwidth,
+                   console.saved_bpp);
+  console.running = 0;
+}
+
+void bx_gui_c::console_refresh(bx_bool force)
+{
+  if (force) memset(console.oldscreen, 0xff, BX_CONSOLE_BUFSIZE);
+  text_update(console.oldscreen, console.screen, console.cursor_x,
+              console.cursor_y, &console.tminfo);
+  flush();
+  memcpy(console.oldscreen, console.screen, BX_CONSOLE_BUFSIZE);
+}
+
+void bx_gui_c::console_key_enq(Bit8u key)
+{
+  if (console.n_keys < 16) {
+    console.keys[console.n_keys++] = key;
+  }
+}
+
+int bx_gui_c::bx_printf(const char *s)
+{
+  unsigned offset;
+
+  if (!console.running) {
+    console_init();
+  }
+  for (unsigned i = 0; i < strlen(s); i++) {
+    offset = console.cursor_y * 160 + console.cursor_x * 2;
+    if ((s[i] != 0x08) && (s[i] != 0x0a)) {
+      console.screen[offset] = s[i];
+      console.screen[offset+1] = 0x07;
+      console.cursor_x++;
+    }
+    if ((s[i] == 0x0a) || (console.cursor_x == 80)) {
+      console.cursor_x = 0;
+      console.cursor_y++;
+    }
+    if (s[i] == 0x08) {
+      if (offset > 0) {
+        console.screen[offset-2] = 0x20;
+        console.screen[offset-1] = 0x07;
+        if (console.cursor_x > 0) {
+          console.cursor_x--;
+        } else {
+          console.cursor_x = 79;
+          console.cursor_y--;
+        }
+      }
+    }
+    if (console.cursor_y == 25) {
+      memcpy(console.screen, console.screen+160, BX_CONSOLE_BUFSIZE-160);
+      console.cursor_y--;
+      offset = console.cursor_y * 160 + console.cursor_x * 2;
+      for (int j = 0; j < 160; j+=2) {
+        console.screen[offset+j] = 0x20;
+        console.screen[offset+j+1] = 0x07;
+      }
+    }
+  }
+  console_refresh(0);
+  return strlen(s);
+}
+
+char* bx_gui_c::bx_gets(char *s, int size)
+{
+  char keystr[2];
+  int pos = 0, done = 0;
+  int cs_counter = 1, cs_visible = 0;
+
+  set_console_edit_mode(1);
+  keystr[1] = 0;
+  do {
+    handle_events();
+    while (console.n_keys > 0) {
+      if ((console.keys[0] >= 0x20) && (pos < (size-1))) {
+        s[pos++] = console.keys[0];
+        keystr[0] = console.keys[0];
+        bx_printf(keystr);
+      } else if (console.keys[0] == 0x0d) {
+        s[pos] = 0x00;
+        keystr[0] = 0x0a;
+        bx_printf(keystr);
+        done = 1;
+      } else if ((console.keys[0] == 0x08) && (pos > 0)) {
+        pos--;
+        keystr[0] = 0x08;
+        bx_printf(keystr);
+      }
+      memcpy(&console.keys[0], &console.keys[1], 15);
+      console.n_keys--;
+    }
+#if BX_HAVE_USLEEP
+    usleep(25000);
+#else
+    msleep(25);
+#endif
+    if (--cs_counter == 0) {
+      cs_counter = 10;
+      cs_visible ^= 1;
+      if (cs_visible) {
+        console.tminfo.cs_start &= ~0x20;
+      } else {
+        console.tminfo.cs_start |= 0x20;
+      }
+      console_refresh(0);
+    }
+  } while (!done);
+  console.tminfo.cs_start |= 0x20;
+  set_console_edit_mode(0);
+  return s;
+>>>>>>> version-2.6.9
 }
 #endif

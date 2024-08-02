@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: stack.cc 12667 2015-02-22 21:26:26Z sshwarts $
+=======
+// $Id: stack.cc 12895 2016-03-02 20:44:42Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2012-2015 Stanislav Shwartsman
@@ -107,6 +111,7 @@ void BX_CPP_AttrRegparmN(2) BX_CPU_C::stackPrefetch(bx_address offset, unsigned 
     }
   }
 
+<<<<<<< HEAD
   unsigned tlbIndex = BX_TLB_INDEX_OF(laddr, 0);
   Bit64u lpf = LPFOf(laddr);
   bx_TLB_entry *tlbEntry = &BX_CPU_THIS_PTR TLB.entry[tlbIndex];
@@ -114,12 +119,26 @@ void BX_CPP_AttrRegparmN(2) BX_CPU_C::stackPrefetch(bx_address offset, unsigned 
     // See if the TLB entry privilege level allows us write access from this CPL
     // Assuming that we always can read if write access is OK
     if (tlbEntry->accessBits & (0x04 << USER_PL)) {
+=======
+  Bit64u lpf = LPFOf(laddr);
+  bx_TLB_entry *tlbEntry = BX_TLB_ENTRY_OF(laddr, 0);
+  if (tlbEntry->lpf == lpf) {
+    // See if the TLB entry privilege level allows us write access from this CPL
+    // Assuming that we always can read if write access is OK
+    if (isWriteOK(tlbEntry, USER_PL)) {
+>>>>>>> version-2.6.9
       BX_CPU_THIS_PTR espPageBias = (bx_address) pageOffset - offset;
       BX_CPU_THIS_PTR pAddrStackPage = tlbEntry->ppf;
       BX_CPU_THIS_PTR espHostPtr = (Bit8u*) tlbEntry->hostPageAddr;
 #if BX_SUPPORT_MEMTYPE
       BX_CPU_THIS_PTR espPageMemtype = tlbEntry->get_memtype();
 #endif
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_SMP == 0
+      BX_CPU_THIS_PTR espPageFineGranularityMapping = pageWriteStampTable.getFineGranularityMapping(tlbEntry->ppf);
+#endif
+>>>>>>> version-2.6.9
     }
   }
 
@@ -143,7 +162,16 @@ void BX_CPP_AttrRegparmN(2) BX_CPU_C::stack_write_byte(bx_address offset, Bit8u 
     bx_phy_address pAddr = BX_CPU_THIS_PTR pAddrStackPage + espBiased;
     BX_NOTIFY_LIN_MEMORY_ACCESS(get_laddr(BX_SEG_REG_SS, offset), pAddr, 1,
                                 MEMTYPE(BX_CPU_THIS_PTR espPageMemtype), BX_WRITE, (Bit8u*) &data);
+<<<<<<< HEAD
     pageWriteStampTable.decWriteStamp(pAddr, 1);
+=======
+
+#if BX_SUPPORT_SMP == 0
+    if (BX_CPU_THIS_PTR espPageFineGranularityMapping)
+#endif
+      pageWriteStampTable.decWriteStamp(pAddr, 1);
+
+>>>>>>> version-2.6.9
     *hostPageAddr = data;
   }
   else {
@@ -171,7 +199,16 @@ void BX_CPP_AttrRegparmN(2) BX_CPU_C::stack_write_word(bx_address offset, Bit16u
 #endif
     BX_NOTIFY_LIN_MEMORY_ACCESS(get_laddr(BX_SEG_REG_SS, offset), pAddr, 2,
                                 MEMTYPE(BX_CPU_THIS_PTR espPageMemtype), BX_WRITE, (Bit8u*) &data);
+<<<<<<< HEAD
     pageWriteStampTable.decWriteStamp(pAddr, 2);
+=======
+
+#if BX_SUPPORT_SMP == 0
+    if (BX_CPU_THIS_PTR espPageFineGranularityMapping)
+#endif
+      pageWriteStampTable.decWriteStamp(pAddr, 2);
+
+>>>>>>> version-2.6.9
     WriteHostWordToLittleEndian(hostPageAddr, data);
   }
   else {
@@ -199,7 +236,16 @@ void BX_CPP_AttrRegparmN(2) BX_CPU_C::stack_write_dword(bx_address offset, Bit32
 #endif
     BX_NOTIFY_LIN_MEMORY_ACCESS(get_laddr(BX_SEG_REG_SS, offset), pAddr, 4,
                                 MEMTYPE(BX_CPU_THIS_PTR espPageMemtype), BX_WRITE, (Bit8u*) &data);
+<<<<<<< HEAD
     pageWriteStampTable.decWriteStamp(pAddr, 4);
+=======
+
+#if BX_SUPPORT_SMP == 0
+    if (BX_CPU_THIS_PTR espPageFineGranularityMapping)
+#endif
+      pageWriteStampTable.decWriteStamp(pAddr, 4);
+
+>>>>>>> version-2.6.9
     WriteHostDWordToLittleEndian(hostPageAddr, data);
   }
   else {
@@ -227,7 +273,16 @@ void BX_CPP_AttrRegparmN(2) BX_CPU_C::stack_write_qword(bx_address offset, Bit64
 #endif
     BX_NOTIFY_LIN_MEMORY_ACCESS(get_laddr(BX_SEG_REG_SS, offset), pAddr, 8,
                                 MEMTYPE(BX_CPU_THIS_PTR espPageMemtype), BX_WRITE, (Bit8u*) &data);
+<<<<<<< HEAD
     pageWriteStampTable.decWriteStamp(pAddr, 8);
+=======
+
+#if BX_SUPPORT_SMP == 0
+    if (BX_CPU_THIS_PTR espPageFineGranularityMapping)
+#endif
+      pageWriteStampTable.decWriteStamp(pAddr, 8);
+
+>>>>>>> version-2.6.9
     WriteHostQWordToLittleEndian(hostPageAddr, data);
   }
   else {

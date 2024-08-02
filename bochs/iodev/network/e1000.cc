@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: e1000.cc 12709 2015-04-07 16:57:36Z vruppert $
+=======
+// $Id: e1000.cc 13160 2017-03-30 18:08:15Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Intel(R) 82540EM Gigabit Ethernet support (ported from QEMU)
@@ -12,7 +16,11 @@
 //  Copyright (c) 2007 Dan Aloni
 //  Copyright (c) 2004 Antony T Curtis
 //
+<<<<<<< HEAD
 //  Copyright (C) 2011-2015  The Bochs Project
+=======
+//  Copyright (C) 2011-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -343,7 +351,11 @@ Bit32s e1000_options_save(FILE *fp)
 
 // device plugin entry points
 
+<<<<<<< HEAD
 int CDECL libe1000_LTX_plugin_init(plugin_t *plugin, plugintype_t type, int argc, char *argv[])
+=======
+int CDECL libe1000_LTX_plugin_init(plugin_t *plugin, plugintype_t type)
+>>>>>>> version-2.6.9
 {
   theE1000Device = new bx_e1000_c();
   BX_REGISTER_DEVICE_DEVMODEL(plugin, type, theE1000Device, BX_PLUGIN_E1000);
@@ -473,8 +485,12 @@ void bx_e1000_c::init(void)
 
   if (BX_E1000_THIS s.tx_timer_index == BX_NULL_TIMER_HANDLE) {
     BX_E1000_THIS s.tx_timer_index =
+<<<<<<< HEAD
       bx_pc_system.register_timer(this, tx_timer_handler, 0,
                                   0, 0, "e1000"); // one-shot, inactive
+=======
+      DEV_register_timer(this, tx_timer_handler, 0, 0, 0, "e1000"); // one-shot, inactive
+>>>>>>> version-2.6.9
   }
   BX_E1000_THIS s.statusbar_id = bx_gui->register_statusitem("E1000", 1);
 
@@ -563,6 +579,7 @@ void bx_e1000_c::register_state(void)
   BXRS_DEC_PARAM_FIELD(list, rxbuf_min_shift, BX_E1000_THIS s.rxbuf_min_shift);
   BXRS_PARAM_BOOL(list, check_rxov, BX_E1000_THIS s.check_rxov);
   bx_list_c *tx = new bx_list_c(list, "tx", "");
+<<<<<<< HEAD
   bx_list_c *header = new bx_list_c(tx, "header", "");
   for (i = 0; i < 256; i++) {
     sprintf(pname, "0x%02x", i);
@@ -573,6 +590,10 @@ void bx_e1000_c::register_state(void)
     sprintf(pname, "0x%02x", i);
     new bx_shadow_num_c(vlh, pname, &BX_E1000_THIS s.tx.vlan_header[i], BASE_HEX);
   }
+=======
+  new bx_shadow_data_c(tx, "header", BX_E1000_THIS s.tx.header, 256, 1);
+  new bx_shadow_data_c(tx, "vlan_header", BX_E1000_THIS s.tx.vlan_header, 4, 1);
+>>>>>>> version-2.6.9
   new bx_shadow_data_c(list, "tx_vlan_data", BX_E1000_THIS s.tx.vlan, 0x10004);
   BXRS_DEC_PARAM_FIELD(tx, size, BX_E1000_THIS s.tx.size);
   BXRS_DEC_PARAM_FIELD(tx, sum_needed, BX_E1000_THIS s.tx.sum_needed);
@@ -1485,6 +1506,7 @@ void bx_e1000_c::rx_frame(const void *buf, unsigned buf_size)
 }
 
 
+<<<<<<< HEAD
 // pci configuration space read callback handler
 Bit32u bx_e1000_c::pci_read_handler(Bit8u address, unsigned io_len)
 {
@@ -1505,6 +1527,8 @@ Bit32u bx_e1000_c::pci_read_handler(Bit8u address, unsigned io_len)
 }
 
 
+=======
+>>>>>>> version-2.6.9
 // pci configuration space write callback handler
 void bx_e1000_c::pci_write_handler(Bit8u address, Bit32u value, unsigned io_len)
 {

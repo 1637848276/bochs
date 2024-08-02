@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: pci_ide.h 12117 2014-01-19 18:13:12Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2004-2014  The Bochs Project
+=======
+// $Id: pci_ide.h 13147 2017-03-24 19:57:25Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2004-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -49,8 +56,12 @@ public:
   void param_restore(bx_param_c *param, Bit64s val);
 #endif
 
+<<<<<<< HEAD
   virtual Bit32u pci_read_handler(Bit8u address, unsigned io_len);
   virtual void   pci_write_handler(Bit8u address, Bit32u value, unsigned io_len);
+=======
+  virtual void pci_write_handler(Bit8u address, Bit32u value, unsigned io_len);
+>>>>>>> version-2.6.9
 
   static void timer_handler(void *);
   BX_PIDE_SMF void timer(void);

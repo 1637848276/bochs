@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: floppy.h 11477 2012-10-03 09:09:04Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2012  The Bochs Project
+=======
+// $Id: floppy.h 12810 2015-08-23 07:04:56Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2002-2015  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -127,6 +134,10 @@ private:
     Bit8u    perp_mode; // perpendicular mode
 
     int      statusbar_id[2]; // IDs of the status LEDs
+<<<<<<< HEAD
+=======
+    int      rt_conf_id;      // ID of the runtime config handler
+>>>>>>> version-2.6.9
   } s;  // state information
 
   static Bit32u read_handler(void *this_ptr, Bit32u address, unsigned io_len);

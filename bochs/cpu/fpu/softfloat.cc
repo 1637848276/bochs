@@ -883,7 +883,11 @@ static float32 addFloat32Sigs(float32 a, float32 b, int zSign, float_status_t &s
             zSig = (aSig + bSig) >> 6;
             if (aSig | bSig) {
                 float_raise(status, float_flag_denormal);
+<<<<<<< HEAD
                 if (get_flush_underflow_to_zero(status)) {
+=======
+                if (get_flush_underflow_to_zero(status) && (extractFloat32Frac(zSig) == zSig)) {
+>>>>>>> version-2.6.9
                     float_raise(status, float_flag_underflow | float_flag_inexact);
                     return packFloat32(zSign, 0, 0);
                 }
@@ -2109,7 +2113,11 @@ static float64 addFloat64Sigs(float64 a, float64 b, int zSign, float_status_t &s
             zSig = (aSig + bSig) >> 9;
             if (aSig | bSig) {
                 float_raise(status, float_flag_denormal);
+<<<<<<< HEAD
                 if (get_flush_underflow_to_zero(status)) {
+=======
+                if (get_flush_underflow_to_zero(status) && (extractFloat64Frac(zSig) == zSig)) {
+>>>>>>> version-2.6.9
                     float_raise(status, float_flag_underflow | float_flag_inexact);
                     return packFloat64(zSign, 0, 0);
                 }

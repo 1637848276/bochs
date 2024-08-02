@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: plugin.cc 12082 2013-12-29 20:04:16Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2013  The Bochs Project
+=======
+// $Id: plugin.cc 13160 2017-03-30 18:08:15Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2002-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -36,6 +43,7 @@
 
 #define LOG_THIS genlog->
 
+<<<<<<< HEAD
 #define PLUGIN_INIT_FMT_STRING  "lib%s_LTX_plugin_init"
 #define PLUGIN_FINI_FMT_STRING  "lib%s_LTX_plugin_fini"
 #define PLUGIN_PATH ""
@@ -44,6 +52,26 @@
 #define PLUGIN_FILENAME_FORMAT "libbx_%s.so"
 #else
 #define PLUGIN_FILENAME_FORMAT "bx_%s.dll"
+=======
+#define PLUGIN_INIT_FMT_STRING       "lib%s_LTX_plugin_init"
+#define PLUGIN_FINI_FMT_STRING       "lib%s_LTX_plugin_fini"
+#define GUI_PLUGIN_INIT_FMT_STRING   "lib%s_gui_plugin_init"
+#define GUI_PLUGIN_FINI_FMT_STRING   "lib%s_gui_plugin_fini"
+#define SOUND_PLUGIN_INIT_FMT_STRING "lib%s_sound_plugin_init"
+#define SOUND_PLUGIN_FINI_FMT_STRING "lib%s_sound_plugin_fini"
+#define NET_PLUGIN_INIT_FMT_STRING   "lib%s_net_plugin_init"
+#define NET_PLUGIN_FINI_FMT_STRING   "lib%s_net_plugin_fini"
+#define PLUGIN_PATH                  ""
+
+#ifndef WIN32
+#define PLUGIN_FILENAME_FORMAT       "libbx_%s.so"
+#define SOUND_PLUGIN_FILENAME_FORMAT "libbx_sound%s.so"
+#define NET_PLUGIN_FILENAME_FORMAT   "libbx_eth_%s.so"
+#else
+#define PLUGIN_FILENAME_FORMAT       "bx_%s.dll"
+#define SOUND_PLUGIN_FILENAME_FORMAT "bx_sound%s.dll"
+#define NET_PLUGIN_FILENAME_FORMAT   "bx_eth_%s.dll"
+>>>>>>> version-2.6.9
 #endif
 
 logfunctions *pluginlog;
@@ -76,10 +104,13 @@ int (*pluginRegisterDefaultIOReadHandler)(void *thisPtr, ioReadHandler_t callbac
                             const char *name, Bit8u mask) = 0;
 int (*pluginRegisterDefaultIOWriteHandler)(void *thisPtr, ioWriteHandler_t callback,
                              const char *name, Bit8u mask) = 0;
+<<<<<<< HEAD
 int (*pluginRegisterTimer)(void *this_ptr, void (*funct)(void *),
                             Bit32u useconds, bx_bool continuous,
 bx_bool active, const char* name) = 0;
                             void (*pluginActivateTimer)(unsigned id, Bit32u usec, bx_bool continuous) = 0;
+=======
+>>>>>>> version-2.6.9
 
 void (*pluginHRQHackCallback)(void);
 unsigned pluginHRQ = 0;
@@ -246,6 +277,7 @@ builtinRegisterDefaultIOWriteHandler(void *thisPtr, ioWriteHandler_t callback,
   return 0;
 }
 
+<<<<<<< HEAD
   static int
 builtinRegisterTimer(void *this_ptr, void (*funct)(void *),
                         Bit32u useconds, bx_bool continuous,
@@ -263,11 +295,14 @@ builtinActivateTimer(unsigned id, Bit32u usec, bx_bool continuous)
   pluginlog->ldebug("plugin activated timer %d", id);
 }
 
+=======
+>>>>>>> version-2.6.9
 #if BX_PLUGINS
 /************************************************************************/
 /* Plugin initialization / deinitialization                             */
 /************************************************************************/
 
+<<<<<<< HEAD
 void plugin_init_all (void)
 {
   plugin_t *plugin;
@@ -329,6 +364,12 @@ void plugin_init_one(plugin_t *plugin)
 
   /* initialize the plugin */
   if (plugin->plugin_init (plugin, plugin->type, plugin->argc, plugin->argv))
+=======
+void plugin_init_one(plugin_t *plugin)
+{
+  /* initialize the plugin */
+  if (plugin->plugin_init(plugin, plugin->type))
+>>>>>>> version-2.6.9
   {
     pluginlog->info("Plugin initialization failed for %s", plugin->name);
     plugin_abort();
@@ -354,11 +395,16 @@ plugin_t *plugin_unload(plugin_t *plugin)
 
   dead_plug = plugin;
   plugin = plugin->next;
+<<<<<<< HEAD
   free(dead_plug);
+=======
+  delete dead_plug;
+>>>>>>> version-2.6.9
 
   return plugin;
 }
 
+<<<<<<< HEAD
 void plugin_fini_all (void)
 {
   plugin_t *plugin;
@@ -367,6 +413,9 @@ void plugin_fini_all (void)
 }
 
 void plugin_load(char *name, char *args, plugintype_t type)
+=======
+void plugin_load(char *name, plugintype_t type)
+>>>>>>> version-2.6.9
 {
   plugin_t *plugin, *temp;
 #if defined(WIN32)
@@ -385,6 +434,7 @@ void plugin_load(char *name, char *args, plugintype_t type)
     }
   }
 
+<<<<<<< HEAD
   plugin = (plugin_t *)malloc(sizeof(plugin_t));
   if (!plugin) {
     BX_PANIC(("malloc plugin_t failed"));
@@ -397,6 +447,22 @@ void plugin_load(char *name, char *args, plugintype_t type)
 
   char plugin_filename[BX_PATHNAME_LEN], tmpname[BX_PATHNAME_LEN];
   sprintf(tmpname, PLUGIN_FILENAME_FORMAT, name);
+=======
+  plugin = new plugin_t;
+
+  plugin->type = type;
+  plugin->name = name;
+  plugin->initialized = 0;
+
+  char plugin_filename[BX_PATHNAME_LEN], tmpname[BX_PATHNAME_LEN];
+  if (type == PLUGTYPE_SOUND) {
+    sprintf(tmpname, SOUND_PLUGIN_FILENAME_FORMAT, name);
+  } else if (type == PLUGTYPE_NETWORK) {
+    sprintf(tmpname, NET_PLUGIN_FILENAME_FORMAT, name);
+  } else {
+    sprintf(tmpname, PLUGIN_FILENAME_FORMAT, name);
+  }
+>>>>>>> version-2.6.9
   sprintf(plugin_filename, "%s%s", PLUGIN_PATH, tmpname);
 
   // Set context so that any devices that the plugin registers will
@@ -420,8 +486,14 @@ void plugin_load(char *name, char *args, plugintype_t type)
   BX_INFO(("DLL handle is %p", plugin->handle));
   if (!plugin->handle) {
     current_plugin_context = NULL;
+<<<<<<< HEAD
     BX_PANIC(("LoadLibrary failed for module '%s': error=%d", name, GetLastError()));
     free(plugin);
+=======
+    BX_PANIC(("LoadLibrary failed for module '%s' (%s): error=%d", name,
+              plugin_filename, GetLastError()));
+    delete plugin;
+>>>>>>> version-2.6.9
     return;
   }
 #else
@@ -429,13 +501,29 @@ void plugin_load(char *name, char *args, plugintype_t type)
   BX_INFO(("lt_dlhandle is %p", plugin->handle));
   if (!plugin->handle) {
     current_plugin_context = NULL;
+<<<<<<< HEAD
     BX_PANIC(("dlopen failed for module '%s': %s", name, lt_dlerror()));
     free(plugin);
+=======
+    BX_PANIC(("dlopen failed for module '%s' (%s): %s", name, plugin_filename,
+              lt_dlerror()));
+    delete plugin;
+>>>>>>> version-2.6.9
     return;
   }
 #endif
 
+<<<<<<< HEAD
   if (type != PLUGTYPE_USER) {
+=======
+  if (type == PLUGTYPE_GUI) {
+    sprintf(tmpname, GUI_PLUGIN_INIT_FMT_STRING, name);
+  } else if (type == PLUGTYPE_SOUND) {
+    sprintf(tmpname, SOUND_PLUGIN_INIT_FMT_STRING, name);
+  } else if (type == PLUGTYPE_NETWORK) {
+    sprintf(tmpname, NET_PLUGIN_INIT_FMT_STRING, name);
+  } else if (type != PLUGTYPE_USER) {
+>>>>>>> version-2.6.9
     sprintf(tmpname, PLUGIN_INIT_FMT_STRING, name);
   } else {
     sprintf(tmpname, PLUGIN_INIT_FMT_STRING, "user");
@@ -454,7 +542,17 @@ void plugin_load(char *name, char *args, plugintype_t type)
   }
 #endif
 
+<<<<<<< HEAD
   if (type != PLUGTYPE_USER) {
+=======
+  if (type == PLUGTYPE_GUI) {
+    sprintf(tmpname, GUI_PLUGIN_FINI_FMT_STRING, name);
+  } else if (type == PLUGTYPE_SOUND) {
+    sprintf(tmpname, SOUND_PLUGIN_FINI_FMT_STRING, name);
+  } else if (type == PLUGTYPE_NETWORK) {
+    sprintf(tmpname, NET_PLUGIN_FINI_FMT_STRING, name);
+  } else if (type != PLUGTYPE_USER) {
+>>>>>>> version-2.6.9
     sprintf(tmpname, PLUGIN_FINI_FMT_STRING, name);
   } else {
     sprintf(tmpname, PLUGIN_FINI_FMT_STRING, "user");
@@ -533,9 +631,12 @@ plugin_startup(void)
   pluginRegisterDefaultIOReadHandler = builtinRegisterDefaultIOReadHandler;
   pluginRegisterDefaultIOWriteHandler = builtinRegisterDefaultIOWriteHandler;
 
+<<<<<<< HEAD
   pluginRegisterTimer = builtinRegisterTimer;
   pluginActivateTimer = builtinActivateTimer;
 
+=======
+>>>>>>> version-2.6.9
   pluginlog = new logfunctions();
   pluginlog->put("PLUGIN");
 #if BX_PLUGINS && !defined(WIN32)
@@ -554,6 +655,7 @@ plugin_startup(void)
 
 void pluginRegisterDeviceDevmodel(plugin_t *plugin, plugintype_t type, bx_devmodel_c *devmodel, const char *name)
 {
+<<<<<<< HEAD
   device_t *device, **devlist;
 
   device = (device_t *)malloc(sizeof(device_t));
@@ -561,6 +663,11 @@ void pluginRegisterDeviceDevmodel(plugin_t *plugin, plugintype_t type, bx_devmod
   {
     pluginlog->panic("can't allocate device_t");
   }
+=======
+  device_t **devlist;
+
+  device_t *device = new device_t;
+>>>>>>> version-2.6.9
 
   device->name = name;
   BX_ASSERT(devmodel != NULL);
@@ -610,7 +717,11 @@ void pluginUnregisterDeviceDevmodel(const char *name)
       } else {
         prev->next = device->next;
       }
+<<<<<<< HEAD
       free(device);
+=======
+      delete device;
+>>>>>>> version-2.6.9
       break;
     } else {
       prev = device;
@@ -643,7 +754,11 @@ int bx_load_plugin(const char *name, plugintype_t type)
 {
   char *namecopy = new char[1+strlen(name)];
   strcpy(namecopy, name);
+<<<<<<< HEAD
   plugin_load(namecopy, (char*)"", type);
+=======
+  plugin_load(namecopy, type);
+>>>>>>> version-2.6.9
   return 1;
 }
 
@@ -761,7 +876,11 @@ void bx_unload_plugins()
 #endif
     }
     next = device->next;
+<<<<<<< HEAD
     free(device);
+=======
+    delete device;
+>>>>>>> version-2.6.9
     device = next;
   }
   devices = NULL;
@@ -781,7 +900,11 @@ void bx_unload_core_plugins()
       delete device->devmodel;
     }
     next = device->next;
+<<<<<<< HEAD
     free(device);
+=======
+    delete device;
+>>>>>>> version-2.6.9
     device = next;
   }
   core_devices = NULL;
@@ -837,15 +960,25 @@ void bx_plugins_after_restore_state()
 
 #if !BX_PLUGINS
 
+<<<<<<< HEAD
 // special code for loading optional plugins when plugins are turned off
 
 typedef struct {
   const char *name;
+=======
+// Special code for loading gui, optional and sound plugins when plugin support
+// is turned off.
+
+typedef struct {
+  const char*   name;
+  plugintype_t  type;
+>>>>>>> version-2.6.9
   plugin_init_t plugin_init;
   plugin_fini_t plugin_fini;
   bx_bool       status;
 } builtin_plugin_t;
 
+<<<<<<< HEAD
 #define BUILTIN_PLUGIN_ENTRY(mod) {#mod, lib##mod##_LTX_plugin_init, lib##mod##_LTX_plugin_fini, 0}
 
 static builtin_plugin_t builtin_opt_plugins[] = {
@@ -902,6 +1035,160 @@ int bx_load_opt_plugin(const char *name)
       if (builtin_opt_plugins[i].status == 0) {
         builtin_opt_plugins[i].plugin_init(NULL, PLUGTYPE_OPTIONAL, 0, NULL);
         builtin_opt_plugins[i].status = 1;
+=======
+#define BUILTIN_GUI_PLUGIN_ENTRY(mod) {#mod, PLUGTYPE_GUI, lib##mod##_gui_plugin_init, lib##mod##_gui_plugin_fini, 0}
+#define BUILTIN_OPT_PLUGIN_ENTRY(mod) {#mod, PLUGTYPE_OPTIONAL, lib##mod##_LTX_plugin_init, lib##mod##_LTX_plugin_fini, 0}
+#define BUILTIN_SND_PLUGIN_ENTRY(mod) {#mod, PLUGTYPE_SOUND, lib##mod##_sound_plugin_init, lib##mod##_sound_plugin_fini, 0}
+#define BUILTIN_NET_PLUGIN_ENTRY(mod) {#mod, PLUGTYPE_NETWORK, lib##mod##_net_plugin_init, lib##mod##_net_plugin_fini, 0}
+
+static builtin_plugin_t builtin_plugins[] = {
+#if BX_WITH_AMIGAOS
+  BUILTIN_GUI_PLUGIN_ENTRY(amigaos),
+#endif
+#if BX_WITH_CARBON
+  BUILTIN_GUI_PLUGIN_ENTRY(carbon),
+#endif
+#if BX_WITH_MACOS
+  BUILTIN_GUI_PLUGIN_ENTRY(macos),
+#endif
+#if BX_WITH_NOGUI
+  BUILTIN_GUI_PLUGIN_ENTRY(nogui),
+#endif
+#if BX_WITH_RFB
+  BUILTIN_GUI_PLUGIN_ENTRY(rfb),
+#endif
+#if BX_WITH_SDL
+  BUILTIN_GUI_PLUGIN_ENTRY(sdl),
+#endif
+#if BX_WITH_SDL2
+  BUILTIN_GUI_PLUGIN_ENTRY(sdl2),
+#endif
+#if BX_WITH_SVGA
+  BUILTIN_GUI_PLUGIN_ENTRY(svga),
+#endif
+#if BX_WITH_TERM
+  BUILTIN_GUI_PLUGIN_ENTRY(term),
+#endif
+#if BX_WITH_VNCSRV
+  BUILTIN_GUI_PLUGIN_ENTRY(vncsrv),
+#endif
+#if BX_WITH_WIN32
+  BUILTIN_GUI_PLUGIN_ENTRY(win32),
+#endif
+#if BX_WITH_WX
+  BUILTIN_GUI_PLUGIN_ENTRY(wx),
+#endif
+#if BX_WITH_X11
+  BUILTIN_GUI_PLUGIN_ENTRY(x),
+#endif
+  BUILTIN_OPT_PLUGIN_ENTRY(unmapped),
+  BUILTIN_OPT_PLUGIN_ENTRY(biosdev),
+  BUILTIN_OPT_PLUGIN_ENTRY(speaker),
+  BUILTIN_OPT_PLUGIN_ENTRY(extfpuirq),
+  BUILTIN_OPT_PLUGIN_ENTRY(parallel),
+  BUILTIN_OPT_PLUGIN_ENTRY(serial),
+#if BX_SUPPORT_BUSMOUSE
+  BUILTIN_OPT_PLUGIN_ENTRY(busmouse),
+#endif
+#if BX_SUPPORT_E1000
+  BUILTIN_OPT_PLUGIN_ENTRY(e1000),
+#endif
+#if BX_SUPPORT_ES1370
+  BUILTIN_OPT_PLUGIN_ENTRY(es1370),
+#endif
+#if BX_SUPPORT_GAMEPORT
+  BUILTIN_OPT_PLUGIN_ENTRY(gameport),
+#endif
+#if BX_SUPPORT_IODEBUG
+  BUILTIN_OPT_PLUGIN_ENTRY(iodebug),
+#endif
+#if BX_SUPPORT_NE2K
+  BUILTIN_OPT_PLUGIN_ENTRY(ne2k),
+#endif
+#if BX_SUPPORT_PCIDEV
+  BUILTIN_OPT_PLUGIN_ENTRY(pcidev),
+#endif
+#if BX_SUPPORT_PCIPNIC
+  BUILTIN_OPT_PLUGIN_ENTRY(pcipnic),
+#endif
+#if BX_SUPPORT_SB16
+  BUILTIN_OPT_PLUGIN_ENTRY(sb16),
+#endif
+#if BX_SUPPORT_USB_UHCI
+  BUILTIN_OPT_PLUGIN_ENTRY(usb_uhci),
+#endif
+#if BX_SUPPORT_USB_OHCI
+  BUILTIN_OPT_PLUGIN_ENTRY(usb_ohci),
+#endif
+#if BX_SUPPORT_USB_EHCI
+  BUILTIN_OPT_PLUGIN_ENTRY(usb_ehci),
+#endif
+#if BX_SUPPORT_USB_XHCI
+  BUILTIN_OPT_PLUGIN_ENTRY(usb_xhci),
+#endif
+#if BX_SUPPORT_VOODOO
+  BUILTIN_OPT_PLUGIN_ENTRY(voodoo),
+#endif
+#if BX_SUPPORT_SOUNDLOW
+  BUILTIN_SND_PLUGIN_ENTRY(dummy),
+  BUILTIN_SND_PLUGIN_ENTRY(file),
+#if BX_HAVE_SOUND_ALSA
+  BUILTIN_SND_PLUGIN_ENTRY(alsa),
+#endif
+#if BX_HAVE_SOUND_OSS
+  BUILTIN_SND_PLUGIN_ENTRY(oss),
+#endif
+#if BX_HAVE_SOUND_OSX
+  BUILTIN_SND_PLUGIN_ENTRY(osx),
+#endif
+#if BX_HAVE_SOUND_SDL
+  BUILTIN_SND_PLUGIN_ENTRY(sdl),
+#endif
+#if BX_HAVE_SOUND_WIN
+  BUILTIN_SND_PLUGIN_ENTRY(win),
+#endif
+#endif
+#if BX_NETWORKING
+#if BX_NETMOD_FBSD
+  BUILTIN_NET_PLUGIN_ENTRY(fbsd),
+#endif
+#if BX_NETMOD_LINUX
+  BUILTIN_NET_PLUGIN_ENTRY(linux),
+#endif
+  BUILTIN_NET_PLUGIN_ENTRY(null),
+#if BX_NETMOD_SLIRP
+  BUILTIN_NET_PLUGIN_ENTRY(slirp),
+#endif
+#if BX_NETMOD_SOCKET
+  BUILTIN_NET_PLUGIN_ENTRY(socket),
+#endif
+#if BX_NETMOD_TAP
+  BUILTIN_NET_PLUGIN_ENTRY(tap),
+#endif
+#if BX_NETMOD_TUNTAP
+  BUILTIN_NET_PLUGIN_ENTRY(tuntap),
+#endif
+#if BX_NETMOD_VDE
+  BUILTIN_NET_PLUGIN_ENTRY(vde),
+#endif
+  BUILTIN_NET_PLUGIN_ENTRY(vnet),
+#if BX_NETMOD_WIN32
+  BUILTIN_NET_PLUGIN_ENTRY(win32),
+#endif
+#endif
+  {"NULL", PLUGTYPE_GUI, NULL, NULL, 0}
+};
+
+int bx_load_plugin2(const char *name, plugintype_t type)
+{
+  int i = 0;
+  while (strcmp(builtin_plugins[i].name, "NULL")) {
+    if ((!strcmp(name, builtin_plugins[i].name)) &&
+        (type == builtin_plugins[i].type)) {
+      if (builtin_plugins[i].status == 0) {
+        builtin_plugins[i].plugin_init(NULL, type);
+        builtin_plugins[i].status = 1;
+>>>>>>> version-2.6.9
       }
       return 1;
     }
@@ -913,6 +1200,7 @@ int bx_load_opt_plugin(const char *name)
 int bx_unload_opt_plugin(const char *name, bx_bool devflag)
 {
   int i = 0;
+<<<<<<< HEAD
   while (strcmp(builtin_opt_plugins[i].name, "NULL")) {
     if (!strcmp(name, builtin_opt_plugins[i].name)) {
       if (builtin_opt_plugins[i].status == 1) {
@@ -921,6 +1209,17 @@ int bx_unload_opt_plugin(const char *name, bx_bool devflag)
         }
         builtin_opt_plugins[i].plugin_fini();
         builtin_opt_plugins[i].status = 0;
+=======
+  while (strcmp(builtin_plugins[i].name, "NULL")) {
+    if ((!strcmp(name, builtin_plugins[i].name)) &&
+        (builtin_plugins[i].type == PLUGTYPE_OPTIONAL)) {
+      if (builtin_plugins[i].status == 1) {
+        if (devflag) {
+          pluginUnregisterDeviceDevmodel(builtin_plugins[i].name);
+        }
+        builtin_plugins[i].plugin_fini();
+        builtin_plugins[i].status = 0;
+>>>>>>> version-2.6.9
       }
       return 1;
     }

@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: cpu.h 12695 2015-03-23 20:27:36Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
+=======
+// $Id: cpu.h 13161 2017-03-30 21:53:39Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -20,6 +27,7 @@
 /////////////////////////////////////////////////////////////////////////
 
 #ifndef BX_CPU_H
+<<<<<<< HEAD
 #  define BX_CPU_H 1
 
 #include <setjmp.h>
@@ -85,6 +93,13 @@ enum {
 #else
 # define BX_GENERAL_REGISTERS 8
 #endif
+=======
+#define BX_CPU_H
+
+#include <setjmp.h>
+
+#include "decoder/decoder.h"
+>>>>>>> version-2.6.9
 
 #define BX_16BIT_REG_IP  (BX_GENERAL_REGISTERS)
 #define BX_32BIT_REG_EIP (BX_GENERAL_REGISTERS)
@@ -92,7 +107,10 @@ enum {
 
 #define BX_TMP_REGISTER  (BX_GENERAL_REGISTERS+1)
 #define BX_NIL_REGISTER  (BX_GENERAL_REGISTERS+2)
+<<<<<<< HEAD
 // <TAG-DEFINES-DECODE-END>
+=======
+>>>>>>> version-2.6.9
 
 #if defined(NEED_CPU_REG_SHORTCUTS)
 
@@ -173,7 +191,10 @@ enum {
 // access to 64 bit MSR registers
 #define MSR_FSBASE  (BX_CPU_THIS_PTR sregs[BX_SEG_REG_FS].cache.u.segment.base)
 #define MSR_GSBASE  (BX_CPU_THIS_PTR sregs[BX_SEG_REG_GS].cache.u.segment.base)
+<<<<<<< HEAD
 #define MSR_KERNELGSBASE   (BX_CPU_THIS_PTR msr.kernelgsbase)
+=======
+>>>>>>> version-2.6.9
 
 #else // simplify merge between 32-bit and 64-bit mode
 
@@ -216,12 +237,15 @@ enum {
   BX_CPU_THIS_PTR gen_reg[index].word.rx = val; \
 }
 
+<<<<<<< HEAD
 /*
 #define BX_WRITE_32BIT_REG(index, val) {\
   BX_CPU_THIS_PTR gen_reg[index].dword.erx = val; \
 }
 */
 
+=======
+>>>>>>> version-2.6.9
 #if BX_SUPPORT_X86_64
 
 #define BX_WRITE_8BIT_REGx(index, extended, val) {\
@@ -292,7 +316,11 @@ enum {
 // <TAG-INSTRUMENTATION_COMMON-BEGIN>
 
 // possible types passed to BX_INSTR_TLB_CNTRL()
+<<<<<<< HEAD
 enum {
+=======
+enum BX_Instr_TLBControl {
+>>>>>>> version-2.6.9
   BX_INSTR_MOV_CR0 = 10,
   BX_INSTR_MOV_CR3 = 11,
   BX_INSTR_MOV_CR4 = 12,
@@ -305,13 +333,21 @@ enum {
 };
 
 // possible types passed to BX_INSTR_CACHE_CNTRL()
+<<<<<<< HEAD
 enum {
+=======
+enum BX_Instr_CacheControl {
+>>>>>>> version-2.6.9
   BX_INSTR_INVD = 10,
   BX_INSTR_WBINVD = 11
 };
 
 // possible types passed to BX_INSTR_FAR_BRANCH() and BX_INSTR_UCNEAR_BRANCH()
+<<<<<<< HEAD
 enum {
+=======
+enum BX_Instr_Branch {
+>>>>>>> version-2.6.9
   BX_INSTR_IS_JMP = 10,
   BX_INSTR_IS_JMP_INDIRECT = 11,
   BX_INSTR_IS_CALL = 12,
@@ -326,7 +362,11 @@ enum {
 };
 
 // possible types passed to BX_INSTR_PREFETCH_HINT()
+<<<<<<< HEAD
 enum {
+=======
+enum BX_Instr_PrefetchHINT {
+>>>>>>> version-2.6.9
   BX_INSTR_PREFETCH_NTA = 0,
   BX_INSTR_PREFETCH_T0  = 1,
   BX_INSTR_PREFETCH_T1  = 2,
@@ -358,6 +398,10 @@ enum {
   BX_VMX_LOAD_MSR_ACCESS,
   BX_VMX_STORE_MSR_ACCESS,
   BX_VMX_VAPIC_ACCESS,
+<<<<<<< HEAD
+=======
+  BX_VMX_PML_WRITE,
+>>>>>>> version-2.6.9
   BX_SMRAM_ACCESS
 };
 
@@ -367,6 +411,7 @@ struct BxExceptionInfo {
   bx_bool push_error;
 };
 
+<<<<<<< HEAD
 #define BX_DE_EXCEPTION   0 // Divide Error (fault)
 #define BX_DB_EXCEPTION   1 // Debug (fault/trap)
 #define BX_BP_EXCEPTION   3 // Breakpoint (trap)
@@ -387,6 +432,30 @@ struct BxExceptionInfo {
 #define BX_VE_EXCEPTION  20
 
 #define BX_CPU_HANDLED_EXCEPTIONS  32
+=======
+enum BX_Exception {
+  BX_DE_EXCEPTION =  0, // Divide Error (fault)
+  BX_DB_EXCEPTION =  1, // Debug (fault/trap)
+  BX_BP_EXCEPTION =  3, // Breakpoint (trap)
+  BX_OF_EXCEPTION =  4, // Overflow (trap)
+  BX_BR_EXCEPTION =  5, // BOUND (fault)
+  BX_UD_EXCEPTION =  6,
+  BX_NM_EXCEPTION =  7,
+  BX_DF_EXCEPTION =  8,
+  BX_TS_EXCEPTION = 10,
+  BX_NP_EXCEPTION = 11,
+  BX_SS_EXCEPTION = 12,
+  BX_GP_EXCEPTION = 13,
+  BX_PF_EXCEPTION = 14,
+  BX_MF_EXCEPTION = 16,
+  BX_AC_EXCEPTION = 17,
+  BX_MC_EXCEPTION = 18,
+  BX_XM_EXCEPTION = 19,
+  BX_VE_EXCEPTION = 20
+};
+
+const unsigned BX_CPU_HANDLED_EXCEPTIONS = 32;
+>>>>>>> version-2.6.9
 
 /* MSR registers */
 #define BX_MSR_TSC                 0x010
@@ -467,6 +536,7 @@ const unsigned BX_NUM_VARIABLE_RANGE_MTRRS = 8;
 
 #define BX_MSR_MAX_INDEX          0x1000
 
+<<<<<<< HEAD
 enum {
   BX_MEMTYPE_UC = 0,
   BX_MEMTYPE_WC = 1,
@@ -488,6 +558,8 @@ typedef unsigned BxMemtype;
   #define MEMTYPE(memtype) (BX_MEMTYPE_UC)
 #endif
 
+=======
+>>>>>>> version-2.6.9
 #if BX_SUPPORT_VMX
   #define BX_MSR_VMX_BASIC                0x480
   #define BX_MSR_VMX_PINBASED_CTRLS       0x481
@@ -526,6 +598,11 @@ typedef unsigned BxMemtype;
 #define BX_SVM_SMM_CTL_MSR      0xc0010116
 #define BX_SVM_HSAVE_PA_MSR     0xc0010117
 
+<<<<<<< HEAD
+=======
+#define BX_MSR_XSS              0xda0
+
+>>>>>>> version-2.6.9
 enum BxCpuMode {
   BX_MODE_IA32_REAL = 0,        // CR0.PE=0                |
   BX_MODE_IA32_V8086 = 1,       // CR0.PE=1, EFLAGS.VM=1   | EFER.LMA=0
@@ -537,6 +614,7 @@ enum BxCpuMode {
 extern const char* cpu_mode_string(unsigned cpu_mode);
 
 #if BX_SUPPORT_X86_64
+<<<<<<< HEAD
 #define IsCanonical(offset) ((Bit64u)((((Bit64s)(offset)) >> (BX_LIN_ADDRESS_WIDTH-1)) + 1) < 2)
 #endif
 
@@ -548,6 +626,41 @@ extern const char* cpu_mode_string(unsigned cpu_mode);
 
 class BX_CPU_C;
 class BX_MEM_C;
+=======
+BX_CPP_INLINE bx_bool IsCanonical(bx_address offset)
+{
+  return ((Bit64u)((((Bit64s)(offset)) >> (BX_LIN_ADDRESS_WIDTH-1)) + 1) < 2);
+}
+#endif
+
+BX_CPP_INLINE bx_bool IsValidPhyAddr(bx_phy_address addr)
+{
+  return ((addr & BX_PHY_ADDRESS_RESERVED_BITS) == 0);
+}
+
+BX_CPP_INLINE bx_bool IsValidPageAlignedPhyAddr(bx_phy_address addr)
+{
+  return ((addr & (BX_PHY_ADDRESS_RESERVED_BITS | 0xfff)) == 0);
+}
+
+const Bit32u CACHE_LINE_SIZE = 64;
+
+class BX_CPU_C;
+class BX_MEM_C;
+class bxInstruction_c;
+
+typedef void BX_INSF_TYPE;
+
+// <TAG-TYPE-EXECUTEPTR-START>
+#if BX_USE_CPU_SMF
+typedef BX_INSF_TYPE (BX_CPP_AttrRegparmN(1) *BxExecutePtr_tR)(bxInstruction_c *);
+typedef void (BX_CPP_AttrRegparmN(1) *BxRepIterationPtr_tR)(bxInstruction_c *);
+#else
+typedef BX_INSF_TYPE (BX_CPU_C::*BxExecutePtr_tR)(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
+typedef void (BX_CPU_C::*BxRepIterationPtr_tR)(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
+#endif
+// <TAG-TYPE-EXECUTEPTR-END>
+>>>>>>> version-2.6.9
 
 #if BX_USE_CPU_SMF == 0
 // normal member functions.  This can ONLY be used within BX_CPU_C classes.
@@ -561,8 +674,11 @@ class BX_MEM_C;
 // Since this is different from when SMF=1, encapsulate it in a macro.
 #  define BX_CPU_CALL_METHOD(func, args) \
             (this->*((BxExecutePtr_tR) (func))) args
+<<<<<<< HEAD
 #  define BX_CPU_CALL_METHODR(func, args) \
             (this->*((BxResolvePtr_tR) (func))) args
+=======
+>>>>>>> version-2.6.9
 #  define BX_CPU_CALL_REP_ITERATION(func, args) \
             (this->*((BxRepIterationPtr_tR) (func))) args
 #else
@@ -572,12 +688,48 @@ class BX_MEM_C;
 #  define BX_SMF           static
 #  define BX_CPU_CALL_METHOD(func, args) \
             ((BxExecutePtr_tR) (func)) args
+<<<<<<< HEAD
 #  define BX_CPU_CALL_METHODR(func, args) \
             ((BxResolvePtr_tR) (func)) args
+=======
+>>>>>>> version-2.6.9
 #  define BX_CPU_CALL_REP_ITERATION(func, args) \
             ((BxRepIterationPtr_tR) (func)) args
 #endif
 
+<<<<<<< HEAD
+=======
+//
+// BX_CPU_RESOLVE_ADDR:
+// Resolve virtual address of the instruction's memory reference without any
+// assumptions about instruction's operand size, address size or execution
+// mode
+//
+// BX_CPU_RESOLVE_ADDR_64:
+// Resolve virtual address of the instruction memory reference assuming
+// the instruction is executed in 64-bit long mode with possible 64-bit
+// or 32-bit address size.
+//
+// BX_CPU_RESOLVE_ADDR_32:
+// Resolve virtual address of the instruction memory reference assuming
+// the instruction is executed in legacy or compatibility mode with
+// possible 32-bit or 16-bit address size.
+//
+//
+#if BX_SUPPORT_X86_64
+#  define BX_CPU_RESOLVE_ADDR(i) \
+            ((i)->as64L() ? BxResolve64(i) : BxResolve32(i))
+#  define BX_CPU_RESOLVE_ADDR_64(i) \
+            ((i)->as64L() ? BxResolve64(i) : BxResolve32(i))
+#else
+#  define BX_CPU_RESOLVE_ADDR(i) \
+            (BxResolve32(i))
+#endif
+#  define BX_CPU_RESOLVE_ADDR_32(i) \
+            (BxResolve32(i))
+
+
+>>>>>>> version-2.6.9
 #if BX_SUPPORT_SMP
 // multiprocessor simulation, we need an array of cpus and memories
 BOCHSAPI extern BX_CPU_C **bx_cpu_array;
@@ -601,17 +753,29 @@ BOCHSAPI extern BX_CPU_C   bx_cpu;
 // The macro is used once for each flag bit
 // Do not use for arithmetic flags !
 #define DECLARE_EFLAG_ACCESSOR(name,bitnum)                     \
+<<<<<<< HEAD
   BX_SMF BX_CPP_INLINE Bit32u  get_##name ();                   \
   BX_SMF BX_CPP_INLINE bx_bool getB_##name ();                  \
+=======
+  BX_SMF BX_CPP_INLINE unsigned  get_##name ();                 \
+  BX_SMF BX_CPP_INLINE unsigned getB_##name ();                 \
+>>>>>>> version-2.6.9
   BX_SMF BX_CPP_INLINE void assert_##name ();                   \
   BX_SMF BX_CPP_INLINE void clear_##name ();                    \
   BX_SMF BX_CPP_INLINE void set_##name (bx_bool val);
 
 #define IMPLEMENT_EFLAG_ACCESSOR(name,bitnum)                   \
+<<<<<<< HEAD
   BX_CPP_INLINE bx_bool BX_CPU_C::getB_##name () {              \
     return 1 & (BX_CPU_THIS_PTR eflags >> bitnum);              \
   }                                                             \
   BX_CPP_INLINE Bit32u  BX_CPU_C::get_##name () {               \
+=======
+  BX_CPP_INLINE unsigned BX_CPU_C::getB_##name () {             \
+    return 1 & (BX_CPU_THIS_PTR eflags >> bitnum);              \
+  }                                                             \
+  BX_CPP_INLINE unsigned BX_CPU_C::get_##name () {              \
+>>>>>>> version-2.6.9
     return BX_CPU_THIS_PTR eflags & (1 << bitnum);              \
   }
 
@@ -712,11 +876,19 @@ BOCHSAPI extern BX_CPU_C   bx_cpu;
 
 #define IMPLEMENT_EFLAG_ACCESSOR_IOPL(bitnum)                   \
   BX_CPP_INLINE void BX_CPU_C::set_IOPL(Bit32u val) {           \
+<<<<<<< HEAD
     BX_CPU_THIS_PTR eflags &= ~(3<<12);                         \
     BX_CPU_THIS_PTR eflags |= ((3&val) << 12);                  \
   }                                                             \
   BX_CPP_INLINE Bit32u BX_CPU_C::get_IOPL() {                   \
     return 3 & (BX_CPU_THIS_PTR eflags >> 12);                  \
+=======
+    BX_CPU_THIS_PTR eflags &= ~(3<<bitnum);                     \
+    BX_CPU_THIS_PTR eflags |= ((3&val) << bitnum);              \
+  }                                                             \
+  BX_CPP_INLINE Bit32u BX_CPU_C::get_IOPL() {                   \
+    return 3 & (BX_CPU_THIS_PTR eflags >> bitnum);              \
+>>>>>>> version-2.6.9
   }
 
 const Bit32u EFlagsCFMask   = (1 <<  0);
@@ -737,11 +909,19 @@ const Bit32u EFlagsVIFMask  = (1 << 19);
 const Bit32u EFlagsVIPMask  = (1 << 20);
 const Bit32u EFlagsIDMask   = (1 << 21);
 
+<<<<<<< HEAD
 #define EFlagsOSZAPCMask \
     (EFlagsCFMask | EFlagsPFMask | EFlagsAFMask | EFlagsZFMask | EFlagsSFMask | EFlagsOFMask)
 
 #define EFlagsOSZAPMask  \
     (EFlagsPFMask | EFlagsAFMask | EFlagsZFMask | EFlagsSFMask | EFlagsOFMask)
+=======
+const Bit32u EFlagsOSZAPCMask = \
+    (EFlagsCFMask | EFlagsPFMask | EFlagsAFMask | EFlagsZFMask | EFlagsSFMask | EFlagsOFMask);
+
+const Bit32u EFlagsOSZAPMask = \
+    (EFlagsPFMask | EFlagsAFMask | EFlagsZFMask | EFlagsSFMask | EFlagsOFMask);
+>>>>>>> version-2.6.9
 
 const Bit32u EFlagsValidMask = 0x003f7fd5; // only supported bits for EFLAGS
 
@@ -756,8 +936,11 @@ typedef struct
   bx_phy_address apicbase;
 #endif
 
+<<<<<<< HEAD
 #define MSR_STAR   (BX_CPU_THIS_PTR msr.star)
 
+=======
+>>>>>>> version-2.6.9
   // SYSCALL/SYSRET instruction msr's
   Bit64u star;
 #if BX_SUPPORT_X86_64
@@ -790,10 +973,18 @@ typedef struct
   Bit64u svm_hsave_pa;
 #endif
 
+<<<<<<< HEAD
+=======
+#if BX_CPU_LEVEL >= 6
+  Bit64u msr_xss;
+#endif
+
+>>>>>>> version-2.6.9
   /* TODO finish of the others */
 } bx_regs_msr_t;
 #endif
 
+<<<<<<< HEAD
 #include "cpuid.h"
 #include "crregs.h"
 #include "descriptor.h"
@@ -854,6 +1045,13 @@ typedef struct {
 
 #define PAGE_OFFSET(laddr) ((Bit32u)(laddr) & 0xfff)
 
+=======
+#include "crregs.h"
+#include "descriptor.h"
+#include "decoder/instr.h"
+#include "lazy_flags.h"
+#include "tlb.h"
+>>>>>>> version-2.6.9
 #include "icache.h"
 
 // general purpose register
@@ -984,6 +1182,11 @@ struct BX_SMM_State;
 struct BxOpcodeInfo_t;
 struct bx_cpu_statistics;
 
+<<<<<<< HEAD
+=======
+#include "cpuid.h"
+
+>>>>>>> version-2.6.9
 class BOCHSAPI BX_CPU_C : public logfunctions {
 
 public: // for now...
@@ -1106,6 +1309,29 @@ public: // for now...
   Bit32u xcr0_suppmask;
 #endif
 
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_PKEYS
+  // protection keys
+  Bit32u pkru;
+
+  // unpacked protection keys to be tested together with accessBits from TLB
+  // the unpacked key is stored in the accessBits format:
+  //     bit 5: Execute from User   privilege is OK
+  //     bit 4: Execute from System privilege is OK
+  //     bit 3: Write   from User   privilege is OK
+  //     bit 2: Write   from System privilege is OK
+  //     bit 1: Read    from User   privilege is OK
+  //     bit 0: Read    from System privilege is OK
+  // But only bits 1 and 3 are relevant, all others should be set to '1
+  // When protection key prevents all accesses to the page both bits 1 and 3 are cleared
+  // When protection key prevents writes to the page bit 1 will be set and 3 cleared
+  // When no protection keys are enabled all bits should be set for all keys
+  Bit32u rd_pkey[16];
+  Bit32u wr_pkey[16];
+#endif
+
+>>>>>>> version-2.6.9
 #if BX_SUPPORT_FPU
   i387_t the_i387;
 #endif
@@ -1167,6 +1393,10 @@ public: // for now...
   
   VMCS_CACHE vmcs;
   VMX_CAP vmx_cap;
+<<<<<<< HEAD
+=======
+  VMCS_Mapping *vmcs_map;
+>>>>>>> version-2.6.9
 #endif
 
 #if BX_SUPPORT_SVM
@@ -1304,6 +1534,12 @@ public: // for now...
 #if BX_SUPPORT_MEMTYPE
   BxMemtype espPageMemtype;
 #endif
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_SMP == 0
+  Bit32u espPageFineGranularityMapping;
+#endif
+>>>>>>> version-2.6.9
 
 #if BX_CPU_LEVEL >= 4 && BX_SUPPORT_ALIGNMENT_CHECK
   unsigned alignment_check_mask;
@@ -1358,8 +1594,11 @@ public: // for now...
 #endif
   } TLB;
 
+<<<<<<< HEAD
 #define BX_TLB_ENTRY_OF(lpf) (&BX_CPU_THIS_PTR TLB.entry[BX_TLB_INDEX_OF((lpf), 0)])
 
+=======
+>>>>>>> version-2.6.9
 #if BX_CPU_LEVEL >= 6
   struct {
     Bit64u entry[4];
@@ -1419,11 +1658,19 @@ public: // for now...
   }
  
   // ZF
+<<<<<<< HEAD
   BX_SMF BX_CPP_INLINE bx_bool getB_ZF(void) {
     return (0 == BX_CPU_THIS_PTR oszapc.result);
   }
 
   BX_SMF BX_CPP_INLINE bx_bool get_ZF(void) { return getB_ZF(); }
+=======
+  BX_SMF BX_CPP_INLINE unsigned getB_ZF(void) {
+    return (0 == BX_CPU_THIS_PTR oszapc.result);
+  }
+
+  BX_SMF BX_CPP_INLINE unsigned get_ZF(void) { return getB_ZF(); }
+>>>>>>> version-2.6.9
 
   BX_SMF BX_CPP_INLINE void set_ZF(bx_bool val) {
     if (val) assert_ZF();
@@ -1448,12 +1695,20 @@ public: // for now...
   }
 
   // SF
+<<<<<<< HEAD
   BX_SMF BX_CPP_INLINE bx_bool getB_SF(void) {
+=======
+  BX_SMF BX_CPP_INLINE unsigned getB_SF(void) {
+>>>>>>> version-2.6.9
     return ((BX_CPU_THIS_PTR oszapc.result >> BX_LF_SIGN_BIT) ^
             (BX_CPU_THIS_PTR oszapc.auxbits >> LF_BIT_SD)) & 1;
   }
 
+<<<<<<< HEAD
   BX_SMF BX_CPP_INLINE bx_bool get_SF(void) { return getB_SF(); }
+=======
+  BX_SMF BX_CPP_INLINE unsigned get_SF(void) { return getB_SF(); }
+>>>>>>> version-2.6.9
 
   BX_SMF BX_CPP_INLINE void set_SF(bx_bool val) {
     bx_bool temp_sf = getB_SF();
@@ -1470,14 +1725,22 @@ public: // for now...
   }
 
   // PF - bit 2 in EFLAGS, represented by lower 8 bits of oszapc.result
+<<<<<<< HEAD
   BX_SMF BX_CPP_INLINE bx_bool getB_PF(void) {
+=======
+  BX_SMF BX_CPP_INLINE unsigned getB_PF(void) {
+>>>>>>> version-2.6.9
     Bit32u temp = (255 & BX_CPU_THIS_PTR oszapc.result);
     temp = temp ^ (255 & (BX_CPU_THIS_PTR oszapc.auxbits >> LF_BIT_PDB));
     temp = (temp ^ (temp >> 4)) & 0x0F;
     return (0x9669U >> temp) & 1;
   }
 
+<<<<<<< HEAD
   BX_SMF BX_CPP_INLINE bx_bool get_PF(void) { return getB_PF(); }
+=======
+  BX_SMF BX_CPP_INLINE unsigned get_PF(void) { return getB_PF(); }
+>>>>>>> version-2.6.9
 
   BX_SMF BX_CPP_INLINE void set_PF(bx_bool val) {
     Bit32u temp_pdb = (255 & BX_CPU_THIS_PTR oszapc.result) ^ (!val);
@@ -1495,11 +1758,19 @@ public: // for now...
   }
 
   // AF - bit 4 in EFLAGS, represented by bit LF_BIT_AF of oszapc.auxbits
+<<<<<<< HEAD
   BX_SMF BX_CPP_INLINE bx_bool getB_AF(void) {
     return ((BX_CPU_THIS_PTR oszapc.auxbits >> LF_BIT_AF) & 1);
   }
 
   BX_SMF BX_CPP_INLINE bx_bool get_AF(void) {
+=======
+  BX_SMF BX_CPP_INLINE unsigned getB_AF(void) {
+    return ((BX_CPU_THIS_PTR oszapc.auxbits >> LF_BIT_AF) & 1);
+  }
+
+  BX_SMF BX_CPP_INLINE unsigned get_AF(void) {
+>>>>>>> version-2.6.9
     return (BX_CPU_THIS_PTR oszapc.auxbits & LF_MASK_AF);
   }
 
@@ -1517,11 +1788,19 @@ public: // for now...
   }
 
   // CF
+<<<<<<< HEAD
   BX_SMF BX_CPP_INLINE bx_bool getB_CF(void) {
     return ((BX_CPU_THIS_PTR oszapc.auxbits >> LF_BIT_CF) & 1);
   }
 
   BX_SMF BX_CPP_INLINE bx_bool get_CF(void) {
+=======
+  BX_SMF BX_CPP_INLINE unsigned getB_CF(void) {
+    return ((BX_CPU_THIS_PTR oszapc.auxbits >> LF_BIT_CF) & 1);
+  }
+
+  BX_SMF BX_CPP_INLINE unsigned get_CF(void) {
+>>>>>>> version-2.6.9
     return (BX_CPU_THIS_PTR oszapc.auxbits & LF_MASK_CF);
   }
 
@@ -1541,11 +1820,19 @@ public: // for now...
   }
 
   // OF
+<<<<<<< HEAD
   BX_SMF BX_CPP_INLINE bx_bool getB_OF(void) {
     return ((BX_CPU_THIS_PTR oszapc.auxbits + (1U << LF_BIT_PO)) >> LF_BIT_CF) & 1;
   }
 
   BX_SMF BX_CPP_INLINE bx_bool get_OF(void) {
+=======
+  BX_SMF BX_CPP_INLINE unsigned getB_OF(void) {
+    return ((BX_CPU_THIS_PTR oszapc.auxbits + (1U << LF_BIT_PO)) >> LF_BIT_CF) & 1;
+  }
+
+  BX_SMF BX_CPP_INLINE unsigned get_OF(void) {
+>>>>>>> version-2.6.9
     return (BX_CPU_THIS_PTR oszapc.auxbits + (1U << LF_BIT_PO)) & (1U << LF_BIT_CF);
   }
 
@@ -1560,7 +1847,11 @@ public: // for now...
   }
  
   BX_SMF BX_CPP_INLINE void assert_OF(void) {
+<<<<<<< HEAD
     bx_bool temp_cf = getB_CF();
+=======
+    unsigned temp_cf = getB_CF();
+>>>>>>> version-2.6.9
     SET_FLAGS_OxxxxC((1), temp_cf);
   }
 
@@ -1792,6 +2083,10 @@ public: // for now...
   BX_SMF BX_INSF_TYPE INVD(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
   BX_SMF BX_INSF_TYPE WBINVD(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
   BX_SMF BX_INSF_TYPE CLFLUSH(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
+<<<<<<< HEAD
+=======
+  BX_SMF BX_INSF_TYPE CLZERO(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
+>>>>>>> version-2.6.9
 
   BX_SMF BX_INSF_TYPE MOV_CR0Rd(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
   BX_SMF BX_INSF_TYPE MOV_CR2Rd(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
@@ -3922,6 +4217,12 @@ public: // for now...
   BX_SMF BX_INSF_TYPE VPLZCNTD_MASK_VdqWdqR(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
   BX_SMF BX_INSF_TYPE VPLZCNTQ_MASK_VdqWdqR(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
 
+<<<<<<< HEAD
+=======
+  BX_SMF BX_INSF_TYPE VPOPCNTD_MASK_VdqWdqR(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
+  BX_SMF BX_INSF_TYPE VPOPCNTQ_MASK_VdqWdqR(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
+
+>>>>>>> version-2.6.9
   BX_SMF BX_INSF_TYPE VPBROADCASTMB2Q_VdqKEbR(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
   BX_SMF BX_INSF_TYPE VPBROADCASTMW2D_VdqKEwR(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
 
@@ -4416,6 +4717,16 @@ public: // for now...
   BX_SMF BX_INSF_TYPE MONITOR(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
   BX_SMF BX_INSF_TYPE MWAIT(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
 
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_PKEYS
+  BX_SMF BX_INSF_TYPE RDPKRU(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
+  BX_SMF BX_INSF_TYPE WRPKRU(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
+#endif
+
+  BX_SMF BX_INSF_TYPE RDPID_Ed(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
+
+>>>>>>> version-2.6.9
   BX_SMF BX_INSF_TYPE UndefinedOpcode(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
   BX_SMF BX_INSF_TYPE BxError(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
 #if BX_SUPPORT_HANDLERS_CHAINING_SPEEDUPS
@@ -4433,12 +4744,18 @@ public: // for now...
 #endif
 #endif
 
+<<<<<<< HEAD
   BX_SMF bx_address BxResolve16BaseIndex(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
   BX_SMF bx_address BxResolve32Base(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
   BX_SMF bx_address BxResolve32BaseIndex(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
 #if BX_SUPPORT_X86_64
   BX_SMF bx_address BxResolve64Base(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
   BX_SMF bx_address BxResolve64BaseIndex(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
+=======
+  BX_CPP_INLINE BX_SMF Bit32u BxResolve32(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
+#if BX_SUPPORT_X86_64
+  BX_CPP_INLINE BX_SMF Bit64u BxResolve64(bxInstruction_c *) BX_CPP_AttrRegparmN(1);
+>>>>>>> version-2.6.9
 #endif
 #if BX_SUPPORT_AVX
   BX_SMF bx_address BxResolveGatherD(bxInstruction_c *, unsigned) BX_CPP_AttrRegparmN(2);
@@ -4481,6 +4798,7 @@ public: // for now...
   BX_SMF bx_bool handleWaitForEvent(void);
   BX_SMF void InterruptAcknowledge(void);
 
+<<<<<<< HEAD
   BX_SMF int fetchDecode32(const Bit8u *fetchPtr, Bit32u fetchModeMask, bxInstruction_c *i, unsigned remainingInPage) BX_CPP_AttrRegparmN(3);
 #if BX_SUPPORT_X86_64
   BX_SMF int fetchDecode64(const Bit8u *fetchPtr, Bit32u fetchModeMask, bxInstruction_c *i, unsigned remainingInPage) BX_CPP_AttrRegparmN(3);
@@ -4493,6 +4811,11 @@ public: // for now...
   BX_SMF char* disasm(const Bit8u *opcode, bool is_32, bool is_64, char *disbufptr, bxInstruction_c *i, bx_address cs_base = 0, bx_address rip = 0);
 
   BX_SMF bxICacheEntry_c *serveICacheMiss(bxICacheEntry_c *entry, Bit32u eipBiased, bx_phy_address pAddr);
+=======
+  BX_SMF void boundaryFetch(const Bit8u *fetchPtr, unsigned remainingInPage, bxInstruction_c *);
+
+  BX_SMF bxICacheEntry_c *serveICacheMiss(Bit32u eipBiased, bx_phy_address pAddr);
+>>>>>>> version-2.6.9
   BX_SMF bxICacheEntry_c* getICacheEntry(void);
   BX_SMF bx_bool mergeTraces(bxICacheEntry_c *entry, bxInstruction_c *i, bx_phy_address pAddr);
 #if BX_SUPPORT_HANDLERS_CHAINING_SPEEDUPS && BX_ENABLE_TRACE_LINKING
@@ -4548,6 +4871,13 @@ public: // for now...
 #endif
 #endif
 
+<<<<<<< HEAD
+=======
+  BX_SMF void tickle_read_linear(unsigned seg, bx_address offset) BX_CPP_AttrRegparmN(2);
+  BX_SMF void tickle_read_virtual_32(unsigned seg, Bit32u offset) BX_CPP_AttrRegparmN(2);
+  BX_SMF void tickle_read_virtual(unsigned seg, bx_address offset) BX_CPP_AttrRegparmN(2);
+
+>>>>>>> version-2.6.9
   BX_SMF Bit8u read_virtual_byte_32(unsigned seg, Bit32u offset) BX_CPP_AttrRegparmN(2);
   BX_SMF Bit16u read_virtual_word_32(unsigned seg, Bit32u offset) BX_CPP_AttrRegparmN(2);
   BX_SMF Bit32u read_virtual_dword_32(unsigned seg, Bit32u offset) BX_CPP_AttrRegparmN(2);
@@ -4733,7 +5063,11 @@ public: // for now...
   BX_SMF void update_access_dirty_PAE(bx_phy_address *entry_addr, Bit64u *entry, BxMemtype *entry_memtype, unsigned max_level, unsigned leaf, unsigned write);
 #endif
 #if BX_SUPPORT_X86_64
+<<<<<<< HEAD
   BX_SMF bx_phy_address translate_linear_long_mode(bx_address laddr, Bit32u &lpf_mask, unsigned user, unsigned rw);
+=======
+  BX_SMF bx_phy_address translate_linear_long_mode(bx_address laddr, Bit32u &lpf_mask, Bit32u &pkey, unsigned user, unsigned rw);
+>>>>>>> version-2.6.9
 #endif
 #if BX_SUPPORT_VMX >= 2
   BX_SMF bx_phy_address translate_guest_physical(bx_phy_address guest_paddr, bx_address guest_laddr, bx_bool guest_laddr_valid, bx_bool is_page_walk, unsigned rw);
@@ -4842,6 +5176,13 @@ public: // for now...
   BX_SMF bx_bool relocate_apic(Bit64u val_64);
 #endif
 
+<<<<<<< HEAD
+=======
+  BX_SMF void load_segw(bxInstruction_c *i, unsigned seg) BX_CPP_AttrRegparmN(2);
+  BX_SMF void load_segd(bxInstruction_c *i, unsigned seg) BX_CPP_AttrRegparmN(2);
+  BX_SMF void load_segq(bxInstruction_c *i, unsigned seg) BX_CPP_AttrRegparmN(2);
+
+>>>>>>> version-2.6.9
   BX_SMF void jmp_far16(bxInstruction_c *i, Bit16u cs_raw, Bit16u disp16);
   BX_SMF void jmp_far32(bxInstruction_c *i, Bit16u cs_raw, Bit32u disp32);
   BX_SMF void call_far16(bxInstruction_c *i, Bit16u cs_raw, Bit16u disp16);
@@ -5008,6 +5349,10 @@ public: // for now...
 
   BX_SMF bx_address agen_read(unsigned seg, bx_address offset, unsigned len);
   BX_SMF Bit32u agen_read32(unsigned seg, Bit32u offset, unsigned len);
+<<<<<<< HEAD
+=======
+  BX_SMF Bit32u agen_read_execute32(unsigned seg, Bit32u offset, unsigned len);
+>>>>>>> version-2.6.9
   BX_SMF bx_address agen_read_aligned(unsigned seg, bx_address offset, unsigned len);
   BX_SMF Bit32u agen_read_aligned32(unsigned seg, Bit32u offset, unsigned len);
 
@@ -5045,6 +5390,13 @@ public: // for now...
   BX_SMF void   set_TSC(Bit64u tsc);
 #endif
 
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_PKEYS
+  BX_SMF void set_PKRU(Bit32u pkru);
+#endif
+
+>>>>>>> version-2.6.9
 #if BX_SUPPORT_FPU
   BX_SMF void print_state_FPU(void);
   BX_SMF void prepareFPU(bxInstruction_c *i, bx_bool = 1);
@@ -5086,6 +5438,12 @@ public: // for now...
   BX_SMF bx_bool xsave_hi_zmm_state_xinuse(void);
 #endif
 #endif
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_PKEYS
+  BX_SMF bx_bool xsave_pkru_state_xinuse(void);
+#endif
+>>>>>>> version-2.6.9
 
   BX_SMF Bit32u get_xinuse_vector(Bit32u requested_feature_bitmap);
 
@@ -5099,6 +5457,12 @@ public: // for now...
   BX_SMF void xsave_hi_zmm_state(bxInstruction_c *i, bx_address offset);
 #endif
 #endif
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_PKEYS
+  BX_SMF void xsave_pkru_state(bxInstruction_c *i, bx_address offset);
+#endif
+>>>>>>> version-2.6.9
 
   BX_SMF void xrstor_x87_state(bxInstruction_c *i, bx_address offset);
   BX_SMF void xrstor_sse_state(bxInstruction_c *i, bx_address offset);
@@ -5110,6 +5474,12 @@ public: // for now...
   BX_SMF void xrstor_hi_zmm_state(bxInstruction_c *i, bx_address offset);
 #endif
 #endif
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_PKEYS
+  BX_SMF void xrstor_pkru_state(bxInstruction_c *i, bx_address offset);
+#endif
+>>>>>>> version-2.6.9
 
   BX_SMF void xrstor_init_x87_state(void);
   BX_SMF void xrstor_init_sse_state(void);
@@ -5121,11 +5491,21 @@ public: // for now...
   BX_SMF void xrstor_init_hi_zmm_state(void);
 #endif
 #endif
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_PKEYS
+  BX_SMF void xrstor_init_pkru_state(void);
+#endif
+>>>>>>> version-2.6.9
 #endif
 
 #if BX_SUPPORT_MONITOR_MWAIT
   BX_SMF bx_bool    is_monitor(bx_phy_address addr, unsigned len);
   BX_SMF void    check_monitor(bx_phy_address addr, unsigned len);
+<<<<<<< HEAD
+=======
+  BX_SMF void   wakeup_monitor(void);
+>>>>>>> version-2.6.9
 #endif
 
 #if BX_SUPPORT_VMX
@@ -5188,6 +5568,10 @@ public: // for now...
   BX_SMF void VMX_Self_IPI_Virtualization(Bit8u vector);
   BX_SMF void VMX_Evaluate_Pending_Virtual_Interrupts(void);
   BX_SMF void VMX_Deliver_Virtual_Interrupt(void);
+<<<<<<< HEAD
+=======
+  BX_SMF void vmx_page_modification_logging(Bit64u guest_addr, unsigned dirty_update);
+>>>>>>> version-2.6.9
 #endif
 #if BX_SUPPORT_VMX >= 2
   BX_SMF Bit16u VMread16_Shadow(unsigned encoding) BX_CPP_AttrRegparmN(1);
@@ -5294,6 +5678,27 @@ BX_CPP_INLINE void BX_CPU_C::prepareXSAVE(void)
 
 #if defined(NEED_CPU_REG_SHORTCUTS)
 
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_X86_64
+BX_CPP_INLINE Bit64u BX_CPP_AttrRegparmN(1) BX_CPU_C::BxResolve64(bxInstruction_c *i)
+{
+  Bit64u eaddr = (Bit64u) (BX_READ_64BIT_REG(i->sibBase()) + i->displ32s());
+  if (i->sibIndex() != 4)
+    eaddr += BX_READ_64BIT_REG(i->sibIndex()) << i->sibScale();
+  return eaddr;
+}
+#endif
+
+BX_CPP_INLINE Bit32u BX_CPP_AttrRegparmN(1) BX_CPU_C::BxResolve32(bxInstruction_c *i)
+{
+  Bit32u eaddr = (Bit32u) (BX_READ_32BIT_REG(i->sibBase()) + i->displ32s());
+  if (i->sibIndex() != 4)
+    eaddr += BX_READ_32BIT_REG(i->sibIndex()) << i->sibScale();
+  return eaddr & i->asize_mask();
+}
+
+>>>>>>> version-2.6.9
 #include "stack.h"
 
 #define RSP_SPECULATIVE {              \
@@ -5316,12 +5721,23 @@ BX_CPP_INLINE void BX_CPU_C::prepareXSAVE(void)
 // bit 5 - EVEX_OK
 //
 
+<<<<<<< HEAD
 #define BX_FETCH_MODE_IS32_MASK (1 << 0)
 #define BX_FETCH_MODE_IS64_MASK (1 << 1)
 #define BX_FETCH_MODE_SSE_OK    (1 << 2)
 #define BX_FETCH_MODE_AVX_OK    (1 << 3)
 #define BX_FETCH_MODE_OPMASK_OK (1 << 4)
 #define BX_FETCH_MODE_EVEX_OK   (1 << 5)
+=======
+enum {
+  BX_FETCH_MODE_IS32_MASK = (1 << 0),
+  BX_FETCH_MODE_IS64_MASK = (1 << 1),
+  BX_FETCH_MODE_SSE_OK    = (1 << 2),
+  BX_FETCH_MODE_AVX_OK    = (1 << 3),
+  BX_FETCH_MODE_OPMASK_OK = (1 << 4),
+  BX_FETCH_MODE_EVEX_OK   = (1 << 5)
+};
+>>>>>>> version-2.6.9
 
 //
 // updateFetchModeMask - has to be called everytime 
@@ -5392,6 +5808,30 @@ BX_CPP_INLINE bx_address BX_CPU_C::get_laddr(unsigned seg, bx_address offset)
   return get_laddr32(seg, (Bit32u) offset);
 }
 
+<<<<<<< HEAD
+=======
+// same as agen_read32 but also allow access to execute only segments
+BX_CPP_INLINE Bit32u BX_CPU_C::agen_read_execute32(unsigned s, Bit32u offset, unsigned len)
+{
+  bx_segment_reg_t *seg = &BX_CPU_THIS_PTR sregs[s];
+
+  if (seg->cache.valid & SegAccessROK4G) {
+    return offset;
+  }
+
+  if (seg->cache.valid & SegAccessROK) {
+    if (offset <= (seg->cache.u.segment.limit_scaled-len+1)) {
+      return get_laddr32(s, offset);
+    }
+  }
+
+  if (!execute_virtual_checks(seg, offset, len))
+    exception(int_number(s), 0);
+
+  return get_laddr32(s, offset);
+}
+
+>>>>>>> version-2.6.9
 BX_CPP_INLINE Bit32u BX_CPU_C::agen_read32(unsigned s, Bit32u offset, unsigned len)
 {
   bx_segment_reg_t *seg = &BX_CPU_THIS_PTR sregs[s];
@@ -5479,7 +5919,11 @@ BX_CPP_INLINE bx_address BX_CPU_C::agen_read(unsigned s, bx_address offset, unsi
     return get_laddr64(s, offset);
   }
 #endif
+<<<<<<< HEAD
   return agen_read32(s, offset, len);
+=======
+  return agen_read32(s, (Bit32u)offset, len);
+>>>>>>> version-2.6.9
 }
 
 BX_CPP_INLINE bx_address BX_CPU_C::agen_read_aligned(unsigned s, bx_address offset, unsigned len)
@@ -5489,7 +5933,11 @@ BX_CPP_INLINE bx_address BX_CPU_C::agen_read_aligned(unsigned s, bx_address offs
     return get_laddr64(s, offset);
   }
 #endif
+<<<<<<< HEAD
   return agen_read_aligned32(s, offset, len);
+=======
+  return agen_read_aligned32(s, (Bit32u)offset, len);
+>>>>>>> version-2.6.9
 }
 
 BX_CPP_INLINE bx_address BX_CPU_C::agen_write(unsigned s, bx_address offset, unsigned len)
@@ -5499,7 +5947,11 @@ BX_CPP_INLINE bx_address BX_CPU_C::agen_write(unsigned s, bx_address offset, uns
     return get_laddr64(s, offset);
   }
 #endif
+<<<<<<< HEAD
   return agen_write32(s, offset, len);
+=======
+  return agen_write32(s, (Bit32u)offset, len);
+>>>>>>> version-2.6.9
 }
 
 BX_CPP_INLINE bx_address BX_CPU_C::agen_write_aligned(unsigned s, bx_address offset, unsigned len)
@@ -5509,7 +5961,11 @@ BX_CPP_INLINE bx_address BX_CPU_C::agen_write_aligned(unsigned s, bx_address off
     return get_laddr64(s, offset);
   }
 #endif
+<<<<<<< HEAD
   return agen_write_aligned32(s, offset, len);
+=======
+  return agen_write_aligned32(s, (Bit32u)offset, len);
+>>>>>>> version-2.6.9
 }
 
 #include "access.h"
@@ -5717,6 +6173,7 @@ enum {
 };
 #endif
 
+<<<<<<< HEAD
 // <TAG-DEFINES-DECODE-START>
 
 //
@@ -5802,5 +6259,65 @@ enum {
 #define BxGroupFP         BxSplitGroupN
 
 // <TAG-DEFINES-DECODE-END>
+=======
+class bxInstruction_c;
+
+#if BX_SUPPORT_HANDLERS_CHAINING_SPEEDUPS
+
+#define BX_SYNC_TIME_IF_SINGLE_PROCESSOR(allowed_delta) {                     \
+  if (BX_SMP_PROCESSORS == 1) {                                               \
+    Bit32u delta = (Bit32u)(BX_CPU_THIS_PTR icount - BX_CPU_THIS_PTR icount_last_sync); \
+    if (delta >= allowed_delta) {                                             \
+      BX_CPU_THIS_PTR sync_icount();                                          \
+      BX_TICKN(delta);                                                        \
+    }                                                                         \
+  }                                                                           \
+}
+
+#define BX_COMMIT_INSTRUCTION(i) {                     \
+  BX_CPU_THIS_PTR prev_rip = RIP; /* commit new RIP */ \
+  BX_INSTR_AFTER_EXECUTION(BX_CPU_ID, (i));            \
+  BX_CPU_THIS_PTR icount++;                            \
+}
+
+#define BX_EXECUTE_INSTRUCTION(i) {                    \
+  BX_INSTR_BEFORE_EXECUTION(BX_CPU_ID, (i));           \
+  RIP += (i)->ilen();                                  \
+  return BX_CPU_CALL_METHOD(i->execute1, (i));         \
+}
+
+#define BX_NEXT_TRACE(i) {                             \
+  BX_COMMIT_INSTRUCTION(i);                            \
+  return;                                              \
+}
+
+#if BX_ENABLE_TRACE_LINKING == 0
+#define linkTrace(i)
+#endif
+
+#define BX_LINK_TRACE(i) {                             \
+  BX_COMMIT_INSTRUCTION(i);                            \
+  linkTrace(i);                                        \
+  return;                                              \
+}
+
+#define BX_NEXT_INSTR(i) {                             \
+  BX_COMMIT_INSTRUCTION(i);                            \
+  if (BX_CPU_THIS_PTR async_event) return;             \
+  ++i;                                                 \
+  BX_EXECUTE_INSTRUCTION(i);                           \
+}
+
+#else // BX_SUPPORT_HANDLERS_CHAINING_SPEEDUPS
+
+#define BX_NEXT_TRACE(i) { return; }
+#define BX_NEXT_INSTR(i) { return; }
+#define BX_LINK_TRACE(i) { return; }
+
+#define BX_SYNC_TIME_IF_SINGLE_PROCESSOR(allowed_delta) \
+  if (BX_SMP_PROCESSORS == 1) BX_TICK1()
+
+#endif
+>>>>>>> version-2.6.9
 
 #endif  // #ifndef BX_CPU_H

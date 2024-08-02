@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: win32paramdlg.cc 12726 2015-04-23 18:44:51Z vruppert $
+=======
+// $Id: win32paramdlg.cc 12979 2016-12-05 18:49:22Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2009-2015  Volker Ruppert
@@ -61,6 +65,7 @@ dlg_list_t *dlg_lists = NULL;
 
 bx_bool registerDlgList(UINT lid, bx_list_c *list)
 {
+<<<<<<< HEAD
   dlg_list_t *dlg_list;
   int items;
 
@@ -73,6 +78,13 @@ bx_bool registerDlgList(UINT lid, bx_list_c *list)
   dlg_list->dlg_list_id = lid;
   dlg_list->dlg_base_id = nextDlgID;
   items = list->get_size();
+=======
+  dlg_list_t *dlg_list = new dlg_list_t;
+  dlg_list->list = list;
+  dlg_list->dlg_list_id = lid;
+  dlg_list->dlg_base_id = nextDlgID;
+  int items = list->get_size();
+>>>>>>> version-2.6.9
   nextDlgID += items;
   dlg_list->next = NULL;
 
@@ -83,7 +95,11 @@ bx_bool registerDlgList(UINT lid, bx_list_c *list)
 
     while (temp->next) {
       if (temp->list == dlg_list->list) {
+<<<<<<< HEAD
         free(dlg_list);
+=======
+        delete dlg_list;
+>>>>>>> version-2.6.9
         return 0;
       }
       temp = temp->next;
@@ -161,7 +177,11 @@ void cleanupDlgLists()
     d = dlg_lists;
     while (d != NULL) {
       next = d->next;
+<<<<<<< HEAD
       free(d);
+=======
+      delete d;
+>>>>>>> version-2.6.9
       d = next;
     }
     dlg_lists = NULL;

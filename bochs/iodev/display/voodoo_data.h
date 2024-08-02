@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: voodoo_data.h 12101 2014-01-07 22:32:22Z vruppert $
+=======
+// $Id: voodoo_data.h 13138 2017-03-19 12:22:27Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 /*
  *  Portion of this software comes with the following license
@@ -1945,7 +1949,11 @@ BX_CPP_INLINE Bit32s fast_reciplog(Bit64s value, Bit32s *log2)
     recip <<= exp;
 
   /* on the way out, apply the original sign to the reciprocal */
+<<<<<<< HEAD
   return neg ? -recip : recip;
+=======
+  return neg ? -((Bit32s)recip) : recip;
+>>>>>>> version-2.6.9
 }
 
 

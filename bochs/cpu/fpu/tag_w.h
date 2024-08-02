@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: tag_w.h 11415 2012-09-12 21:08:40Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2003-2009 Stanislav Shwartsman
+=======
+// $Id: tag_w.h 12857 2015-10-09 19:33:36Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//   Copyright (c) 2003-2015 Stanislav Shwartsman
+>>>>>>> version-2.6.9
 //          Written by Stanislav Shwartsman [sshwarts at sourceforge net]
 //
 //  This library is free software; you can redistribute it and/or
@@ -25,9 +32,18 @@
 #define _TAG_W_H
 
 /* Tag Word */
+<<<<<<< HEAD
 #define FPU_Tag_Valid   0x00
 #define FPU_Tag_Zero    0x01
 #define FPU_Tag_Special 0x02
 #define FPU_Tag_Empty   0x03
+=======
+enum {
+  FPU_Tag_Valid   = 0x00,
+  FPU_Tag_Zero    = 0x01,
+  FPU_Tag_Special = 0x02,
+  FPU_Tag_Empty   = 0x03
+};
+>>>>>>> version-2.6.9
 
 #endif

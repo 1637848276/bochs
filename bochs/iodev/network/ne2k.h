@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: ne2k.h 11148 2012-04-23 17:06:19Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2012  The Bochs Project
+=======
+// $Id: ne2k.h 13150 2017-03-26 08:09:28Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -197,9 +204,17 @@ typedef struct {
 #endif
 } bx_ne2k_t;
 
+<<<<<<< HEAD
 class bx_ne2k_c : public bx_devmodel_c
 #if BX_SUPPORT_PCI
   , public bx_pci_device_stub_c
+=======
+class bx_ne2k_c
+#if BX_SUPPORT_PCI
+: public bx_pci_device_c
+#else
+: public bx_devmodel_c
+>>>>>>> version-2.6.9
 #endif
 {
 public:
@@ -216,7 +231,10 @@ public:
 #endif
 
 #if BX_SUPPORT_PCI
+<<<<<<< HEAD
   virtual Bit32u pci_read_handler(Bit8u address, unsigned io_len);
+=======
+>>>>>>> version-2.6.9
   virtual void   pci_write_handler(Bit8u address, Bit32u value, unsigned io_len);
 #endif
 

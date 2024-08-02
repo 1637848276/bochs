@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: voodoo.cc 12514 2014-10-19 08:54:16Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2012-2014  The Bochs Project
+=======
+// $Id: voodoo.cc 13147 2017-03-24 19:57:25Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2012-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -130,7 +137,11 @@ Bit32s voodoo_options_save(FILE *fp)
 
 // device plugin entry points
 
+<<<<<<< HEAD
 int CDECL libvoodoo_LTX_plugin_init(plugin_t *plugin, plugintype_t type, int argc, char *argv[])
+=======
+int CDECL libvoodoo_LTX_plugin_init(plugin_t *plugin, plugintype_t type)
+>>>>>>> version-2.6.9
 {
   theVoodooDevice = new bx_voodoo_c();
   BX_REGISTER_DEVICE_DEVMODEL(plugin, type, theVoodooDevice, BX_PLUGIN_VOODOO);
@@ -614,6 +625,7 @@ void bx_voodoo_c::set_irq_level(bx_bool level)
 }
 
 
+<<<<<<< HEAD
 // pci configuration space read callback handler
 Bit32u bx_voodoo_c::pci_read_handler(Bit8u address, unsigned io_len)
 {
@@ -634,6 +646,8 @@ Bit32u bx_voodoo_c::pci_read_handler(Bit8u address, unsigned io_len)
 }
 
 
+=======
+>>>>>>> version-2.6.9
 // pci configuration space write callback handler
 void bx_voodoo_c::pci_write_handler(Bit8u address, Bit32u value, unsigned io_len)
 {

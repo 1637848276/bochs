@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: soundosx.h 12672 2015-02-23 21:32:34Z vruppert $
+=======
+// $Id: soundosx.h 13116 2017-03-14 18:21:05Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2004-2015  The Bochs Project
@@ -77,11 +81,19 @@ private:
 
 class bx_sound_osx_c : public bx_sound_lowlevel_c {
 public:
+<<<<<<< HEAD
   bx_sound_osx_c();
+=======
+  bx_sound_osx_c() : bx_sound_lowlevel_c("osx") {}
+>>>>>>> version-2.6.9
   virtual ~bx_sound_osx_c() {}
 
   virtual bx_soundlow_waveout_c* get_waveout();
   virtual bx_soundlow_midiout_c* get_midiout();
+<<<<<<< HEAD
 };
+=======
+} bx_sound_osx;
+>>>>>>> version-2.6.9
 
 #endif  // macintosh

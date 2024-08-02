@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: fpu_load_store.cc 12736 2015-05-02 20:08:36Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2003-2012 Stanislav Shwartsman
+=======
+// $Id: fpu_load_store.cc 12769 2015-05-16 21:06:59Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//   Copyright (c) 2003-2015 Stanislav Shwartsman
+>>>>>>> version-2.6.9
 //          Written by Stanislav Shwartsman [sshwarts at sourceforge net]
 //
 //  This library is free software; you can redistribute it and/or
@@ -70,7 +77,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FLD_SINGLE_REAL(bxInstruction_c *i
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   float32 load_reg = read_virtual_dword(i->seg(), RMAddr(i));
 
   FPU_update_last_instruction(i);
@@ -101,7 +112,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FLD_DOUBLE_REAL(bxInstruction_c *i
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   float64 load_reg = read_virtual_qword(i->seg(), RMAddr(i));
 
   FPU_update_last_instruction(i);
@@ -134,7 +149,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FLD_EXTENDED_REAL(bxInstruction_c 
 
   floatx80 result;
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   result.fraction = read_virtual_qword(i->seg(), RMAddr(i));
   result.exp      = read_virtual_word(i->seg(), (RMAddr(i)+8) & i->asize_mask());
 
@@ -158,7 +177,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FILD_WORD_INTEGER(bxInstruction_c 
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   Bit16s load_reg = (Bit16s) read_virtual_word(i->seg(), RMAddr(i));
 
   FPU_update_last_instruction(i);
@@ -182,7 +205,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FILD_DWORD_INTEGER(bxInstruction_c
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   Bit32s load_reg = (Bit32s) read_virtual_dword(i->seg(), RMAddr(i));
 
   FPU_update_last_instruction(i);
@@ -206,7 +233,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FILD_QWORD_INTEGER(bxInstruction_c
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   Bit64s load_reg = (Bit64s) read_virtual_qword(i->seg(), RMAddr(i));
 
   FPU_update_last_instruction(i);
@@ -230,7 +261,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FBLD_PACKED_BCD(bxInstruction_c *i
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   Bit16u hi2 = read_virtual_word(i->seg(), (RMAddr(i) + 8) & i->asize_mask());
   Bit64u lo8 = read_virtual_qword(i->seg(), RMAddr(i));
 
@@ -297,7 +332,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FST_SINGLE_REAL(bxInstruction_c *i
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   FPU_update_last_instruction(i);
 
@@ -345,7 +384,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FST_DOUBLE_REAL(bxInstruction_c *i
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   FPU_update_last_instruction(i);
 
@@ -394,7 +437,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FSTP_EXTENDED_REAL(bxInstruction_c
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   FPU_update_last_instruction(i);
 
@@ -426,7 +473,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FIST_WORD_INTEGER(bxInstruction_c 
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   FPU_update_last_instruction(i);
 
@@ -474,7 +525,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FIST_DWORD_INTEGER(bxInstruction_c
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   FPU_update_last_instruction(i);
 
@@ -522,7 +577,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FISTP_QWORD_INTEGER(bxInstruction_
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   FPU_update_last_instruction(i);
 
@@ -566,7 +625,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FBSTP_PACKED_BCD(bxInstruction_c *
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   FPU_update_last_instruction(i);
 
@@ -645,7 +708,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FISTTP16(bxInstruction_c *i)
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   FPU_update_last_instruction(i);
 
@@ -690,7 +757,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FISTTP32(bxInstruction_c *i)
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   FPU_update_last_instruction(i);
 
@@ -735,7 +806,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::FISTTP64(bxInstruction_c *i)
 {
   BX_CPU_THIS_PTR prepareFPU(i);
 
+<<<<<<< HEAD
   RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   FPU_update_last_instruction(i);
 

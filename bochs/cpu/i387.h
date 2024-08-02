@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: i387.h 12673 2015-02-25 19:43:47Z sshwarts $
+=======
+// $Id: i387.h 13028 2017-01-10 20:15:17Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2004-2015 Stanislav Shwartsman
@@ -258,10 +262,17 @@ typedef BxPackedRegister BxPackedMmxRegister;
 #define BX_READ_MMX_REG(index) 						\
     (*((const BxPackedMmxRegister*)(&(BX_MMX_REG(index)))))
 
+<<<<<<< HEAD
 #define BX_WRITE_MMX_REG(index, value)            			\
 {                                 					\
    (BX_FPU_REG(index)).fraction = MMXUQ(value);				\
    (BX_FPU_REG(index)).exp = 0xffff;       				\
+=======
+#define BX_WRITE_MMX_REG(index, value)              \
+{                                 					\
+   (BX_FPU_REG(index)).fraction = MMXUQ(value);		\
+   (BX_FPU_REG(index)).exp = 0xffff;       			\
+>>>>>>> version-2.6.9
 }
 
 #endif		/* BX_SUPPORT_FPU */

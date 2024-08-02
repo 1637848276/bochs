@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: stack32.cc 11831 2013-09-24 05:21:00Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2013  The Bochs Project
+=======
+// $Id: stack32.cc 12769 2015-05-16 21:06:59Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2015  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -40,7 +47,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::POP_EdM(bxInstruction_c *i)
   // Note: there is one little weirdism here.  It is possible to use
   // ESP in the modrm addressing. If used, the value of ESP after the
   // pop is used to calculate the address.
+<<<<<<< HEAD
   Bit32u eaddr = (Bit32u) BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  Bit32u eaddr = (Bit32u) BX_CPU_RESOLVE_ADDR_32(i);
+>>>>>>> version-2.6.9
 
   write_virtual_dword_32(i->seg(), eaddr, val32);
 
@@ -58,7 +69,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::PUSH_EdR(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::PUSH_EdM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   Bit32u eaddr = (Bit32u) BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  Bit32u eaddr = (Bit32u) BX_CPU_RESOLVE_ADDR_32(i);
+>>>>>>> version-2.6.9
 
   Bit32u op1_32 = read_virtual_dword_32(i->seg(), eaddr);
 

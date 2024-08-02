@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: compat.h 12732 2015-05-01 19:41:08Z vruppert $
+=======
+// $Id: compat.h 12890 2016-01-08 18:58:27Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 
 /*
@@ -15,6 +19,11 @@
 #include <assert.h>
 #include <stddef.h>
 
+<<<<<<< HEAD
+=======
+#include "qemu-queue.h"
+
+>>>>>>> version-2.6.9
 #if defined(_MSC_VER)
 #include <io.h>
 typedef Bit8s  int8_t;
@@ -44,6 +53,7 @@ typedef Bit64s ssize_t;
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 
+<<<<<<< HEAD
 /*
  * Tail queue definitions.
  */
@@ -93,6 +103,8 @@ struct {                                                                \
  */
 #define QTAILQ_EMPTY(head)               ((head)->tqh_first == NULL)
 
+=======
+>>>>>>> version-2.6.9
 /* Workaround for older versions of MinGW. */
 #ifndef ECONNREFUSED
 # define ECONNREFUSED WSAECONNREFUSED

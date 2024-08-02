@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: slirp.cc 12356 2014-06-04 19:46:21Z sshwarts $
+=======
+// $Id: slirp.cc 12935 2016-08-12 17:06:14Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 /*
  * libslirp glue
@@ -928,7 +932,11 @@ void slirp_socket_recv(Slirp *slirp, struct in_addr guest_addr, int guest_port,
 
 void slirp_warning(Slirp *slirp, const char *msg)
 {
+<<<<<<< HEAD
     BX_ERROR((msg));
+=======
+    BX_ERROR(("%s",msg));
+>>>>>>> version-2.6.9
 }
 
 #endif

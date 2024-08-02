@@ -15,6 +15,10 @@
   --enable-alignment-check \
   --enable-3dnow \
   --enable-monitor-mwait \
+<<<<<<< HEAD
+=======
+  --enable-protection-keys \
+>>>>>>> version-2.6.9
   --enable-svm \
   --enable-vmx=2 \
   --enable-avx \
@@ -31,6 +35,10 @@
   --enable-voodoo \
   --enable-usb \
   --enable-usb-ohci \
+<<<<<<< HEAD
+=======
+  --enable-usb-ehci \
+>>>>>>> version-2.6.9
   --enable-usb-xhci \
   --enable-cdrom \
   --enable-sb16 \
@@ -39,6 +47,9 @@
   --enable-busmouse \
   --enable-iodebug \
   --enable-large-ramfile \
+<<<<<<< HEAD
   --enable-gdb-stub \
+=======
+>>>>>>> version-2.6.9
   --enable-show-ips \
   --with-all-libs

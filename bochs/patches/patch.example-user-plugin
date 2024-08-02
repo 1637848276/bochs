@@ -1,7 +1,11 @@
 ----------------------------------------------------------------------
 Patch name: patch.example-user-plugin
 Author:     Volker Ruppert
+<<<<<<< HEAD
 Updated:    10 May 2014
+=======
+Updated:    28 Jan 2017
+>>>>>>> version-2.6.9
 Status:     Demo
 
 Detailed description:
@@ -21,6 +25,7 @@ Detailed description:
 Patch was created with:
   diff -u
 Apply patch to what version:
+<<<<<<< HEAD
   svn revision 12321 (May 10, 2014)
 Instructions:
   To patch, go to main bochs directory.
@@ -44,6 +49,22 @@ diff -urN ../bochs/user-plugin/Makefile.in ./user-plugin/Makefile.in
 +++ ./user-plugin/Makefile.in	2014-05-10 09:10:19.461987931 +0200
 @@ -0,0 +1,112 @@
 +# Copyright (C) 2009-2014  Volker Ruppert
+=======
+  svn revision 13051 (Jan 28, 2017)
+Instructions:
+  To patch, go to main bochs directory.
+  Type "patch -p0 < THIS_PATCH_FILE".
+  Configure and compile Bochs as usual
+  cd user-plugins
+  make
+  make install
+----------------------------------------------------------------------
+diff -urN ../bochs/user_plugins/Makefile.in ./user_plugins/Makefile.in
+--- ../bochs/user_plugins/Makefile.in	1970-01-01 01:00:00.000000000 +0100
++++ ./user_plugins/Makefile.in	2017-01-28 21:20:39.386980650 +0100
+@@ -0,0 +1,112 @@
++# Copyright (C) 2009-2017  Volker Ruppert
+>>>>>>> version-2.6.9
 +#
 +# This library is free software; you can redistribute it and/or
 +# modify it under the terms of the GNU Lesser General Public
@@ -146,6 +167,7 @@ diff -urN ../bochs/user-plugin/Makefile.in ./user-plugin/Makefile.in
 +# building plugins.
 +###########################################
 +testdev.o: testdev.@CPP_SUFFIX@ ../iodev/iodev.h ../bochs.h ../config.h ../osdep.h \
+<<<<<<< HEAD
 +  ../bx_debug/debug.h ../config.h ../osdep.h ../bxversion.h \
 +  ../gui/siminterface.h ../memory/memory.h ../pc_system.h ../plugin.h \
 +  ../extplugin.h ../ltdl-bochs.h ../gui/gui.h ../gui/textconfig.h \
@@ -160,6 +182,22 @@ diff -urN ../bochs/user-plugin/testdev.cc ./user-plugin/testdev.cc
 +++ ./user-plugin/testdev.cc	2014-05-10 10:01:44.771282429 +0200
 @@ -0,0 +1,123 @@
 +// Copyright (C) 2009-2014  Volker Ruppert
+=======
++ ../bx_debug/debug.h ../config.h ../osdep.h ../gui/siminterface.h \
++ ../cpudb.h ../gui/paramtree.h ../memory/memory-bochs.h ../pc_system.h \
++ ../gui/gui.h ../instrument/stubs/instrument.h ../plugin.h ../extplugin.h \
++ ../param_names.h testdev.h
++testdev.lo: testdev.@CPP_SUFFIX@ ../iodev/iodev.h ../bochs.h ../config.h ../osdep.h \
++ ../bx_debug/debug.h ../config.h ../osdep.h ../gui/siminterface.h \
++ ../cpudb.h ../gui/paramtree.h ../memory/memory-bochs.h ../pc_system.h \
++ ../gui/gui.h ../instrument/stubs/instrument.h ../plugin.h ../extplugin.h \
++ ../param_names.h testdev.h
+diff -urN ../bochs/user_plugins/testdev.cc ./user_plugins/testdev.cc
+--- ../bochs/user_plugins/testdev.cc	1970-01-01 01:00:00.000000000 +0100
++++ ./user_plugins/testdev.cc	2017-01-28 21:15:30.176913002 +0100
+@@ -0,0 +1,123 @@
++// Copyright (C) 2009-2017  Volker Ruppert
+>>>>>>> version-2.6.9
 +//
 +// This library is free software; you can redistribute it and/or
 +// modify it under the terms of the GNU Lesser General Public
@@ -221,7 +259,11 @@ diff -urN ../bochs/user-plugin/testdev.cc ./user-plugin/testdev.cc
 +
 +// device plugin entry points
 +
+<<<<<<< HEAD
 +int libuser_LTX_plugin_init(plugin_t *plugin, plugintype_t type, int argc, char *argv[])
+=======
++int libuser_LTX_plugin_init(plugin_t *plugin, plugintype_t type)
+>>>>>>> version-2.6.9
 +{
 +  theTestDevice = new bx_testdev_c();
 +  BX_REGISTER_DEVICE_DEVMODEL(plugin, type, theTestDevice, "testdev");
@@ -282,11 +324,19 @@ diff -urN ../bochs/user-plugin/testdev.cc ./user-plugin/testdev.cc
 +
 +  BX_USER_THIS s.reg0 = value;
 +}
+<<<<<<< HEAD
 diff -urN ../bochs/user-plugin/testdev.h ./user-plugin/testdev.h
 --- ../bochs/user-plugin/testdev.h	1970-01-01 01:00:00.000000000 +0100
 +++ ./user-plugin/testdev.h	2014-05-10 09:27:23.575831428 +0200
 @@ -0,0 +1,40 @@
 +// Copyright (C) 2009-2014  Volker Ruppert
+=======
+diff -urN ../bochs/user_plugins/testdev.h ./user_plugins/testdev.h
+--- ../bochs/user_plugins/testdev.h	1970-01-01 01:00:00.000000000 +0100
++++ ./user_plugins/testdev.h	2017-01-28 21:15:30.176913002 +0100
+@@ -0,0 +1,40 @@
++// Copyright (C) 2009-2017  Volker Ruppert
+>>>>>>> version-2.6.9
 +//
 +// This library is free software; you can redistribute it and/or
 +// modify it under the terms of the GNU Lesser General Public

@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: soundfile.cc 12733 2015-05-02 08:42:44Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
+=======
+// $Id: soundfile.cc 13116 2017-03-14 18:21:05Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -28,14 +35,21 @@
 
 #include "iodev.h"
 #include "soundlow.h"
+<<<<<<< HEAD
+=======
+#include "soundmod.h"
+>>>>>>> version-2.6.9
 #include "soundfile.h"
 
 #if BX_SUPPORT_SOUNDLOW
 
+<<<<<<< HEAD
 #ifndef WIN32
 #include <pthread.h>
 #endif
 
+=======
+>>>>>>> version-2.6.9
 #define BX_SOUNDFILE_RAW 0
 #define BX_SOUNDFILE_VOC 1
 #define BX_SOUNDFILE_WAV 2
@@ -43,7 +57,24 @@
 
 #define LOG_THIS
 
+<<<<<<< HEAD
 // bx_soundlow_waveout_file_c class implemenzation
+=======
+// sound driver plugin entry points
+
+int CDECL libfile_sound_plugin_init(plugin_t *plugin, plugintype_t type)
+{
+  // Nothing here yet
+  return 0; // Success
+}
+
+void CDECL libfile_sound_plugin_fini(void)
+{
+  // Nothing here yet
+}
+
+// bx_soundlow_waveout_file_c class implementation
+>>>>>>> version-2.6.9
 
 bx_soundlow_waveout_file_c::bx_soundlow_waveout_file_c()
     :bx_soundlow_waveout_c()
@@ -101,6 +132,12 @@ int bx_soundlow_waveout_file_c::openwaveoutput(const char *wavedev)
       initwavfile();
     }
     set_pcm_params(&real_pcm_param);
+<<<<<<< HEAD
+=======
+    if (resampler_control != 1) {
+      start_resampler_thread();
+    }
+>>>>>>> version-2.6.9
     if (mixer_control != 1) {
       pcm_callback_id = register_wave_callback(this, pcm_callback);
       start_mixer_thread();
@@ -222,7 +259,11 @@ void bx_soundlow_waveout_file_c::VOC_write_block(int block, Bit32u headerlen,
     fwrite(data, 1, datalen, wavefile);
 }
 
+<<<<<<< HEAD
 // bx_soundlow_midiout_file_c class implemenzation
+=======
+// bx_soundlow_midiout_file_c class implementation
+>>>>>>> version-2.6.9
 
 bx_soundlow_midiout_file_c::bx_soundlow_midiout_file_c()
     :bx_soundlow_midiout_c()
@@ -360,6 +401,7 @@ void bx_soundlow_midiout_file_c::writedeltatime(Bit32u deltatime)
     fputc(value[i], midifile);
 }
 
+<<<<<<< HEAD
 // bx_sound_oss_c class implemenzation
 
 bx_sound_file_c::bx_sound_file_c()
@@ -367,6 +409,9 @@ bx_sound_file_c::bx_sound_file_c()
 {
   BX_INFO(("Sound lowlevel module 'file' initialized"));
 }
+=======
+// bx_sound_oss_c class implementation
+>>>>>>> version-2.6.9
 
 bx_soundlow_waveout_c* bx_sound_file_c::get_waveout()
 {

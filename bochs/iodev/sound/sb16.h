@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: sb16.h 12708 2015-04-06 16:03:04Z vruppert $
+=======
+// $Id: sb16.h 12810 2015-08-23 07:04:56Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
@@ -159,6 +163,10 @@ private:
   int currentdma8;
   int currentdma16;
   int fmopl_callback_id;
+<<<<<<< HEAD
+=======
+  int rt_conf_id;
+>>>>>>> version-2.6.9
   Bit16u fm_volume;
 
   // the MPU 401 relevant variables

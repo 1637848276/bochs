@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 $Id: PARAM_TREE.txt 12737 2015-05-03 06:36:30Z vruppert $
+=======
+$Id: PARAM_TREE.txt 13159 2017-03-28 21:13:05Z vruppert $
+>>>>>>> version-2.6.9
 
 Starting from Bochs 2.3 the parameters are organized in a tree structure
 instead of a huge flat list. The parameter tree was required for implementing
@@ -71,6 +75,10 @@ memory
     rom
       path
       address
+<<<<<<< HEAD
+=======
+      options
+>>>>>>> version-2.6.9
     vgarom
       path
   optrom
@@ -109,7 +117,12 @@ clock_cmos
     rtc_init
 
 pci
+<<<<<<< HEAD
   i440fx_support
+=======
+  enabled
+  chipset
+>>>>>>> version-2.6.9
   slot
     1
     2
@@ -226,6 +239,11 @@ ports
         options
     ohci
       (same options as ports.usb.uhci)
+<<<<<<< HEAD
+=======
+    ehci
+      (same options as ports.usb.uhci)
+>>>>>>> version-2.6.9
     xhci
       (same options as ports.usb.uhci)
 

@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: arith32.cc 12613 2015-01-25 20:55:10Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
+=======
+// $Id: arith32.cc 13165 2017-03-31 07:34:08Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -46,7 +53,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADD_EdGdM(bxInstruction_c *i)
 {
   Bit32u op1_32, op2_32, sum_32;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   op2_32 = BX_READ_32BIT_REG(i->src());
@@ -77,7 +88,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADD_GdEdM(bxInstruction_c *i)
 {
   Bit32u op1_32, op2_32, sum_32;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = BX_READ_32BIT_REG(i->dst());
   op2_32 = read_virtual_dword(i->seg(), eaddr);
@@ -92,11 +107,17 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADD_GdEdM(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADC_EdGdM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_bool temp_CF = getB_CF();
 
   Bit32u op1_32, op2_32, sum_32;
 
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  Bit32u op1_32, op2_32, sum_32, temp_CF = getB_CF();
+
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   op2_32 = BX_READ_32BIT_REG(i->src());
@@ -110,9 +131,13 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADC_EdGdM(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADC_GdEdR(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_bool temp_CF = getB_CF();
 
   Bit32u op1_32, op2_32, sum_32;
+=======
+  Bit32u op1_32, op2_32, sum_32, temp_CF = getB_CF();
+>>>>>>> version-2.6.9
 
   op1_32 = BX_READ_32BIT_REG(i->dst());
   op2_32 = BX_READ_32BIT_REG(i->src());
@@ -126,11 +151,17 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADC_GdEdR(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADC_GdEdM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_bool temp_CF = getB_CF();
 
   Bit32u op1_32, op2_32, sum_32;
 
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  Bit32u op1_32, op2_32, sum_32, temp_CF = getB_CF();
+
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = BX_READ_32BIT_REG(i->dst());
   op2_32 = read_virtual_dword(i->seg(), eaddr);
@@ -144,11 +175,17 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADC_GdEdM(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SBB_EdGdM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_bool temp_CF = getB_CF();
 
   Bit32u op1_32, op2_32, diff_32;
 
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  Bit32u op1_32, op2_32, diff_32, temp_CF = getB_CF();
+
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   op2_32 = BX_READ_32BIT_REG(i->src());
@@ -162,9 +199,13 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SBB_EdGdM(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SBB_GdEdR(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_bool temp_CF = getB_CF();
 
   Bit32u op1_32, op2_32, diff_32;
+=======
+  Bit32u op1_32, op2_32, diff_32, temp_CF = getB_CF();
+>>>>>>> version-2.6.9
 
   op1_32 = BX_READ_32BIT_REG(i->dst());
   op2_32 = BX_READ_32BIT_REG(i->src());
@@ -178,11 +219,17 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SBB_GdEdR(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SBB_GdEdM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_bool temp_CF = getB_CF();
 
   Bit32u op1_32, op2_32, diff_32;
 
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  Bit32u op1_32, op2_32, diff_32, temp_CF = getB_CF();
+
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = BX_READ_32BIT_REG(i->dst());
   op2_32 = read_virtual_dword(i->seg(), eaddr);
@@ -196,11 +243,17 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SBB_GdEdM(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SBB_EdIdM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_bool temp_CF = getB_CF();
 
   Bit32u op1_32, op2_32 = i->Id(), diff_32;
 
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  Bit32u op1_32, op2_32 = i->Id(), diff_32, temp_CF = getB_CF();
+
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   diff_32 = op1_32 - (op2_32 + temp_CF);
@@ -213,9 +266,13 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SBB_EdIdM(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SBB_EdIdR(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_bool temp_CF = getB_CF();
 
   Bit32u op1_32, op2_32 = i->Id(), diff_32;
+=======
+  Bit32u op1_32, op2_32 = i->Id(), diff_32, temp_CF = getB_CF();
+>>>>>>> version-2.6.9
 
   op1_32 = BX_READ_32BIT_REG(i->dst());
   diff_32 = op1_32 - (op2_32 + temp_CF);
@@ -230,7 +287,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SUB_EdGdM(bxInstruction_c *i)
 {
   Bit32u op1_32, op2_32, diff_32;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   op2_32 = BX_READ_32BIT_REG(i->src());
@@ -260,7 +321,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SUB_GdEdM(bxInstruction_c *i)
 {
   Bit32u op1_32, op2_32, diff_32;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = BX_READ_32BIT_REG(i->dst());
   op2_32 = read_virtual_dword(i->seg(), eaddr);
@@ -276,7 +341,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CMP_EdGdM(bxInstruction_c *i)
 {
   Bit32u op1_32, op2_32, diff_32;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = read_virtual_dword(i->seg(), eaddr);
   op2_32 = BX_READ_32BIT_REG(i->src());
@@ -304,7 +373,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CMP_GdEdM(bxInstruction_c *i)
 {
   Bit32u op1_32, op2_32, diff_32;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = BX_READ_32BIT_REG(i->dst());
   op2_32 = read_virtual_dword(i->seg(), eaddr);
@@ -347,7 +420,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::XADD_EdGdM(bxInstruction_c *i)
    * dst  <-- tmp               | op1 = sum
    */
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   op2_32 = BX_READ_32BIT_REG(i->src());
@@ -392,7 +469,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADD_EdIdM(bxInstruction_c *i)
 {
   Bit32u op1_32, op2_32, sum_32;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   op2_32 = i->Id();
@@ -421,11 +502,17 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADD_EdIdR(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADC_EdIdM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_bool temp_CF = getB_CF();
 
   Bit32u op1_32, op2_32 = i->Id(), sum_32;
 
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  Bit32u op1_32, op2_32 = i->Id(), sum_32, temp_CF = getB_CF();
+
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   sum_32 = op1_32 + op2_32 + temp_CF;
@@ -438,9 +525,13 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADC_EdIdM(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::ADC_EdIdR(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_bool temp_CF = getB_CF();
 
   Bit32u op1_32, op2_32 = i->Id(), sum_32;
+=======
+  Bit32u op1_32, op2_32 = i->Id(), sum_32, temp_CF = getB_CF();
+>>>>>>> version-2.6.9
 
   op1_32 = BX_READ_32BIT_REG(i->dst());
   sum_32 = op1_32 + op2_32 + temp_CF;
@@ -455,7 +546,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SUB_EdIdM(bxInstruction_c *i)
 {
   Bit32u op1_32, op2_32 = i->Id(), diff_32;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   diff_32 = op1_32 - op2_32;
@@ -483,7 +578,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CMP_EdIdM(bxInstruction_c *i)
 {
   Bit32u op1_32, op2_32, diff_32;
 
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   op1_32 = read_virtual_dword(i->seg(), eaddr);
   op2_32 = i->Id();
@@ -509,7 +608,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CMP_EdIdR(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::NEG_EdM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   Bit32u op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   op1_32 = - (Bit32s)(op1_32);
@@ -533,7 +636,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::NEG_EdR(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::INC_EdM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   Bit32u op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   op1_32++;
@@ -546,7 +653,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::INC_EdM(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::DEC_EdM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   Bit32u op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   op1_32--;
@@ -559,7 +670,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::DEC_EdM(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CMPXCHG_EdGdM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   Bit32u op1_32 = read_RMW_virtual_dword(i->seg(), eaddr);
   Bit32u diff_32 = EAX - op1_32;
@@ -598,7 +713,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CMPXCHG_EdGdR(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::CMPXCHG8B(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
 
   // check write permission for following write
   Bit64u op1_64 = read_RMW_virtual_qword(i->seg(), eaddr);

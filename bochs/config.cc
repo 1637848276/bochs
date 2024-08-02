@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: config.cc 12681 2015-03-06 22:54:30Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2015  The Bochs Project
+=======
+// $Id: config.cc 13146 2017-03-24 18:23:07Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2002-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -167,6 +174,12 @@ void bx_init_std_nic_options(const char *name, bx_list_c *menu)
 #if BX_NETMOD_SLIRP
     "slirp",
 #endif
+<<<<<<< HEAD
+=======
+#if BX_NETMOD_SOCKET
+    "socket",
+#endif
+>>>>>>> version-2.6.9
     "vnet",
     NULL
   };
@@ -698,7 +711,11 @@ void bx_init_options()
   ram->set_options(ram->SERIES_ASK);
 
   path = new bx_param_filename_c(rom,
+<<<<<<< HEAD
       "path",
+=======
+      "file",
+>>>>>>> version-2.6.9
       "ROM BIOS image",
       "Pathname of ROM image to load",
       "", BX_PATHNAME_LEN);
@@ -706,18 +723,36 @@ void bx_init_options()
   sprintf(name, "%s/BIOS-bochs-latest", (char *)get_builtin_variable("BXSHARE"));
   path->set_initial_val(name);
   bx_param_num_c *romaddr = new bx_param_num_c(rom,
+<<<<<<< HEAD
       "addr",
+=======
+      "address",
+>>>>>>> version-2.6.9
       "ROM BIOS address",
       "The address at which the ROM image should be loaded",
       0, BX_MAX_BIT32U,
       0);
   romaddr->set_base(16);
+<<<<<<< HEAD
   romaddr->set_format("0x%05x");
   romaddr->set_long_format("ROM BIOS address: 0x%05x");
   rom->set_options(rom->SERIES_ASK);
 
   path = new bx_param_filename_c(vgarom,
       "path",
+=======
+  romaddr->set_format("0x%08x");
+  romaddr->set_long_format("ROM BIOS address: 0x%08x");
+  new bx_param_string_c(rom,
+      "options",
+      "BIOS options",
+      "Options for the Bochs BIOS",
+      "", BX_PATHNAME_LEN);
+  rom->set_options(rom->SERIES_ASK);
+
+  path = new bx_param_filename_c(vgarom,
+      "file",
+>>>>>>> version-2.6.9
       "VGA BIOS image",
       "Pathname of VGA ROM image to load",
       "", BX_PATHNAME_LEN);
@@ -726,15 +761,25 @@ void bx_init_options()
   path->set_initial_val(name);
   vgarom->set_options(vgarom->SERIES_ASK);
 
+<<<<<<< HEAD
+=======
+  bx_list_c *optnum;
+>>>>>>> version-2.6.9
   bx_param_num_c *optaddr;
 
   for (i=0; i<BX_N_OPTROM_IMAGES; i++) {
     sprintf(name, "%d", i+1);
     sprintf(descr, "Pathname of optional ROM image #%d to load", i+1);
     sprintf(label, "Optional ROM image #%d", i+1);
+<<<<<<< HEAD
     bx_list_c *optnum1 = new bx_list_c(optrom, name, label);
     path = new bx_param_filename_c(optnum1,
       "path",
+=======
+    optnum = new bx_list_c(optrom, name, label);
+    path = new bx_param_filename_c(optnum,
+      "file",
+>>>>>>> version-2.6.9
       "Path",
       descr,
       "", BX_PATHNAME_LEN);
@@ -742,8 +787,13 @@ void bx_init_options()
     strcat(label, " : %s");
     path->set_format(strdup(label));
     sprintf(descr, "The address at which the optional ROM image #%d should be loaded", i+1);
+<<<<<<< HEAD
     optaddr = new bx_param_num_c(optnum1,
       "addr",
+=======
+    optaddr = new bx_param_num_c(optnum,
+      "address",
+>>>>>>> version-2.6.9
       "Address",
       descr,
       0, BX_MAX_BIT32U,
@@ -753,7 +803,14 @@ void bx_init_options()
     sprintf(label, "Optional ROM #%d address:", i+1);
     strcat(label, " 0x%05x");
     optaddr->set_long_format(strdup(label));
+<<<<<<< HEAD
     optnum1->set_options(optnum1->SERIES_ASK | optnum1->USE_BOX_TITLE);
+=======
+    deplist = new bx_list_c(NULL);
+    deplist->add(optaddr);
+    path->set_dependent_list(deplist);
+    optnum->set_options(optnum->SERIES_ASK | optnum->USE_BOX_TITLE);
+>>>>>>> version-2.6.9
   }
   optrom->set_options(optrom->SHOW_PARENT);
 
@@ -761,9 +818,15 @@ void bx_init_options()
     sprintf(name, "%d", i+1);
     sprintf(descr, "Pathname of optional RAM image #%d to load", i+1);
     sprintf(label, "Optional RAM image #%d", i+1);
+<<<<<<< HEAD
     bx_list_c *optnum2 = new bx_list_c(optram, name, label);
     path = new bx_param_filename_c(optnum2,
       "path",
+=======
+    optnum = new bx_list_c(optram, name, label);
+    path = new bx_param_filename_c(optnum,
+      "file",
+>>>>>>> version-2.6.9
       "Path",
       descr,
       "", BX_PATHNAME_LEN);
@@ -771,8 +834,13 @@ void bx_init_options()
     strcat(label, " : %s");
     path->set_format(strdup(label));
     sprintf(descr, "The address at which the optional RAM image #%d should be loaded", i+1);
+<<<<<<< HEAD
     optaddr = new bx_param_num_c(optnum2,
       "addr",
+=======
+    optaddr = new bx_param_num_c(optnum,
+      "address",
+>>>>>>> version-2.6.9
       "Address",
       descr,
       0, BX_MAX_BIT32U,
@@ -782,7 +850,14 @@ void bx_init_options()
     sprintf(label, "Optional RAM #%d address:", i+1);
     strcat(label, " 0x%05x");
     optaddr->set_long_format(strdup(label));
+<<<<<<< HEAD
     optnum2->set_options(optnum2->SERIES_ASK | optnum2->USE_BOX_TITLE);
+=======
+    deplist = new bx_list_c(NULL);
+    deplist->add(optaddr);
+    path->set_dependent_list(deplist);
+    optnum->set_options(optnum->SERIES_ASK | optnum->USE_BOX_TITLE);
+>>>>>>> version-2.6.9
   }
   optram->set_options(optram->SHOW_PARENT);
   memory->set_options(memory->SHOW_PARENT | memory->USE_TAB_WINDOW);
@@ -1031,6 +1106,10 @@ void bx_init_options()
     "ps2",
     "imps2",
 #if BX_SUPPORT_BUSMOUSE
+<<<<<<< HEAD
+=======
+    "inport",
+>>>>>>> version-2.6.9
     "bus",
 #endif
     "serial",
@@ -1382,7 +1461,11 @@ void bx_init_options()
         "Generic 1234", 41);
       model->set_ask_format("Enter new model name: [%s]");
 
+<<<<<<< HEAD
       static const char *atadevice_biosdetect_names[] = { "none", "auto", "cmos", NULL };
+=======
+      static const char *atadevice_biosdetect_names[] = { "auto", "cmos", "none", NULL };
+>>>>>>> version-2.6.9
 
       bx_param_enum_c *biosdetect = new bx_param_enum_c(menu,
         "biosdetect",
@@ -1390,7 +1473,11 @@ void bx_init_options()
         "Type of bios detection",
         atadevice_biosdetect_names,
         BX_ATA_BIOSDETECT_AUTO,
+<<<<<<< HEAD
         BX_ATA_BIOSDETECT_NONE);
+=======
+        BX_ATA_BIOSDETECT_AUTO);
+>>>>>>> version-2.6.9
       biosdetect->set_ask_format("Enter bios detection type: [%s]");
 
       static const char *atadevice_translation_names[] = { "none", "lba", "large", "rechs", "auto", NULL };
@@ -2061,6 +2148,7 @@ static Bit32s parse_log_options(const char *context, int num_params, char *param
     actstr = strtok(NULL, "");
     if (actstr != NULL) {
       def_action = !strcmp(module, "action");
+<<<<<<< HEAD
       if (!strcmp(actstr, "fatal"))
         action = ACT_FATAL;
       else if (!strcmp (actstr, "report"))
@@ -2070,6 +2158,10 @@ static Bit32s parse_log_options(const char *context, int num_params, char *param
       else if (!strcmp (actstr, "ask"))
         action = ACT_ASK;
       else {
+=======
+      action = SIM->is_action_name(actstr);
+      if (action < ACT_IGNORE) {
+>>>>>>> version-2.6.9
         PARSE_ERR(("%s: %s directive malformed.", context, params[0]));
         free(param);
         return -1;
@@ -2172,6 +2264,7 @@ int bx_parse_param_from_list(const char *context, const char *input, bx_list_c *
       free(propval);
       return 0;
     }
+<<<<<<< HEAD
     switch (param->get_type()) {
       case BXT_PARAM_NUM:
         if (value != NULL) {
@@ -2210,6 +2303,18 @@ int bx_parse_param_from_list(const char *context, const char *input, bx_list_c *
       default:
         PARSE_WARN(("%s: parameter '%s': unknown type", context, property));
         ret = -1;
+=======
+    int res = param->parse_param(value);
+    if (res != -1) {
+      if (res == 0) {
+        PARSE_WARN(("%s: wrong value for parameter '%s'", context, property));
+        ret = -1;
+      }
+    }
+    else {
+      PARSE_WARN(("%s: parameter '%s': unknown type", context, property));
+      ret = -1;
+>>>>>>> version-2.6.9
     }
   } else {
     PARSE_WARN(("%s: unknown parameter '%s'", context, property));
@@ -2278,6 +2383,7 @@ int bx_parse_nic_params(const char *context, const char *param, bx_list_c *base)
 
 bx_bool is_deprecated_option(const char *oldparam, const char **newparam)
 {
+<<<<<<< HEAD
   if (!strcmp(oldparam, "i440fxsupport")) {
     // replaced v2.5 / removed v2.6.1
     *newparam = "pci";
@@ -2287,11 +2393,22 @@ bx_bool is_deprecated_option(const char *oldparam, const char **newparam)
     *newparam = "vga";
     return 1;
   } else if ((!strcmp(oldparam, "keyboard_serial_delay")) ||
+=======
+  if ((!strcmp(oldparam, "keyboard_serial_delay")) ||
+>>>>>>> version-2.6.9
              (!strcmp(oldparam, "keyboard_paste_delay")) ||
              (!strcmp(oldparam, "keyboard_type")) ||
              (!strcmp(oldparam, "keyboard_mapping")) ||
              (!strcmp(oldparam, "keyboardmapping"))) {
+<<<<<<< HEAD
     // replaced v2.6 / removed v2.6.6 SVN
+=======
+    // replaced v2.6 / removed v2.6.7
+    *newparam = "keyboard";
+    return 1;
+  } else if (!strcmp(oldparam, "user_shortcut")) {
+    // replaced v2.6.1 / removed v2.6.9
+>>>>>>> version-2.6.9
     *newparam = "keyboard";
     return 1;
 #if BX_SUPPORT_PCIPNIC
@@ -2666,6 +2783,7 @@ static int parse_line_formatted(const char *context, int num_params, char *param
       }
     }
   } else if (!strcmp(params[0], "romimage")) {
+<<<<<<< HEAD
     if ((num_params < 2) || (num_params > 3)) {
       PARSE_ERR(("%s: romimage directive: wrong # args.", context));
     }
@@ -2685,6 +2803,26 @@ static int parse_line_formatted(const char *context, int num_params, char *param
       }
     } else {
       SIM->get_param_num(BXPN_ROM_ADDRESS)->set(0);
+=======
+    if ((num_params < 2) || (num_params > 4)) {
+      PARSE_ERR(("%s: romimage directive: wrong # args.", context));
+    }
+    // set to default value 0 (auto-detect if no specified)
+    SIM->get_param_num(BXPN_ROM_ADDRESS)->set(0);
+    for (i=1; i<num_params; i++) {
+      if (!strncmp(params[i], "file=", 5)) {
+        SIM->get_param_string(BXPN_ROM_PATH)->set(&params[i][5]);
+      } else  if (!strncmp(params[i], "address=", 8)) {
+        if ((params[i][8] == '0') && (params[i][9] == 'x'))
+          SIM->get_param_num(BXPN_ROM_ADDRESS)->set(strtoul(&params[i][8], NULL, 16));
+        else
+          SIM->get_param_num(BXPN_ROM_ADDRESS)->set(strtoul(&params[i][8], NULL, 10));
+      } else  if (!strncmp(params[i], "options=", 8)) {
+        SIM->get_param_string(BXPN_ROM_OPTIONS)->set(&params[i][8]);
+      } else {
+        PARSE_ERR(("%s: romimage directive malformed.", context));
+      }
+>>>>>>> version-2.6.9
     }
   } else if (!strcmp(params[0], "vgaromimage")) {
     if (num_params != 2) {
@@ -2697,6 +2835,7 @@ static int parse_line_formatted(const char *context, int num_params, char *param
     }
   } else if (!strncmp(params[0], "optromimage", 11)) {
     int num = atoi(&params[0][11]);
+<<<<<<< HEAD
     char tmppath[80], tmpaddr[80];
     if ((num < 1) || (num > BX_N_OPTROM_IMAGES)) {
       PARSE_ERR(("%s: optromimage%d: not supported", context, num));
@@ -2714,12 +2853,32 @@ static int parse_line_formatted(const char *context, int num_params, char *param
           SIM->get_param_num(tmpaddr)->set(strtoul(&params[i][8], NULL, 16));
         else
           SIM->get_param_num(tmpaddr)->set(strtoul(&params[i][8], NULL, 10));
+=======
+    char pname[16];
+    if ((num < 1) || (num > BX_N_OPTROM_IMAGES)) {
+      PARSE_ERR(("%s: optromimage%d: not supported", context, num));
+    }
+    if (num_params > 3) {
+      PARSE_ERR(("%s: optromimage%d directive: wrong # args.", context, num));
+    }
+    sprintf(pname, "%s.%d", BXPN_OPTROM_BASE, num);
+    base = (bx_list_c*) SIM->get_param(pname);
+    for (i=1; i<num_params; i++) {
+      if (!strncmp(params[i], "file=", 5)) {
+        SIM->get_param_string("file", base)->set(&params[i][5]);
+      } else if (!strncmp(params[i], "address=", 8)) {
+        if ((params[i][8] == '0') && (params[2][9] == 'x'))
+          SIM->get_param_num("address", base)->set(strtoul(&params[i][8], NULL, 16));
+        else
+          SIM->get_param_num("address", base)->set(strtoul(&params[i][8], NULL, 10));
+>>>>>>> version-2.6.9
       } else {
         PARSE_ERR(("%s: optromimage%d directive malformed.", context, num));
       }
     }
   } else if (!strncmp(params[0], "optramimage", 11)) {
     int num = atoi(&params[0][11]);
+<<<<<<< HEAD
     char tmppath[80], tmpaddr[80];
     if ((num < 1) || (num > BX_N_OPTRAM_IMAGES)) {
       PARSE_ERR(("%s: optramimage%d: not supported", context, num));
@@ -2737,6 +2896,25 @@ static int parse_line_formatted(const char *context, int num_params, char *param
           SIM->get_param_num(tmpaddr)->set(strtoul(&params[i][8], NULL, 16));
         else
           SIM->get_param_num(tmpaddr)->set(strtoul(&params[i][8], NULL, 10));
+=======
+    char pname[16];
+    if ((num < 1) || (num > BX_N_OPTRAM_IMAGES)) {
+      PARSE_ERR(("%s: optramimage%d: not supported", context, num));
+    }
+    if (num_params > 3) {
+      PARSE_ERR(("%s: optramimage%d directive: wrong # args.", context, num));
+    }
+    sprintf(pname, "%s.%d", BXPN_OPTRAM_BASE, num);
+    base = (bx_list_c*) SIM->get_param(pname);
+    for (i=1; i<num_params; i++) {
+      if (!strncmp(params[i], "file=", 5)) {
+        SIM->get_param_string("file", base)->set(&params[i][5]);
+      } else if (!strncmp(params[i], "address=", 8)) {
+        if ((params[i][8] == '0') && (params[2][9] == 'x'))
+          SIM->get_param_num("address", base)->set(strtoul(&params[i][8], NULL, 16));
+        else
+          SIM->get_param_num("address", base)->set(strtoul(&params[i][8], NULL, 10));
+>>>>>>> version-2.6.9
       } else {
         PARSE_ERR(("%s: optramimage%d directive malformed.", context, num));
       }
@@ -2853,8 +3031,12 @@ static int parse_line_formatted(const char *context, int num_params, char *param
       } else if (!strcmp(params[i], "rtc_init=image")) {
         SIM->get_param_bool(BXPN_CMOSIMAGE_RTC_INIT)->set(1);
       } else {
+<<<<<<< HEAD
         // for backward compatiblity
         SIM->get_param_string(BXPN_CMOSIMAGE_PATH)->set(params[i]);
+=======
+        BX_ERROR(("%s: unknown parameter for cmosimage ignored.", context));
+>>>>>>> version-2.6.9
       }
     }
     if (strlen(SIM->get_param_string(BXPN_CMOSIMAGE_PATH)->getptr()) > 0) {
@@ -3039,6 +3221,7 @@ static int parse_line_formatted(const char *context, int num_params, char *param
       }
       SIM->get_param_string(BXPN_LOAD32BITOS_INITRD)->set(&params[4][7]);
     }
+<<<<<<< HEAD
   } else if (!strcmp(params[0], "user_shortcut")) {
     // handled by 'keyboard' option since Bochs 2.6.1
     if (num_params != 2) {
@@ -3050,6 +3233,9 @@ static int parse_line_formatted(const char *context, int num_params, char *param
       PARSE_ERR(("%s: user_shortcut directive malformed.", context));
     }
     PARSE_WARN(("%s: 'user_shortcut' will be replaced by new 'keyboard' option.", context));
+=======
+    PARSE_WARN(("%s: WARNING: This Bochs feature is not maintained yet", context));
+>>>>>>> version-2.6.9
   } else if (!strcmp(params[0], "user_plugin")) {
 #if BX_PLUGINS
     char tmpname[80];
@@ -3318,7 +3504,11 @@ int bx_write_debugger_options(FILE *fp)
 int bx_write_configuration(const char *rc, int overwrite)
 {
   int i;
+<<<<<<< HEAD
   char tmppath[80], tmpaddr[80], tmpdev[80];
+=======
+  char pname[16], tmppath[80], tmpdev[80];
+>>>>>>> version-2.6.9
   bx_param_string_c *sparam;
   bx_list_c *base;
   BX_INFO(("write current configuration to %s", rc));
@@ -3352,6 +3542,7 @@ int bx_write_configuration(const char *rc, int overwrite)
     fprintf(fp, "\n");
   fprintf(fp, "memory: host=%d, guest=%d\n", SIM->get_param_num(BXPN_HOST_MEM_SIZE)->get(),
     SIM->get_param_num(BXPN_MEM_SIZE)->get());
+<<<<<<< HEAD
   sparam = SIM->get_param_string(BXPN_ROM_PATH);
   if (!sparam->isempty()) {
     fprintf(fp, "romimage: file=\"%s\"", sparam->getptr());
@@ -3367,6 +3558,11 @@ int bx_write_configuration(const char *rc, int overwrite)
     fprintf(fp, "vgaromimage: file=\"%s\"\n", sparam->getptr());
   else
     fprintf(fp, "# no vgaromimage\n");
+=======
+
+  bx_write_param_list(fp, (bx_list_c*) SIM->get_param(BXPN_ROMIMAGE), "romimage", 0);
+  bx_write_param_list(fp, (bx_list_c*) SIM->get_param(BXPN_VGA_ROMIMAGE), "vgaromimage", 0);
+>>>>>>> version-2.6.9
   fprintf(fp, "boot: %s", SIM->get_param_enum(BXPN_BOOTDRIVE1)->get_selected());
   for (i=1; i<3; i++) {
     sprintf(tmppath, "boot_params.boot_drive%d", i+1);
@@ -3391,6 +3587,7 @@ int bx_write_configuration(const char *rc, int overwrite)
     bx_write_param_list(fp, (bx_list_c*) SIM->get_param("slave", base), tmppath, 0);
   }
   for (i=0; i<BX_N_OPTROM_IMAGES; i++) {
+<<<<<<< HEAD
     sprintf(tmppath, "memory.optrom.%d.path", i+1);
     sprintf(tmpaddr, "memory.optrom.%d.addr", i+1);
     sparam = SIM->get_param_string(tmppath);
@@ -3405,6 +3602,16 @@ int bx_write_configuration(const char *rc, int overwrite)
     if (!sparam->isempty())
       fprintf(fp, "optramimage%d: file=\"%s\", address=0x%05x\n", i+1, sparam->getptr(),
               (unsigned int)SIM->get_param_num(tmpaddr)->get());
+=======
+    sprintf(pname, "%s.%d", BXPN_OPTROM_BASE, i+1);
+    sprintf(tmppath, "optromimage%d", i+1);
+    bx_write_param_list(fp, (bx_list_c*) SIM->get_param(pname), tmppath, 0);
+  }
+  for (i=0; i<BX_N_OPTRAM_IMAGES; i++) {
+    sprintf(pname, "%s.%d", BXPN_OPTRAM_BASE, i+1);
+    sprintf(tmppath, "optramimage%d", i+1);
+    bx_write_param_list(fp, (bx_list_c*) SIM->get_param(pname), tmppath, 0);
+>>>>>>> version-2.6.9
   }
   // pci
   fprintf(fp, "pci: enabled=%d",

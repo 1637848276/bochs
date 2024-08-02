@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: wxdialog.cc 12594 2015-01-07 16:17:40Z sshwarts $
 /////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2014  The Bochs Project
+=======
+// $Id: wxdialog.cc 13010 2016-12-28 15:06:34Z vruppert $
+/////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2002-2016  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -208,7 +215,10 @@ AdvancedLogOptionsDialog::AdvancedLogOptionsDialog(
   : wxDialog(parent, id, wxT(""), wxDefaultPosition, wxDefaultSize,
     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
+<<<<<<< HEAD
   //static int integers[LOG_OPTS_N_CHOICES_NORMAL] = {0, 1, 2, 3};
+=======
+>>>>>>> version-2.6.9
   static wxString names[] = ADVLOG_OPTS_TYPE_NAMES;
   SetTitle(ADVLOG_OPTS_TITLE);
   vertSizer = new wxBoxSizer(wxVERTICAL);
@@ -1563,7 +1573,11 @@ wxChoice *makeLogOptionChoiceBox(wxWindow *parent,
     bool includeNoChange)
 {
   static wxString choices[] = LOG_OPTS_CHOICES;
+<<<<<<< HEAD
   static int integers[LOG_OPTS_N_CHOICES] = {0, 1, 2, 3, 4};
+=======
+  static int integers[LOG_OPTS_N_CHOICES] = {0, 1, 2, 3, 4, 5};
+>>>>>>> version-2.6.9
   wxChoice *control = new wxChoice(parent, id, wxDefaultPosition, wxDefaultSize);
   int lastChoice = 0;  // remember index of last choice
   int nchoice = includeNoChange? LOG_OPTS_N_CHOICES : LOG_OPTS_N_CHOICES_NORMAL;

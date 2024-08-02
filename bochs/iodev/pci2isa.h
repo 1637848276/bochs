@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: pci2isa.h 11551 2012-11-16 16:59:58Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2002-2012  The Bochs Project
+=======
+// $Id: pci2isa.h 13147 2017-03-24 19:57:25Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2002-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -40,8 +47,12 @@ public:
   virtual void register_state(void);
   virtual void after_restore_state(void);
 
+<<<<<<< HEAD
   virtual Bit32u pci_read_handler(Bit8u address, unsigned io_len);
   virtual void   pci_write_handler(Bit8u address, Bit32u value, unsigned io_len);
+=======
+  virtual void pci_write_handler(Bit8u address, Bit32u value, unsigned io_len);
+>>>>>>> version-2.6.9
 #if BX_DEBUGGER
   virtual void debug_dump(int argc, char **argv);
 #endif
@@ -55,7 +66,11 @@ private:
     Bit8u apmc;
     Bit8u apms;
     Bit8u irq_registry[16];
+<<<<<<< HEAD
     Bit32u irq_level[16];
+=======
+    Bit32u irq_level[4][16];
+>>>>>>> version-2.6.9
     Bit8u pci_reset;
   } s;
 

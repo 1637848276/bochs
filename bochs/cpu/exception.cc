@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: exception.cc 12570 2014-12-18 19:45:03Z sshwarts $
+=======
+// $Id: exception.cc 13135 2017-03-18 21:25:06Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2013  The Bochs Project
@@ -769,11 +773,20 @@ void BX_CPU_C::interrupt(Bit8u vector, unsigned type, bx_bool push_error, Bit16u
 /* Exception classes.  These are used as indexes into the 'is_exception_OK'
  * array below, and are stored in the 'exception' array also
  */
+<<<<<<< HEAD
 #define BX_ET_BENIGN       0
 #define BX_ET_CONTRIBUTORY 1
 #define BX_ET_PAGE_FAULT   2
 
 #define BX_ET_DOUBLE_FAULT 10
+=======
+enum {
+  BX_ET_BENIGN = 0,
+  BX_ET_CONTRIBUTORY = 1,
+  BX_ET_PAGE_FAULT = 2,
+  BX_ET_DOUBLE_FAULT = 10
+};
+>>>>>>> version-2.6.9
 
 static const bx_bool is_exception_OK[3][3] = {
     { 1, 1, 1 }, /* 1st exception is BENIGN */
@@ -781,9 +794,17 @@ static const bx_bool is_exception_OK[3][3] = {
     { 1, 0, 0 }  /* 1st exception is PAGE_FAULT */
 };
 
+<<<<<<< HEAD
 #define BX_EXCEPTION_CLASS_TRAP  0
 #define BX_EXCEPTION_CLASS_FAULT 1
 #define BX_EXCEPTION_CLASS_ABORT 2
+=======
+enum {
+  BX_EXCEPTION_CLASS_TRAP = 0,
+  BX_EXCEPTION_CLASS_FAULT = 1,
+  BX_EXCEPTION_CLASS_ABORT = 2
+};
+>>>>>>> version-2.6.9
 
 struct BxExceptionInfo exceptions_info[BX_CPU_HANDLED_EXCEPTIONS] = {
   /* DE */ { BX_ET_CONTRIBUTORY, BX_EXCEPTION_CLASS_FAULT, 0 },

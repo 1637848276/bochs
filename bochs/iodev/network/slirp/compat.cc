@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: compat.cc 12732 2015-05-01 19:41:08Z vruppert $
+=======
+// $Id: compat.cc 12935 2016-08-12 17:06:14Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 /*
  * QEMU compatibility functions
@@ -28,6 +32,16 @@
 
 #include "slirp.h"
 
+<<<<<<< HEAD
+=======
+#ifndef WEXITSTATUS
+# define WEXITSTATUS(stat_val) ((unsigned int) (stat_val) >> 8)
+#endif
+#ifndef WIFEXITED
+# define WIFEXITED(stat_val) (((stat_val) & 255) == 0)
+#endif
+
+>>>>>>> version-2.6.9
 #if BX_NETWORKING && BX_NETMOD_SLIRP
 
 void pstrcpy(char *buf, int buf_size, const char *str)

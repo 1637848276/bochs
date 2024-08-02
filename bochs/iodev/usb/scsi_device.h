@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: scsi_device.h 12154 2014-01-28 20:29:12Z vruppert $
+=======
+// $Id: scsi_device.h 12851 2015-10-04 08:54:36Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  SCSI emulation layer (ported from QEMU)
@@ -9,7 +13,11 @@
 //
 //  Written by Paul Brook
 //
+<<<<<<< HEAD
 //  Copyright (C) 2007-2014  The Bochs Project
+=======
+//  Copyright (C) 2007-2015  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -61,6 +69,12 @@ typedef struct SCSIRequest {
   int buf_len;
   Bit8u *dma_buf;
   Bit32u status;
+<<<<<<< HEAD
+=======
+  bx_bool write_cmd;
+  bx_bool async_mode;
+  Bit8u seek_pending;
+>>>>>>> version-2.6.9
   struct SCSIRequest *next;
 } SCSIRequest;
 
@@ -74,21 +88,37 @@ public:
   virtual ~scsi_device_t(void);
 
   void register_state(bx_list_c *parent, const char *name);
+<<<<<<< HEAD
   Bit32s scsi_send_command(Bit32u tag, Bit8u *buf, int lun);
+=======
+  Bit32s scsi_send_command(Bit32u tag, Bit8u *buf, int lun, bx_bool async);
+>>>>>>> version-2.6.9
   void scsi_command_complete(SCSIRequest *r, int status, int sense);
   void scsi_cancel_io(Bit32u tag);
   void scsi_read_complete(void *req, int ret);
   void scsi_read_data(Bit32u tag);
   void scsi_write_complete(void *req, int ret);
+<<<<<<< HEAD
   int scsi_write_data(Bit32u tag);
+=======
+  void scsi_write_data(Bit32u tag);
+>>>>>>> version-2.6.9
   Bit8u* scsi_get_buf(Bit32u tag);
   const char *get_serial_number() {return drive_serial_str;}
   void set_inserted(bx_bool value);
   bx_bool get_inserted() {return inserted;}
+<<<<<<< HEAD
   static void seek_timer_handler(void *);
   void seek_timer(void);
   bx_bool save_requests(const char *path);
   void restore_requests(const char *path);
+=======
+  bx_bool get_locked() {return locked;}
+  static void seek_timer_handler(void *);
+  bx_bool save_requests(const char *path);
+  void restore_requests(const char *path);
+  void set_debug_mode();
+>>>>>>> version-2.6.9
 
 protected:
   SCSIRequest* scsi_new_request(Bit32u tag);
@@ -96,6 +126,7 @@ protected:
   SCSIRequest *scsi_find_request(Bit32u tag);
 
 private:
+<<<<<<< HEAD
   enum scsidev_type type;
   device_image_t *hdimage;
   cdrom_base_c *cdrom;
@@ -110,6 +141,31 @@ private:
   bx_bool inserted;
   char drive_serial_str[21];
   int seek_timer_index;
+=======
+  void start_seek(SCSIRequest *r);
+  void seek_timer(void);
+  void seek_complete(SCSIRequest *r);
+
+  // members set in constructor
+  enum scsidev_type type;
+  device_image_t *hdimage;
+  cdrom_base_c *cdrom;
+  int cluster_size;
+  int tcq;
+  scsi_completionfn completion;
+  void *dev;
+  char drive_serial_str[21];
+  int seek_timer_index;
+  int statusbar_id;
+  // members set in constructor / runtime config
+  Bit64u max_lba;
+  bx_bool inserted;
+  // members handled by save/restore
+  Bit64u curr_lba;
+  int sense;
+  bx_bool locked;
+  SCSIRequest *requests;
+>>>>>>> version-2.6.9
 };
 
 #endif

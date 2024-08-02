@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: busmouse.h 12073 2013-12-27 17:47:44Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2004-2013  The Bochs Project
+=======
+// $Id: busmouse.h 12903 2016-03-31 17:24:34Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2004-2016  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -57,18 +64,33 @@ private:
   Bit32u  read(Bit32u address, unsigned io_len);
 #endif
 
+<<<<<<< HEAD
+=======
+  int   type;
+>>>>>>> version-2.6.9
   int   timer_index; // our timer index
 
   int   mouse_delayed_dx;
   int   mouse_delayed_dy;
   Bit8u mouse_buttons;
+<<<<<<< HEAD
+=======
+  Bit8u mouse_buttons_last;
+>>>>>>> version-2.6.9
   Bit8u current_x, current_y, current_b;
 
   Bit8u control_val;
   Bit8u command_val;     // current command val
+<<<<<<< HEAD
   bx_bool interrupts;    // 0 or 1.  interrupts off or on.
   bx_bool sig_port_sequ; // A register read rotates between two values? 0xDE and Hardware ID?
   bx_bool needs_update;  // update of mouse data register required
+=======
+  Bit8u config_val;
+  Bit8u sig_val;
+  Bit16u toggle_counter;
+  bx_bool interrupts;    // 0 or 1.  interrupts off or on.
+>>>>>>> version-2.6.9
 };
 
 #endif  // BX_SUPPORT_BUSMOUSE

@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: cpudb.h 12643 2015-02-12 21:28:24Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2011-2015 Stanislav Shwartsman
+=======
+// $Id: cpudb.h 13149 2017-03-25 20:12:31Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//   Copyright (c) 2011-2017 Stanislav Shwartsman
+>>>>>>> version-2.6.9
 //          Written by Stanislav Shwartsman [sshwarts at sourceforge net]
 //
 //  This library is free software; you can redistribute it and/or
@@ -45,6 +52,10 @@ bx_define_cpudb(corei7_sandy_bridge_2600k)
 #if BX_SUPPORT_AVX
 bx_define_cpudb(zambezi)
 bx_define_cpudb(trinity_apu)
+<<<<<<< HEAD
+=======
+bx_define_cpudb(ryzen)
+>>>>>>> version-2.6.9
 bx_define_cpudb(corei7_ivy_bridge_3770k)
 bx_define_cpudb(corei7_haswell_4770)
 bx_define_cpudb(broadwell_ult)

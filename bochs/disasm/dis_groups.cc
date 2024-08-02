@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: dis_groups.cc 11885 2013-10-15 17:19:18Z sshwarts $
+=======
+// $Id: dis_groups.cc 12919 2016-05-12 11:16:05Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2005-2011 Stanislav Shwartsman
@@ -29,6 +33,16 @@
 #endif
 */
 
+<<<<<<< HEAD
+=======
+#if BX_SUPPORT_X86_64 == 0
+#define BX_64BIT_REG_RAX BX_32BIT_REG_EAX
+#define BX_64BIT_REG_RCX BX_32BIT_REG_ECX
+#define BX_64BIT_REG_RSI BX_32BIT_REG_ESI
+#define BX_64BIT_REG_RDI BX_32BIT_REG_EDI
+#endif
+
+>>>>>>> version-2.6.9
 void disassembler::Apw(const x86_insn *insn)
 {
   Bit16u imm16 = fetch_word();
@@ -44,6 +58,7 @@ void disassembler::Apd(const x86_insn *insn)
 }
 
 // 8-bit general purpose registers
+<<<<<<< HEAD
 void disassembler::AL_Reg(const x86_insn *insn) { dis_sprintf("%s", general_8bit_regname[rAX_REG]); }
 void disassembler::CL_Reg(const x86_insn *insn) { dis_sprintf("%s", general_8bit_regname[rCX_REG]); }
 
@@ -54,22 +69,43 @@ void disassembler::AX_Reg(const x86_insn *insn) {
 
 void disassembler::DX_Reg(const x86_insn *insn) {
   dis_sprintf("%s", general_16bit_regname[rDX_REG]);
+=======
+void disassembler::AL_Reg(const x86_insn *insn) { dis_sprintf("%s", general_8bit_regname[BX_8BIT_REG_AL]); }
+void disassembler::CL_Reg(const x86_insn *insn) { dis_sprintf("%s", general_8bit_regname[BX_8BIT_REG_CL]); }
+
+// 16-bit general purpose registers
+void disassembler::AX_Reg(const x86_insn *insn) {
+  dis_sprintf("%s", general_16bit_regname[BX_16BIT_REG_AX]);
+}
+
+void disassembler::DX_Reg(const x86_insn *insn) {
+  dis_sprintf("%s", general_16bit_regname[BX_16BIT_REG_DX]);
+>>>>>>> version-2.6.9
 }
 
 // 32-bit general purpose registers
 void disassembler::EAX_Reg(const x86_insn *insn)
 {
+<<<<<<< HEAD
   dis_sprintf("%s", general_32bit_regname[rAX_REG]);
+=======
+  dis_sprintf("%s", general_32bit_regname[BX_32BIT_REG_EAX]);
+>>>>>>> version-2.6.9
 }
 
 // 64-bit general purpose registers
 void disassembler::RAX_Reg(const x86_insn *insn)
 {
+<<<<<<< HEAD
   dis_sprintf("%s", general_64bit_regname[rAX_REG]);
+=======
+  dis_sprintf("%s", general_64bit_regname[BX_64BIT_REG_RAX]);
+>>>>>>> version-2.6.9
 }
 
 void disassembler::RCX_Reg(const x86_insn *insn)
 {
+<<<<<<< HEAD
   dis_sprintf("%s", general_64bit_regname[rCX_REG]);
 }
 
@@ -80,6 +116,18 @@ void disassembler::ES(const x86_insn *insn) { dis_sprintf("%s", segment_name[ES_
 void disassembler::SS(const x86_insn *insn) { dis_sprintf("%s", segment_name[SS_REG]); }
 void disassembler::FS(const x86_insn *insn) { dis_sprintf("%s", segment_name[FS_REG]); }
 void disassembler::GS(const x86_insn *insn) { dis_sprintf("%s", segment_name[GS_REG]); }
+=======
+  dis_sprintf("%s", general_64bit_regname[BX_64BIT_REG_RCX]);
+}
+
+// segment registers
+void disassembler::CS(const x86_insn *insn) { dis_sprintf("%s", segment_name[BX_SEG_REG_CS]); }
+void disassembler::DS(const x86_insn *insn) { dis_sprintf("%s", segment_name[BX_SEG_REG_DS]); }
+void disassembler::ES(const x86_insn *insn) { dis_sprintf("%s", segment_name[BX_SEG_REG_ES]); }
+void disassembler::SS(const x86_insn *insn) { dis_sprintf("%s", segment_name[BX_SEG_REG_SS]); }
+void disassembler::FS(const x86_insn *insn) { dis_sprintf("%s", segment_name[BX_SEG_REG_FS]); }
+void disassembler::GS(const x86_insn *insn) { dis_sprintf("%s", segment_name[BX_SEG_REG_GS]); }
+>>>>>>> version-2.6.9
 
 void disassembler::Sw(const x86_insn *insn) { dis_sprintf("%s", segment_name[insn->nnn]); }
 
@@ -493,7 +541,11 @@ void disassembler::OP_O(const x86_insn *insn, unsigned size)
   if (insn->is_seg_override())
     seg = segment_name[insn->seg_override];
   else
+<<<<<<< HEAD
     seg = segment_name[DS_REG];
+=======
+    seg = segment_name[BX_SEG_REG_DS];
+>>>>>>> version-2.6.9
 
   print_datasize(size);
 
@@ -557,6 +609,7 @@ void disassembler::OP_X(const x86_insn *insn, unsigned size)
   const char *rsi, *seg;
 
   if (insn->as_64) {
+<<<<<<< HEAD
     rsi = general_64bit_regname[rSI_REG];
   }
   else {
@@ -564,12 +617,25 @@ void disassembler::OP_X(const x86_insn *insn, unsigned size)
       rsi = general_32bit_regname[rSI_REG];
     else
       rsi = general_16bit_regname[rSI_REG];
+=======
+    rsi = general_64bit_regname[BX_64BIT_REG_RSI];
+  }
+  else {
+    if (insn->as_32)
+      rsi = general_32bit_regname[BX_32BIT_REG_ESI];
+    else
+      rsi = general_16bit_regname[BX_16BIT_REG_SI];
+>>>>>>> version-2.6.9
   }
 
   if (insn->is_seg_override())
     seg = segment_name[insn->seg_override];
   else
+<<<<<<< HEAD
     seg = segment_name[DS_REG];
+=======
+    seg = segment_name[BX_SEG_REG_DS];
+>>>>>>> version-2.6.9
 
   print_datasize(size);
 
@@ -589,6 +655,7 @@ void disassembler::OP_Y(const x86_insn *insn, unsigned size)
   const char *rdi;
 
   if (insn->as_64) {
+<<<<<<< HEAD
     rdi = general_64bit_regname[rDI_REG];
   }
   else {
@@ -596,14 +663,29 @@ void disassembler::OP_Y(const x86_insn *insn, unsigned size)
       rdi = general_32bit_regname[rDI_REG];
     else
       rdi = general_16bit_regname[rDI_REG];
+=======
+    rdi = general_64bit_regname[BX_64BIT_REG_RDI];
+  }
+  else {
+    if (insn->as_32)
+      rdi = general_32bit_regname[BX_32BIT_REG_EDI];
+    else
+      rdi = general_16bit_regname[BX_16BIT_REG_DI];
+>>>>>>> version-2.6.9
   }
 
   print_datasize(size);
 
   if (intel_mode)
+<<<<<<< HEAD
     dis_sprintf("%s:[%s]", segment_name[ES_REG], rdi);
   else
     dis_sprintf("%s:(%s)", segment_name[ES_REG], rdi);
+=======
+    dis_sprintf("%s:[%s]", segment_name[BX_SEG_REG_ES], rdi);
+  else
+    dis_sprintf("%s:(%s)", segment_name[BX_SEG_REG_ES], rdi);
+>>>>>>> version-2.6.9
 }
 
 void disassembler::Yb(const x86_insn *insn) { OP_Y(insn, B_SIZE); }
@@ -616,6 +698,7 @@ void disassembler::OP_sY(const x86_insn *insn, unsigned size)
   const char *rdi, *seg;
 
   if (insn->as_64) {
+<<<<<<< HEAD
     rdi = general_64bit_regname[rDI_REG];
   }
   else {
@@ -623,6 +706,15 @@ void disassembler::OP_sY(const x86_insn *insn, unsigned size)
       rdi = general_32bit_regname[rDI_REG];
     else
       rdi = general_16bit_regname[rDI_REG];
+=======
+    rdi = general_64bit_regname[BX_64BIT_REG_RDI];
+  }
+  else {
+    if (insn->as_32)
+      rdi = general_32bit_regname[BX_32BIT_REG_EDI];
+    else
+      rdi = general_16bit_regname[BX_16BIT_REG_DI];
+>>>>>>> version-2.6.9
   }
 
   print_datasize(size);
@@ -630,7 +722,11 @@ void disassembler::OP_sY(const x86_insn *insn, unsigned size)
   if (insn->is_seg_override())
     seg = segment_name[insn->seg_override];
   else
+<<<<<<< HEAD
     seg = segment_name[DS_REG];
+=======
+    seg = segment_name[BX_SEG_REG_DS];
+>>>>>>> version-2.6.9
 
   if (intel_mode)
     dis_sprintf("%s:[%s]", seg, rdi);

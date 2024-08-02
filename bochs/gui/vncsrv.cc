@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: vncsrv.cc 12606 2015-01-17 19:53:03Z vruppert $
+=======
+// $Id: vncsrv.cc 13075 2017-02-18 11:13:56Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2000  Psyon.Org!
@@ -7,7 +11,11 @@
 //    Donald Becker
 //    http://www.psyon.org
 //
+<<<<<<< HEAD
 //  Copyright (C) 2001-2015  The Bochs Project
+=======
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -52,11 +60,15 @@
 
 #include "icon_bochs.h"
 #include "font/vga.bitmap.h"
+<<<<<<< HEAD
 #if (BX_WITH_SDL || BX_WITH_SDL2 || BX_WITH_RFB) && !BX_PLUGINS
 extern unsigned char sdl_font8x8[256][8];
 #else
 #include "sdl.h" // 8x8 font for status text
 #endif
+=======
+#include "sdl.h" // 8x8 font for status text
+>>>>>>> version-2.6.9
 
 #define HAVE_LIBVNCSERVER
 
@@ -68,6 +80,10 @@ public:
   bx_vncsrv_gui_c(void) : screen(NULL) {}
   DECLARE_GUI_VIRTUAL_METHODS()
   DECLARE_GUI_NEW_VIRTUAL_METHODS()
+<<<<<<< HEAD
+=======
+  virtual void set_display_mode(disp_mode_t newmode);
+>>>>>>> version-2.6.9
   void get_capabilities(Bit16u *xres, Bit16u *yres, Bit16u *bpp);
   void statusbar_setitem_specific(int element, bx_bool active, bx_bool w);
   virtual void set_mouse_mode_absxy(bx_bool mode);
@@ -75,6 +91,12 @@ public:
   void show_ips(Bit32u ips_count);
 #endif
   rfbScreenInfoPtr screen;
+<<<<<<< HEAD
+=======
+private:
+  void vncMouseMove(int x, int y, int z, int bmask);
+  void vncKeyPressed(Bit32u key, int press_release);
+>>>>>>> version-2.6.9
 };
 
 // declare one instance of the gui object and call macro to insert the
@@ -120,6 +142,7 @@ static struct _rfbBitmaps {
     unsigned ydim;
 } rfbBitmaps[BX_MAX_PIXMAPS];
 
+<<<<<<< HEAD
 static unsigned rfbHeaderbarBitmapCount = 0;
 static struct _rfbHeaderbarBitmaps {
     unsigned int index;
@@ -130,6 +153,9 @@ static struct _rfbHeaderbarBitmaps {
 } rfbHeaderbarBitmaps[BX_MAX_HEADERBAR_ENTRIES];
 
 //Keyboard stuff
+=======
+// Keyboard/Mouse stuff
+>>>>>>> version-2.6.9
 #define KEYBOARD 1
 #define MOUSE    0
 #define MAX_KEY_EVENTS 512
@@ -210,8 +236,11 @@ void UpdateScreen(rfbPixel *newBits, int x, int y, int width, int height);
 void SendUpdate(int x, int y, int width, int height);
 void vncSetStatusText(int element, const char *text, bx_bool active, bx_bool w = 0);
 static Bit32u convertStringToRfbKey(const char *string);
+<<<<<<< HEAD
 void vncKeyPressed(Bit32u key, int press_release);
 void vncMouseMove(int x, int y, int z, int bmask);
+=======
+>>>>>>> version-2.6.9
 
 void clientgone(rfbClientPtr cl);
 enum rfbNewClientAction newclient(rfbClientPtr cl);
@@ -224,6 +253,7 @@ DWORD WINAPI vncShowIPSthread(LPVOID);
 #endif
 
 
+<<<<<<< HEAD
 // VNCSRV implementation of the bx_gui_c methods
 
 // ::SPECIFIC_INIT()
@@ -242,6 +272,12 @@ DWORD WINAPI vncShowIPSthread(LPVOID);
 void bx_vncsrv_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
 {
   unsigned char fc, vc;
+=======
+// VNCSRV implementation of the bx_gui_c methods (see nogui.cc for details)
+
+void bx_vncsrv_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
+{
+>>>>>>> version-2.6.9
   int i, timeout = 30;
 
   put("VNCSRV");
@@ -260,6 +296,7 @@ void bx_vncsrv_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
 
   for (i = 0; i < 256; i++) {
     for (int j = 0; j < 16; j++) {
+<<<<<<< HEAD
       vc = bx_vgafont[i].data[j];
       fc = 0;
       for (int b = 0; b < 8; b++) {
@@ -267,6 +304,9 @@ void bx_vncsrv_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
         vc >>= 1;
       }
       vga_charmap[i * 32 + j] = fc;
+=======
+      vga_charmap[i * 32 + j] = reverse_bitorder(bx_vgafont[i].data[j]);
+>>>>>>> version-2.6.9
     }
   }
 
@@ -300,7 +340,11 @@ void bx_vncsrv_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
     BX_PANIC(("Create VNC screen failed!"));
 
   screen->desktopName = "Bochs VNC Screen";
+<<<<<<< HEAD
   screen->frameBuffer = (char *) malloc(rfbWindowX * rfbWindowY * sizeof(rfbPixel));
+=======
+  screen->frameBuffer = new char[rfbWindowX * rfbWindowY * sizeof(rfbPixel)];
+>>>>>>> version-2.6.9
   screen->alwaysShared = TRUE;
   screen->ptrAddEvent = doptr;
   screen->kbdAddEvent = dokey;
@@ -354,6 +398,7 @@ void bx_vncsrv_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
 #endif
 
   new_gfx_api = 1;
+<<<<<<< HEAD
   dialog_caps = 0;
 }
 
@@ -363,6 +408,11 @@ void bx_vncsrv_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
 // the gui code can poll for keyboard, mouse, and other
 // relevant events.
 
+=======
+  console.present = 1;
+}
+
+>>>>>>> version-2.6.9
 void bx_vncsrv_gui_c::handle_events(void)
 {
   BX_LOCK(bKeyboardInUse);
@@ -387,19 +437,25 @@ void bx_vncsrv_gui_c::handle_events(void)
 #endif
 }
 
+<<<<<<< HEAD
 // ::FLUSH()
 //
 // Called periodically, requesting that the gui code flush all pending
 // screen update requests.
 
+=======
+>>>>>>> version-2.6.9
 void bx_vncsrv_gui_c::flush(void)
 {
 }
 
+<<<<<<< HEAD
 // ::CLEAR_SCREEN()
 //
 // Called to request that the VGA region is cleared.  Don't
 // clear the area that defines the headerbar.
+=======
+>>>>>>> version-2.6.9
 void bx_vncsrv_gui_c::clear_screen(void)
 {
   memset(&(screen->frameBuffer[rfbWindowX * rfbHeaderbarY * sizeof(rfbPixel)]),
@@ -407,6 +463,7 @@ void bx_vncsrv_gui_c::clear_screen(void)
   SendUpdate(0, rfbHeaderbarY, rfbDimensionX, rfbDimensionY);
 }
 
+<<<<<<< HEAD
 // ::TEXT_UPDATE()
 //
 // Called in a VGA text mode, to update the screen with
@@ -426,6 +483,8 @@ void bx_vncsrv_gui_c::clear_screen(void)
 // tm_info:  this structure contains information for additional
 //           features in text mode (cursor shape, line offset,...)
 
+=======
+>>>>>>> version-2.6.9
 void bx_vncsrv_gui_c::text_update(Bit8u *old_text, Bit8u *new_text,
         unsigned long cursor_x, unsigned long cursor_y,
         bx_vga_tminfo_t *tm_info)
@@ -529,6 +588,7 @@ int bx_vncsrv_gui_c::set_clipboard_text(char *text_snapshot, Bit32u len)
   return 0;
 }
 
+<<<<<<< HEAD
 // ::PALETTE_CHANGE()
 //
 // Allocate a color in the native GUI, for this color, and put
@@ -536,6 +596,8 @@ int bx_vncsrv_gui_c::set_clipboard_text(char *text_snapshot, Bit32u len)
 // returns: 0=no screen update needed (color map change has direct effect)
 //          1=screen updated needed (redraw using current colormap)
 
+=======
+>>>>>>> version-2.6.9
 bx_bool bx_vncsrv_gui_c::palette_change(U8 index, U8 red,
         U8 green, U8 blue)
 {
@@ -543,6 +605,7 @@ bx_bool bx_vncsrv_gui_c::palette_change(U8 index, U8 red,
   return 1;
 }
 
+<<<<<<< HEAD
 // ::GRAPHICS_TILE_UPDATE()
 //
 // Called to request that a tile of graphics be drawn to the
@@ -557,6 +620,8 @@ bx_bool bx_vncsrv_gui_c::palette_change(U8 index, U8 red,
 //
 // note: origin of tile and of window based on (0,0) being in the upper
 //       left of the window.
+=======
+>>>>>>> version-2.6.9
 void bx_vncsrv_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned y0)
 {
   rfbPixel *buf;
@@ -592,6 +657,7 @@ void bx_vncsrv_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned y0
   SendUpdate(x0, y0 + rfbHeaderbarY, rfbTileX, rfbTileY);
 }
 
+<<<<<<< HEAD
 // ::DIMENSION_UPDATE()
 //
 // Called when the VGA mode changes it's X,Y dimensions.
@@ -604,6 +670,8 @@ void bx_vncsrv_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned y0
 // fwidth : new VGA character width in text mode
 // bpp : bits per pixel in graphics mode
 
+=======
+>>>>>>> version-2.6.9
 void bx_vncsrv_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight,
         unsigned fwidth, unsigned bpp)
 {
@@ -613,6 +681,10 @@ void bx_vncsrv_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight,
     BX_PANIC(("%d bpp graphics mode not supported", bpp));
   }
   guest_textmode = (fheight > 0);
+<<<<<<< HEAD
+=======
+  guest_fsize = (fheight << 4) | fwidth;
+>>>>>>> version-2.6.9
   guest_xres = x;
   guest_yres = y;
   if (guest_textmode) {
@@ -645,6 +717,7 @@ void bx_vncsrv_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight,
   }
 }
 
+<<<<<<< HEAD
 // ::CREATE_BITMAP()
 //
 // Create a monochrome bitmap of size 'xdim' by 'ydim', which will
@@ -656,6 +729,8 @@ void bx_vncsrv_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight,
 // xdim: x dimension of bitmap
 // ydim: y dimension of bitmap
 
+=======
+>>>>>>> version-2.6.9
 unsigned bx_vncsrv_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim,
         unsigned ydim)
 {
@@ -663,7 +738,11 @@ unsigned bx_vncsrv_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim
     BX_ERROR(("too many pixmaps."));
     return 0;
   }
+<<<<<<< HEAD
   rfbBitmaps[rfbBitmapCount].bmap = (char *) malloc((xdim * ydim) / 8);
+=======
+  rfbBitmaps[rfbBitmapCount].bmap = new char[(xdim * ydim) / 8];
+>>>>>>> version-2.6.9
   rfbBitmaps[rfbBitmapCount].xdim = xdim;
   rfbBitmaps[rfbBitmapCount].ydim = ydim;
   memcpy(rfbBitmaps[rfbBitmapCount].bmap, bmap, (xdim * ydim) / 8);
@@ -672,6 +751,7 @@ unsigned bx_vncsrv_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim
   return (rfbBitmapCount - 1);
 }
 
+<<<<<<< HEAD
 // ::HEADERBAR_BITMAP()
 //
 // Called to install a bitmap in the bochs headerbar (toolbar).
@@ -686,11 +766,14 @@ unsigned bx_vncsrv_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim
 // f: a 'C' function pointer to callback when the mouse is clicked in
 //     the boundaries of this bitmap.
 
+=======
+>>>>>>> version-2.6.9
 unsigned bx_vncsrv_gui_c::headerbar_bitmap(unsigned bmap_id, unsigned alignment,
         void (*f)(void))
 {
   int hb_index;
 
+<<<<<<< HEAD
   if ((rfbHeaderbarBitmapCount + 1) > BX_MAX_HEADERBAR_ENTRIES) {
     return 0;
   }
@@ -708,10 +791,29 @@ unsigned bx_vncsrv_gui_c::headerbar_bitmap(unsigned bmap_id, unsigned alignment,
     rfbOriginRight += rfbBitmaps[bmap_id].xdim;
     rfbHeaderbarBitmaps[hb_index].xorigin = rfbOriginRight;
     rfbHeaderbarBitmaps[hb_index].yorigin = 0;
+=======
+  if ((bx_headerbar_entries + 1) > BX_MAX_HEADERBAR_ENTRIES) {
+    return 0;
+  }
+
+  hb_index = bx_headerbar_entries++;
+  bx_headerbar_entry[hb_index].bmap_id = bmap_id;
+  bx_headerbar_entry[hb_index].xdim = rfbBitmaps[bmap_id].xdim;
+  bx_headerbar_entry[hb_index].ydim = rfbBitmaps[bmap_id].ydim;
+  bx_headerbar_entry[hb_index].alignment = alignment;
+  bx_headerbar_entry[hb_index].f = f;
+  if (alignment == BX_GRAVITY_LEFT) {
+    bx_headerbar_entry[hb_index].xorigin = rfbOriginLeft;
+    rfbOriginLeft += rfbBitmaps[bmap_id].xdim;
+  } else { // BX_GRAVITY_RIGHT
+    rfbOriginRight += rfbBitmaps[bmap_id].xdim;
+    bx_headerbar_entry[hb_index].xorigin = rfbOriginRight;
+>>>>>>> version-2.6.9
   }
   return hb_index;
 }
 
+<<<<<<< HEAD
 // ::SHOW_HEADERBAR()
 //
 // Show (redraw) the current headerbar, which is composed of
@@ -739,6 +841,29 @@ void bx_vncsrv_gui_c::show_headerbar(void)
   }
   free(newBits);
   newBits = (char *) malloc(rfbWindowX * rfbStatusbarY / 8);
+=======
+void bx_vncsrv_gui_c::show_headerbar(void)
+{
+  char *newBits, value;
+  unsigned int i, xorigin, addr, bmap_id;
+
+  newBits = new char[rfbWindowX * rfbHeaderbarY];
+  memset(newBits, 0, (rfbWindowX * rfbHeaderbarY));
+  DrawBitmap(0, 0, rfbWindowX, rfbHeaderbarY, newBits, headerbar_fg,
+             headerbar_bg);
+  for (i = 0; i < bx_headerbar_entries; i++) {
+    if (bx_headerbar_entry[i].alignment == BX_GRAVITY_LEFT) {
+      xorigin = bx_headerbar_entry[i].xorigin;
+    } else {
+      xorigin = rfbWindowX - bx_headerbar_entry[i].xorigin;
+    }
+    bmap_id = bx_headerbar_entry[i].bmap_id;
+    DrawBitmap(xorigin, 0, rfbBitmaps[bmap_id].xdim, rfbBitmaps[bmap_id].ydim,
+               rfbBitmaps[bmap_id].bmap, headerbar_fg, headerbar_bg);
+  }
+  delete [] newBits;
+  newBits = new char[rfbWindowX * rfbStatusbarY / 8];
+>>>>>>> version-2.6.9
   memset(newBits, 0, (rfbWindowX * rfbStatusbarY / 8));
   for (i = 1; i < 12; i++) {
     addr = rfbStatusitemPos[i] / 8;
@@ -749,12 +874,17 @@ void bx_vncsrv_gui_c::show_headerbar(void)
   }
   DrawBitmap(0, rfbWindowY - rfbStatusbarY, rfbWindowX, rfbStatusbarY,
              newBits, headerbar_fg, headerbar_bg);
+<<<<<<< HEAD
   free(newBits);
+=======
+  delete [] newBits;
+>>>>>>> version-2.6.9
   for (i = 1; i <= statusitem_count; i++) {
     vncSetStatusText(i, statusitem[i - 1].text, rfbStatusitemActive[i]);
   }
 }
 
+<<<<<<< HEAD
 // ::REPLACE_BITMAP()
 //
 // Replace the bitmap installed in the headerbar ID slot 'hbar_id',
@@ -768,10 +898,13 @@ void bx_vncsrv_gui_c::show_headerbar(void)
 // hbar_id: headerbar slot ID
 // bmap_id: bitmap ID
 
+=======
+>>>>>>> version-2.6.9
 void bx_vncsrv_gui_c::replace_bitmap(unsigned hbar_id, unsigned bmap_id)
 {
   unsigned int xorigin;
 
+<<<<<<< HEAD
   if (bmap_id == rfbHeaderbarBitmaps[hbar_id].index)
     return;
   rfbHeaderbarBitmaps[hbar_id].index = bmap_id;
@@ -790,6 +923,20 @@ void bx_vncsrv_gui_c::replace_bitmap(unsigned hbar_id, unsigned bmap_id)
 //
 // Called before bochs terminates, to allow for a graceful
 // exit from the native GUI mechanism.
+=======
+  if (bmap_id == bx_headerbar_entry[hbar_id].bmap_id)
+    return;
+  bx_headerbar_entry[hbar_id].bmap_id = bmap_id;
+  if (bx_headerbar_entry[hbar_id].alignment == BX_GRAVITY_LEFT) {
+    xorigin = bx_headerbar_entry[hbar_id].xorigin;
+  } else {
+    xorigin = rfbWindowX - bx_headerbar_entry[hbar_id].xorigin;
+  }
+  DrawBitmap(xorigin, 0, rfbBitmaps[bmap_id].xdim, rfbBitmaps[bmap_id].ydim,
+             rfbBitmaps[bmap_id].bmap, headerbar_fg, headerbar_bg);
+}
+
+>>>>>>> version-2.6.9
 void bx_vncsrv_gui_c::exit(void)
 {
   unsigned int i;
@@ -802,7 +949,11 @@ void bx_vncsrv_gui_c::exit(void)
   BX_FINI_MUTEX(bKeyboardInUse);
 
   for (i = 0; i < rfbBitmapCount; i++) {
+<<<<<<< HEAD
     free(rfbBitmaps[i].bmap);
+=======
+    delete [] rfbBitmaps[i].bmap;
+>>>>>>> version-2.6.9
   }
 
   BX_DEBUG(("bx_vncsrv_gui_c::exit()"));
@@ -891,6 +1042,7 @@ void bx_vncsrv_gui_c::show_ips(Bit32u ips_count)
 }
 #endif
 
+<<<<<<< HEAD
 // VNCSRV specific functions
 
 BX_THREAD_FUNC(vncServerThreadInit, indata)
@@ -1019,6 +1171,51 @@ void vncSetStatusText(int element, const char *text, bx_bool active, bx_bool w)
 
   rfbMarkRectAsModified(theGui->screen, xleft, rfbWindowY - rfbStatusbarY + 1,
                         xleft + xsize, rfbWindowY - 2);
+=======
+void bx_vncsrv_gui_c::set_display_mode(disp_mode_t newmode)
+{
+  // if no mode change, do nothing.
+  if (disp_mode == newmode) return;
+  // remember the display mode for next time
+  disp_mode = newmode;
+  if ((newmode == DISP_MODE_SIM) && console_running()) {
+    console_cleanup();
+  }
+}
+
+void bx_vncsrv_gui_c::vncMouseMove(int x, int y, int z, int bmask)
+{
+  static int oldx = -1;
+  static int oldy = -1;
+  int dx, dy;
+
+  if ((oldx == 1) && (oldy == -1)) {
+    oldx = x;
+    oldy = y;
+    return;
+  }
+  if (y > rfbHeaderbarY) {
+    if (console_running())
+      return;
+    if (rfbMouseModeAbsXY) {
+      if ((y >= rfbHeaderbarY) && (y < (int)(rfbDimensionY + rfbHeaderbarY))) {
+        dx = x * 0x7fff / rfbDimensionX;
+        dy = (y - rfbHeaderbarY) * 0x7fff / rfbDimensionY;
+        DEV_mouse_motion(dx, dy, z, bmask, 1);
+      }
+    } else {
+      DEV_mouse_motion(x - oldx, oldy - y, z, bmask, 0);
+    }
+    oldx = x;
+    oldy = y;
+  } else {
+    if (bmask == 1) {
+      rfbKeyboardEvents = 0;
+      BX_UNLOCK(bKeyboardInUse);
+      headerbar_click(x);
+    }
+  }
+>>>>>>> version-2.6.9
 }
 
 // function to convert key names into rfb key values.
@@ -1085,10 +1282,24 @@ static Bit32u rfb_ascii_to_key_event[0x5f] = {
         BX_KEY_RIGHT_BRACKET, BX_KEY_GRAVE
 };
 
+<<<<<<< HEAD
 void vncKeyPressed(Bit32u key, int press_release)
 {
   Bit32u key_event;
 
+=======
+void bx_vncsrv_gui_c::vncKeyPressed(Bit32u key, int press_release)
+{
+  Bit32u key_event;
+
+  if (console_running() && press_release) {
+    if (((key >= XK_space) && (key <= XK_asciitilde)) ||
+        (key == XK_Return) || (key == XK_BackSpace)) {
+      console_key_enq((Bit8u)(key & 0xff));
+    }
+    return;
+  }
+>>>>>>> version-2.6.9
   if (!SIM->get_param_bool(BXPN_KBD_USEMAPPING)->get()) {
     if ((key >= XK_space) && (key <= XK_asciitilde)) {
       key_event = rfb_ascii_to_key_event[key - XK_space];
@@ -1339,6 +1550,7 @@ void vncKeyPressed(Bit32u key, int press_release)
   DEV_kbd_gen_scancode(key_event);
 }
 
+<<<<<<< HEAD
 void vncMouseMove(int x, int y, int z, int bmask)
 {
   static int oldx = -1;
@@ -1377,6 +1589,137 @@ void vncMouseMove(int x, int y, int z, int bmask)
       }
     }
   }
+=======
+// VNCSRV specific functions
+
+BX_THREAD_FUNC(vncServerThreadInit, indata)
+{
+  /* this is the blocking event loop, i.e. it never returns */
+  /* 40000 are the microseconds to wait on select(), i.e. 0.04 seconds*/
+  rfbRunEventLoop(theGui->screen, 40000, FALSE);
+
+  delete [] theGui->screen->frameBuffer;
+  rfbScreenCleanup(theGui->screen);
+
+  rfbServerDown = true;
+
+  BX_THREAD_EXIT;
+}
+
+void vncStartThread()
+{
+  BX_THREAD_ID(threadID);
+
+  BX_THREAD_CREATE(vncServerThreadInit, NULL, threadID);
+}
+
+void DrawBitmap(int x, int y, int width, int height, char *bmap,
+        rfbPixel fgcolor, rfbPixel bgcolor)
+{
+  rfbPixel *newBits;
+
+  newBits = new rfbPixel[width * height];
+  memset(newBits, 0, (width * height * sizeof(rfbPixel)));
+  for (int i = 0; i < (width * height) / 8; i++) {
+    newBits[i * 8 + 0] = (bmap[i] & 0x01) ? fgcolor : bgcolor;
+    newBits[i * 8 + 1] = (bmap[i] & 0x02) ? fgcolor : bgcolor;
+    newBits[i * 8 + 2] = (bmap[i] & 0x04) ? fgcolor : bgcolor;
+    newBits[i * 8 + 3] = (bmap[i] & 0x08) ? fgcolor : bgcolor;
+    newBits[i * 8 + 4] = (bmap[i] & 0x10) ? fgcolor : bgcolor;
+    newBits[i * 8 + 5] = (bmap[i] & 0x20) ? fgcolor : bgcolor;
+    newBits[i * 8 + 6] = (bmap[i] & 0x40) ? fgcolor : bgcolor;
+    newBits[i * 8 + 7] = (bmap[i] & 0x80) ? fgcolor : bgcolor;
+  }
+  UpdateScreen(newBits, x, y, width, height);
+  delete [] newBits;
+}
+
+void DrawChar(int x, int y, int width, int height, int fonty, char *bmap,
+        rfbPixel fgcolor, rfbPixel bgcolor, bx_bool gfxchar)
+{
+  static rfbPixel newBits[18 * 32];
+  unsigned char mask;
+  int bytes = width * height;
+  bx_bool dwidth = (width > 9);
+
+  for (int i = 0; i < bytes; i += width) {
+    mask = 0x80;
+    for (int j = 0; j < width; j++) {
+      if (mask > 0) {
+        newBits[i + j] = (bmap[fonty] & mask) ? fgcolor : bgcolor;
+      } else {
+        if (gfxchar) {
+          newBits[i + j] = (bmap[fonty] & 0x01) ? fgcolor : bgcolor;
+        } else {
+          newBits[i + j] = bgcolor;
+        }
+      }
+      if (!dwidth || (j & 1)) mask >>= 1;
+    }
+    fonty++;
+  }
+  UpdateScreen(newBits, x, y, width, height);
+}
+
+void UpdateScreen(rfbPixel *newBits, int x, int y, int width, int height)
+{
+  int i, x0, y0;
+  x0 = x;
+  y0 = y;
+  if ((unsigned)(x + width - 1) >= rfbWindowX) {
+    width = rfbWindowX - x + 1;
+  }
+  if ((unsigned)(y + height - 1) >= rfbWindowY) {
+    height = rfbWindowY - y + 1;
+  }
+  for (i = 0; i < height; i++) {
+    memcpy(&(theGui->screen->frameBuffer[y * rfbWindowX * sizeof(rfbPixel)
+             + x * sizeof(rfbPixel)]),
+           &newBits[i * width], width * sizeof(rfbPixel));
+    y++;
+  }
+  SendUpdate(x0, y0, width, height);
+}
+
+void SendUpdate(int x, int y, int width, int height)
+{
+  rfbMarkRectAsModified(theGui->screen, x, y, x + width, y + height);
+}
+
+void vncSetStatusText(int element, const char *text, bx_bool active, bx_bool w)
+{
+  char *newBits;
+  unsigned xleft, xsize, i, len;
+
+  rfbStatusitemActive[element] = active;
+  xleft = rfbStatusitemPos[element] + 2;
+  xsize = rfbStatusitemPos[element + 1] - xleft - 1;
+  newBits = new char[((xsize / 8) + 1) * (rfbStatusbarY - 2)];
+  memset(newBits, 0, ((xsize / 8) + 1) * (rfbStatusbarY - 2));
+  for (i = 0; i < (rfbStatusbarY - 2); i++) {
+    newBits[((xsize / 8) + 1) * i] = 0;
+  }
+
+  rfbPixel fgcolor = active ? headerbar_fg : status_gray_text;
+  rfbPixel bgcolor = 0;
+  if (element > 0) {
+    bgcolor = active ? (w ? status_led_red : status_led_green) : headerbar_bg;
+  } else {
+    bgcolor = headerbar_bg;
+  }
+  DrawBitmap(xleft, rfbWindowY - rfbStatusbarY + 1, xsize, rfbStatusbarY - 2,
+             newBits, fgcolor, bgcolor);
+
+  delete [] newBits;
+  len = ((element > 0) && (strlen(text) > 4)) ? 4 : strlen(text);
+  for (i = 0; i < len; i++) {
+    DrawChar(xleft + i * 8 + 2, rfbWindowY - rfbStatusbarY + 5, 8, 8, 0,
+             (char *) &sdl_font8x8[(unsigned) text[i]][0], fgcolor, bgcolor, 0);
+  }
+
+  rfbMarkRectAsModified(theGui->screen, xleft, rfbWindowY - rfbStatusbarY + 1,
+                        xleft + xsize, rfbWindowY - 2);
+>>>>>>> version-2.6.9
 }
 
 void newframebuffer(rfbScreenInfoPtr screen, int width, int height)
@@ -1384,10 +1727,17 @@ void newframebuffer(rfbScreenInfoPtr screen, int width, int height)
     unsigned char *oldfb, *newfb;
 
     oldfb = (unsigned char*) screen->frameBuffer;
+<<<<<<< HEAD
     newfb = (unsigned char*) malloc(width * height * sizeof(rfbPixel));
     rfbNewFramebuffer(screen, (char*) newfb, width, height, 8, 3,
             sizeof(rfbPixel));
     free(oldfb);
+=======
+    newfb = new unsigned char[width * height * sizeof(rfbPixel)];
+    rfbNewFramebuffer(screen, (char*) newfb, width, height, 8, 3,
+            sizeof(rfbPixel));
+    delete [] oldfb;
+>>>>>>> version-2.6.9
 
     /*** FIXME: Re-install cursor. ***/
 }

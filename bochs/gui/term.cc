@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: term.cc 12571 2014-12-18 20:29:37Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2000-2014  The Bochs Project
+=======
+// $Id: term.cc 13042 2017-01-15 11:44:43Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2000-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -33,6 +40,11 @@ extern "C" {
 #include <signal.h>
 };
 
+<<<<<<< HEAD
+=======
+#define BX_DEBUGGER_TERM (BX_DEBUGGER && !defined(__OpenBSD__))
+
+>>>>>>> version-2.6.9
 class bx_term_gui_c : public bx_gui_c {
 public:
   bx_term_gui_c(void) {}
@@ -50,7 +62,11 @@ public:
 // declare one instance of the gui object and call macro to insert the
 // plugin code
 static bx_term_gui_c *theGui = NULL;
+<<<<<<< HEAD
 #if BX_DEBUGGER
+=======
+#if BX_DEBUGGER_TERM
+>>>>>>> version-2.6.9
 static int scr_fd = -1;
 #endif
 IMPLEMENT_GUI_PLUGIN_CODE(term)
@@ -164,6 +180,7 @@ void bx_term_gui_c::sighandler(int signo)
   }
 }
 
+<<<<<<< HEAD
 // ::SPECIFIC_INIT()
 //
 // Called from gui.cc, once upon program startup, to allow for the
@@ -176,6 +193,9 @@ void bx_term_gui_c::sighandler(int signo)
 //     VGA window, showing floppy status, and other information.  It
 //     always assumes the width of the current VGA mode width, but
 //     it's height is defined by this parameter.
+=======
+// TERM implementation of the bx_gui_c methods (see nogui.cc for details)
+>>>>>>> version-2.6.9
 
 void bx_term_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
 {
@@ -183,7 +203,11 @@ void bx_term_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
 
   // the ask menu causes trouble
   io->set_log_action(LOGLEV_PANIC, ACT_FATAL);
+<<<<<<< HEAD
 #if !BX_DEBUGGER
+=======
+#if !BX_DEBUGGER_TERM
+>>>>>>> version-2.6.9
   // logfile should be different from stderr, otherwise terminal mode
   // really ends up having fun
   if (!strcmp(SIM->get_param_string(BXPN_LOG_FILENAME)->getptr(), "-"))
@@ -200,7 +224,11 @@ void bx_term_gui_c::specific_init(int argc, char **argv, unsigned headerbar_y)
   }
 #endif
   initscr();
+<<<<<<< HEAD
 #if BX_DEBUGGER
+=======
+#if BX_DEBUGGER_TERM
+>>>>>>> version-2.6.9
   stdin = old_stdin;
   stdout = old_stdout;
 #endif
@@ -422,12 +450,15 @@ void do_char(int character, int alt)
   }
 }
 
+<<<<<<< HEAD
 // ::HANDLE_EVENTS()
 //
 // Called periodically (vga_update_interval in .bochsrc) so the
 // the gui code can poll for keyboard, mouse, and other
 // relevant events.
 
+=======
+>>>>>>> version-2.6.9
 void bx_term_gui_c::handle_events(void)
 {
   int character;
@@ -437,21 +468,27 @@ void bx_term_gui_c::handle_events(void)
   }
 }
 
+<<<<<<< HEAD
 // ::FLUSH()
 //
 // Called periodically, requesting that the gui code flush all pending
 // screen update requests.
 
+=======
+>>>>>>> version-2.6.9
 void bx_term_gui_c::flush(void)
 {
   if (initialized) refresh();
 }
 
+<<<<<<< HEAD
 // ::CLEAR_SCREEN()
 //
 // Called to request that the VGA region is cleared.  Don't
 // clear the area that defines the headerbar.
 
+=======
+>>>>>>> version-2.6.9
 void bx_term_gui_c::clear_screen(void)
 {
   clear();
@@ -550,6 +587,7 @@ chtype get_term_char(Bit8u vga_char[])
   return term_char;
 }
 
+<<<<<<< HEAD
 // ::TEXT_UPDATE()
 //
 // Called in a VGA text mode, to update the screen with
@@ -569,6 +607,8 @@ chtype get_term_char(Bit8u vga_char[])
 // tm_info:  this structure contains information for additional
 //           features in text mode (cursor shape, line offset,...)
 
+=======
+>>>>>>> version-2.6.9
 void bx_term_gui_c::text_update(Bit8u *old_text, Bit8u *new_text,
         unsigned long cursor_x, unsigned long cursor_y,
         bx_vga_tminfo_t *tm_info)
@@ -648,6 +688,7 @@ int bx_term_gui_c::set_clipboard_text(char *text_snapshot, Bit32u len)
   return 0;
 }
 
+<<<<<<< HEAD
 // ::PALETTE_CHANGE()
 //
 // Allocate a color in the native GUI, for this color, and put
@@ -655,6 +696,8 @@ int bx_term_gui_c::set_clipboard_text(char *text_snapshot, Bit32u len)
 // returns: 0=no screen update needed (color map change has direct effect)
 //          1=screen updated needed (redraw using current colormap)
 
+=======
+>>>>>>> version-2.6.9
 bx_bool bx_term_gui_c::palette_change(Bit8u index, Bit8u red, Bit8u green, Bit8u blue)
 {
   BX_DEBUG(("color pallete request (%d,%d,%d,%d) ignored", index,red,green,blue));
@@ -662,6 +705,7 @@ bx_bool bx_term_gui_c::palette_change(Bit8u index, Bit8u red, Bit8u green, Bit8u
 }
 
 
+<<<<<<< HEAD
 // ::GRAPHICS_TILE_UPDATE()
 //
 // Called to request that a tile of graphics be drawn to the
@@ -677,10 +721,13 @@ bx_bool bx_term_gui_c::palette_change(Bit8u index, Bit8u red, Bit8u green, Bit8u
 // note: origin of tile and of window based on (0,0) being in the upper
 //       left of the window.
 
+=======
+>>>>>>> version-2.6.9
 void bx_term_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned y0)
 {
 }
 
+<<<<<<< HEAD
 // ::DIMENSION_UPDATE()
 //
 // Called when the VGA mode changes it's X,Y dimensions.
@@ -693,6 +740,8 @@ void bx_term_gui_c::graphics_tile_update(Bit8u *tile, unsigned x0, unsigned y0)
 // fwidth : new VGA character width in text mode
 // bpp : bits per pixel in graphics mode
 
+=======
+>>>>>>> version-2.6.9
 void bx_term_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, unsigned fwidth, unsigned bpp)
 {
   if (bpp > 8) {
@@ -724,6 +773,7 @@ void bx_term_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, u
   }
 }
 
+<<<<<<< HEAD
 // ::CREATE_BITMAP()
 //
 // Create a monochrome bitmap of size 'xdim' by 'ydim', which will
@@ -735,11 +785,14 @@ void bx_term_gui_c::dimension_update(unsigned x, unsigned y, unsigned fheight, u
 // xdim: x dimension of bitmap
 // ydim: y dimension of bitmap
 
+=======
+>>>>>>> version-2.6.9
 unsigned bx_term_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim, unsigned ydim)
 {
   return(0);
 }
 
+<<<<<<< HEAD
 // ::HEADERBAR_BITMAP()
 //
 // Called to install a bitmap in the bochs headerbar (toolbar).
@@ -754,20 +807,26 @@ unsigned bx_term_gui_c::create_bitmap(const unsigned char *bmap, unsigned xdim, 
 // f: a 'C' function pointer to callback when the mouse is clicked in
 //     the boundaries of this bitmap.
 
+=======
+>>>>>>> version-2.6.9
 unsigned bx_term_gui_c::headerbar_bitmap(unsigned bmap_id, unsigned alignment, void (*f)(void))
 {
   return(0);
 }
 
+<<<<<<< HEAD
 // ::SHOW_HEADERBAR()
 //
 // Show (redraw) the current headerbar, which is composed of
 // currently installed bitmaps.
 
+=======
+>>>>>>> version-2.6.9
 void bx_term_gui_c::show_headerbar(void)
 {
 }
 
+<<<<<<< HEAD
 // ::REPLACE_BITMAP()
 //
 // Replace the bitmap installed in the headerbar ID slot 'hbar_id',
@@ -781,10 +840,13 @@ void bx_term_gui_c::show_headerbar(void)
 // hbar_id: headerbar slot ID
 // bmap_id: bitmap ID
 
+=======
+>>>>>>> version-2.6.9
 void bx_term_gui_c::replace_bitmap(unsigned hbar_id, unsigned bmap_id)
 {
 }
 
+<<<<<<< HEAD
 // ::EXIT()
 //
 // Called before bochs terminates, to allow for a graceful
@@ -794,6 +856,12 @@ void bx_term_gui_c::exit(void)
 {
   if (!initialized) return;
 #if BX_DEBUGGER
+=======
+void bx_term_gui_c::exit(void)
+{
+  if (!initialized) return;
+#if BX_DEBUGGER_TERM
+>>>>>>> version-2.6.9
   if(scr_fd > 0)
     close(scr_fd);
 #endif

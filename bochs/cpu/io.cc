@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: io.cc 12619 2015-01-26 20:01:25Z sshwarts $
+=======
+// $Id: io.cc 12843 2015-09-28 18:37:35Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
@@ -38,10 +42,15 @@ Bit32u BX_CPU_C::FastRepINSW(bxInstruction_c *i, Bit32u dstOff, Bit16u port, Bit
   signed int pointerDelta;
   Bit8u *hostAddrDst;
   unsigned count;
+<<<<<<< HEAD
+=======
+  bx_address laddrDst;
+>>>>>>> version-2.6.9
 
   BX_ASSERT(BX_CPU_THIS_PTR cpu_mode != BX_MODE_LONG_64);
 
   bx_segment_reg_t *dstSegPtr = &BX_CPU_THIS_PTR sregs[BX_SEG_REG_ES];
+<<<<<<< HEAD
   if (!(dstSegPtr->cache.valid & SegAccessWOK))
     return 0;
   if ((dstOff | 0xfff) > dstSegPtr->cache.u.segment.limit_scaled)
@@ -52,6 +61,24 @@ Bit32u BX_CPU_C::FastRepINSW(bxInstruction_c *i, Bit32u dstOff, Bit16u port, Bit
   if (laddrDst & 1) return 0;
 
   hostAddrDst = v2h_write_byte(laddrDst, BX_CPU_THIS_PTR user_pl);
+=======
+  if (dstSegPtr->cache.valid & SegAccessWOK4G) {
+    laddrDst = dstOff;
+  }
+  else {
+    if (!(dstSegPtr->cache.valid & SegAccessWOK))
+      return 0;
+    if ((dstOff | 0xfff) > dstSegPtr->cache.u.segment.limit_scaled)
+      return 0;
+
+    laddrDst = get_laddr32(BX_SEG_REG_ES, dstOff);
+  }
+
+  // check that the address is word aligned
+  if (laddrDst & 1) return 0;
+
+  hostAddrDst = v2h_write_byte(laddrDst, USER_PL);
+>>>>>>> version-2.6.9
   // Check that native host access was not vetoed for that page
   if (!hostAddrDst) return 0;
 
@@ -111,10 +138,15 @@ Bit32u BX_CPU_C::FastRepOUTSW(bxInstruction_c *i, unsigned srcSeg, Bit32u srcOff
   signed int pointerDelta;
   Bit8u *hostAddrSrc;
   unsigned count;
+<<<<<<< HEAD
+=======
+  bx_address laddrSrc;
+>>>>>>> version-2.6.9
 
   BX_ASSERT(BX_CPU_THIS_PTR cpu_mode != BX_MODE_LONG_64);
 
   bx_segment_reg_t *srcSegPtr = &BX_CPU_THIS_PTR sregs[srcSeg];
+<<<<<<< HEAD
   if (!(srcSegPtr->cache.valid & SegAccessROK))
     return 0;
   if ((srcOff | 0xfff) > srcSegPtr->cache.u.segment.limit_scaled)
@@ -126,6 +158,24 @@ Bit32u BX_CPU_C::FastRepOUTSW(bxInstruction_c *i, unsigned srcSeg, Bit32u srcOff
 
   hostAddrSrc = v2h_read_byte(laddrSrc, BX_CPU_THIS_PTR user_pl);
 
+=======
+  if (srcSegPtr->cache.valid & SegAccessROK4G) {
+    laddrSrc = srcOff;
+  }
+  else {
+    if (!(srcSegPtr->cache.valid & SegAccessROK))
+      return 0;
+    if ((srcOff | 0xfff) > srcSegPtr->cache.u.segment.limit_scaled)
+      return 0;
+
+    laddrSrc = get_laddr32(srcSeg, srcOff);
+  }
+
+  // check that the address is word aligned
+  if (laddrSrc & 1) return 0;
+
+  hostAddrSrc = v2h_read_byte(laddrSrc, USER_PL);
+>>>>>>> version-2.6.9
   // Check that native host access was not vetoed for that page
   if (!hostAddrSrc) return 0;
 

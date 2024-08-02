@@ -1,10 +1,19 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: pcidev.h 10209 2011-02-24 22:05:47Z sshwarts $
+=======
+// $Id: pcidev.h 13150 2017-03-26 08:09:28Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 
 /*
  *  PCIDEV: PCI host device mapping
+<<<<<<< HEAD
  *  Copyright (C) 2003 - Frank Cornelis
+=======
+ *  Copyright (C) 2003       Frank Cornelis
+ *  Copyright (C) 2003-2017  The Bochs Project
+>>>>>>> version-2.6.9
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -39,7 +48,11 @@ struct region_struct {
   class bx_pcidev_c *pcidev;
 };
 
+<<<<<<< HEAD
 class bx_pcidev_c : public bx_devmodel_c, public bx_pci_device_stub_c {
+=======
+class bx_pcidev_c : public bx_pci_device_c {
+>>>>>>> version-2.6.9
 public:
   bx_pcidev_c();
   virtual ~bx_pcidev_c();

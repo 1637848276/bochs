@@ -1,11 +1,19 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: es1370.h 12717 2015-04-16 21:18:42Z vruppert $
+=======
+// $Id: es1370.h 13150 2017-03-26 08:09:28Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 // ES1370 soundcard support (ported from QEMU)
 //
 // Copyright (c) 2005  Vassili Karpov (malc)
+<<<<<<< HEAD
 // Copyright (C) 2011-2015  The Bochs Project
+=======
+// Copyright (C) 2011-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -77,11 +85,19 @@ typedef struct {
   Bit8u midicmd_index;
   Bit8u midi_buffer[256];
 
+<<<<<<< HEAD
+=======
+  int rt_conf_id;
+>>>>>>> version-2.6.9
   Bit8u devfunc;
 } bx_es1370_t;
 
 
+<<<<<<< HEAD
 class bx_es1370_c : public bx_devmodel_c, bx_pci_device_stub_c {
+=======
+class bx_es1370_c : public bx_pci_device_c {
+>>>>>>> version-2.6.9
 public:
   bx_es1370_c();
   virtual ~bx_es1370_c();
@@ -90,8 +106,12 @@ public:
   virtual void register_state(void);
   virtual void after_restore_state(void);
 
+<<<<<<< HEAD
   virtual Bit32u pci_read_handler(Bit8u address, unsigned io_len);
   virtual void   pci_write_handler(Bit8u address, Bit32u value, unsigned io_len);
+=======
+  virtual void pci_write_handler(Bit8u address, Bit32u value, unsigned io_len);
+>>>>>>> version-2.6.9
 
   // runtime options
   static Bit64s es1370_param_handler(bx_param_c *param, int set, Bit64s val);

@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: simd_int.h 12461 2014-08-05 20:18:42Z sshwarts $
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2011-2014 Stanislav Shwartsman
+=======
+// $Id: simd_int.h 13165 2017-03-31 07:34:08Z sshwarts $
+/////////////////////////////////////////////////////////////////////////
+//
+//   Copyright (c) 2011-2017 Stanislav Shwartsman
+>>>>>>> version-2.6.9
 //          Written by Stanislav Shwartsman [sshwarts at sourceforge net]
 //
 //  This library is free software; you can redistribute it and/or
@@ -1009,6 +1016,7 @@ BX_CPP_INLINE void xmm_pmaddwd(BxPackedXmmRegister *op1, const BxPackedXmmRegist
 {
   for(unsigned n=0; n<4; n++)
   {
+<<<<<<< HEAD
     if((op1->xmm32u(n) & op2->xmm32u(n)) == 0x80008000) {
       op1->xmm32u(n) = 0x80000000;
     }
@@ -1016,6 +1024,10 @@ BX_CPP_INLINE void xmm_pmaddwd(BxPackedXmmRegister *op1, const BxPackedXmmRegist
       op1->xmm32u(n) = Bit32s(op1->xmm16s(n*2))   * Bit32s(op2->xmm16s(n*2)) + 
                        Bit32s(op1->xmm16s(n*2+1)) * Bit32s(op2->xmm16s(n*2+1));
     }
+=======
+    op1->xmm32u(n) = Bit32s(op1->xmm16s(n*2))   * Bit32s(op2->xmm16s(n*2)) + 
+                     Bit32s(op1->xmm16s(n*2+1)) * Bit32s(op2->xmm16s(n*2+1));
+>>>>>>> version-2.6.9
   }
 }
 

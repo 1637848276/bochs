@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: crregs.cc 12481 2014-08-31 20:05:25Z sshwarts $
+=======
+// $Id: crregs.cc 12912 2016-05-02 17:33:06Z sshwarts $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 //
 //   Copyright (c) 2010-2014 Stanislav Shwartsman
@@ -872,7 +876,11 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LMSW_Ew(bxInstruction_c *i)
   }
   else {
     /* use RMAddr(i) to save address for VMexit */
+<<<<<<< HEAD
     RMAddr(i) = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+    RMAddr(i) = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
     /* pointer, segment address pair */
     msw = read_virtual_word(i->seg(), RMAddr(i));
   }
@@ -899,6 +907,16 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::LMSW_Ew(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SMSW_EwR(bxInstruction_c *i)
 {
+<<<<<<< HEAD
+=======
+#if BX_CPU_LEVEL >= 5
+  if (CPL!=0 && BX_CPU_THIS_PTR cr4.get_UMIP()) {
+    BX_ERROR(("SMSW: CPL != 0 causes #GP when CR4.UMIP set"));
+    exception(BX_GP_EXCEPTION, 0);
+  }
+#endif
+
+>>>>>>> version-2.6.9
   Bit32u msw = (Bit32u) read_CR0();  // handle CR0 shadow in VMX
 
   if (i->os32L()) {
@@ -913,8 +931,20 @@ BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SMSW_EwR(bxInstruction_c *i)
 
 BX_INSF_TYPE BX_CPP_AttrRegparmN(1) BX_CPU_C::SMSW_EwM(bxInstruction_c *i)
 {
+<<<<<<< HEAD
   Bit16u msw = read_CR0() & 0xffff;   // handle CR0 shadow in VMX
   bx_address eaddr = BX_CPU_CALL_METHODR(i->ResolveModrm, (i));
+=======
+#if BX_CPU_LEVEL >= 5
+  if (CPL!=0 && BX_CPU_THIS_PTR cr4.get_UMIP()) {
+    BX_ERROR(("SMSW: CPL != 0 causes #GP when CR4.UMIP set"));
+    exception(BX_GP_EXCEPTION, 0);
+  }
+#endif
+
+  Bit16u msw = read_CR0() & 0xffff;   // handle CR0 shadow in VMX
+  bx_address eaddr = BX_CPU_RESOLVE_ADDR(i);
+>>>>>>> version-2.6.9
   write_virtual_word(i->seg(), eaddr, msw);
 
   BX_NEXT_INSTR(i);
@@ -1112,8 +1142,17 @@ bx_bool BX_CPU_C::SetCR0(bxInstruction_c *i, bx_address val)
   // Modification of PG,PE flushes TLB cache according to docs.
   // Additionally, the TLB strategy is based on the current value of
   // WP, so if that changes we must also flush the TLB.
+<<<<<<< HEAD
   if ((oldCR0 & 0x80010001) != (val_32 & 0x80010001))
     TLB_flush(); // Flush Global entries also
+=======
+  if ((oldCR0 & 0x80010001) != (val_32 & 0x80010001)) {
+    TLB_flush(); // Flush Global entries also
+#if BX_SUPPORT_PKEYS
+    set_PKRU(BX_CPU_THIS_PTR pkru); // recalculate protection keys due to CR0.WP change
+#endif
+  }
+>>>>>>> version-2.6.9
 
   return 1;
 }
@@ -1125,6 +1164,10 @@ Bit32u BX_CPU_C::get_cr4_allow_mask(void)
 
   // CR4 bits definitions:
   //   [31-22] Reserved, Must be Zero
+<<<<<<< HEAD
+=======
+  //   [22]    PKE: Protection Keys Enable R/W
+>>>>>>> version-2.6.9
   //   [21]    SMAP: Supervisor Mode Access Prevention R/W
   //   [20]    SMEP: Supervisor Mode Execution Protection R/W
   //   [19]    Reserved, Must be Zero
@@ -1134,7 +1177,12 @@ Bit32u BX_CPU_C::get_cr4_allow_mask(void)
   //   [15]    Reserved, Must be Zero
   //   [14]    SMXE: SMX Extensions R/W
   //   [13]    VMXE: VMX Extensions R/W
+<<<<<<< HEAD
   //   [12-11] Reserved, Must be Zero
+=======
+  //   [12] Reserved, Must be Zero
+  //   [11]    UMIP: User Mode Instruction Prevention R/W
+>>>>>>> version-2.6.9
   //   [10]    OSXMMEXCPT: Operating System Unmasked Exception Support R/W
   //   [9]     OSFXSR: Operating System FXSAVE/FXRSTOR Support R/W
   //   [8]     PCE: Performance-Monitoring Counter Enable R/W
@@ -1207,6 +1255,15 @@ Bit32u BX_CPU_C::get_cr4_allow_mask(void)
 
   if (is_cpu_extension_supported(BX_ISA_SMAP))
     allowMask |= BX_CR4_SMAP_MASK;
+<<<<<<< HEAD
+=======
+
+  if (is_cpu_extension_supported(BX_ISA_PKU))
+    allowMask |= BX_CR4_PKE_MASK;
+
+  if (is_cpu_extension_supported(BX_ISA_UMIP))
+    allowMask |= BX_CR4_UMIP_MASK;
+>>>>>>> version-2.6.9
 #endif
 
   return allowMask;
@@ -1305,6 +1362,14 @@ bx_bool BX_CPU_C::SetCR4(bxInstruction_c *i, bx_address val)
 #endif
 #endif
 
+<<<<<<< HEAD
+=======
+  // re-calculate protection keys if CR4.PKE was set
+#if BX_SUPPORT_PKEYS
+  set_PKRU(BX_CPU_THIS_PTR pkru);
+#endif
+
+>>>>>>> version-2.6.9
   return 1;
 }
 #endif // BX_CPU_LEVEL >= 5

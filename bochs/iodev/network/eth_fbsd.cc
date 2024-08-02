@@ -1,8 +1,15 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: eth_fbsd.cc 12733 2015-05-02 08:42:44Z vruppert $
 /////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) 2001-2015  The Bochs Project
+=======
+// $Id: eth_fbsd.cc 13160 2017-03-30 18:08:15Z vruppert $
+/////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (C) 2001-2017  The Bochs Project
+>>>>>>> version-2.6.9
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -53,6 +60,24 @@
 
 #if BX_NETWORKING && BX_NETMOD_FBSD
 
+<<<<<<< HEAD
+=======
+// network driver plugin entry points
+
+int CDECL libfbsd_net_plugin_init(plugin_t *plugin, plugintype_t type)
+{
+  // Nothing here yet
+  return 0; // Success
+}
+
+void CDECL libfbsd_net_plugin_fini(void)
+{
+  // Nothing here yet
+}
+
+// network driver implementation
+
+>>>>>>> version-2.6.9
 #define LOG_THIS netdev->
 
 #define BX_ETH_FBSD_LOGGING 0
@@ -110,7 +135,11 @@ private:
   void rx_timer(void);
   int rx_timer_index;
   struct bpf_insn filter[BX_BPF_INSNSIZ];
+<<<<<<< HEAD
   FILE *ne2klog, *ne2klog_txt;
+=======
+  FILE *pktlog, *pktlog_txt;
+>>>>>>> version-2.6.9
 };
 
 
@@ -270,13 +299,19 @@ bx_fbsd_pktmover_c::bx_fbsd_pktmover_c(const char *netif,
 
   // Start the rx poll
   this->rx_timer_index =
+<<<<<<< HEAD
     bx_pc_system.register_timer(this, this->rx_timer_handler, BX_BPF_POLL,
                                 1, 1, "eth_fbsd"); // continuous, active
+=======
+    DEV_register_timer(this, this->rx_timer_handler, BX_BPF_POLL, 1, 1,
+                       "eth_fbsd"); // continuous, active
+>>>>>>> version-2.6.9
 
   this->rxh    = rxh;
   this->rxstat = rxstat;
 
 #if BX_ETH_FBSD_LOGGING
+<<<<<<< HEAD
   // eventually Bryce wants ne2klog to dump in pcap format so that
   // tcpdump -r FILE can read it and interpret packets.
   ne2klog = fopen("ne2k.raw", "wb");
@@ -290,6 +325,21 @@ bx_fbsd_pktmover_c::bx_fbsd_pktmover_c(const char *netif,
     fprintf(ne2klog_txt, "%02x%s", 0xff & macaddr[i], i<5?":" : "");
   fprintf(ne2klog_txt, "\n--\n");
   fflush(ne2klog_txt);
+=======
+  // eventually Bryce wants pktlog to dump in pcap format so that
+  // tcpdump -r FILE can read it and interpret packets.
+  pktlog = fopen("eth_fbsd-log.raw", "wb");
+  if (!pktlog) BX_PANIC(("open eth_fbsd-log.raw failed"));
+  pktlog_txt = fopen("eth_fbsd-log.txt", "wb");
+  if (!pktlog_txt) BX_PANIC(("open eth_fbsd-log.txt failed"));
+  fprintf(pktlog_txt, "fbsd packetmover readable log file\n");
+  fprintf(pktlog_txt, "net IF = %s\n", netif);
+  fprintf(pktlog_txt, "MAC address = ");
+  for (int i=0; i<6; i++)
+    fprintf(pktlog_txt, "%02x%s", 0xff & macaddr[i], i<5?":" : "");
+  fprintf(pktlog_txt, "\n--\n");
+  fflush(pktlog_txt);
+>>>>>>> version-2.6.9
 #endif
 }
 
@@ -301,12 +351,21 @@ bx_fbsd_pktmover_c::sendpkt(void *buf, unsigned io_len)
   BX_DEBUG(("sendpkt length %u", io_len));
   // dump raw bytes to a file, eventually dump in pcap format so that
   // tcpdump -r FILE can interpret them for us.
+<<<<<<< HEAD
   int n = fwrite(buf, io_len, 1, ne2klog);
   if (n != 1) BX_ERROR(("fwrite to ne2klog failed", io_len));
   // dump packet in hex into an ascii log file
   write_pktlog_txt(ne2klog_txt, (const Bit8u *)buf, io_len, 0);
   // flush log so that we see the packets as they arrive w/o buffering
   fflush(ne2klog);
+=======
+  int n = fwrite(buf, io_len, 1, pktlog);
+  if (n != 1) BX_ERROR(("fwrite to pktlog failed", io_len));
+  // dump packet in hex into an ascii log file
+  write_pktlog_txt(pktlog_txt, (const Bit8u *)buf, io_len, 0);
+  // flush log so that we see the packets as they arrive w/o buffering
+  fflush(pktlog);
+>>>>>>> version-2.6.9
 #endif
   int status;
 
@@ -364,6 +423,7 @@ bx_fbsd_pktmover_c::rx_timer(void)
     BX_DEBUG(("receive packet length %u", nbytes));
     // dump raw bytes to a file, eventually dump in pcap format so that
     // tcpdump -r FILE can interpret them for us.
+<<<<<<< HEAD
     if (1 != fwrite(bhdr, bhdr->bh_caplen, 1, ne2klog)) {
       BX_PANIC(("fwrite to ne2klog failed: %s", strerror(errno)));
     }
@@ -371,6 +431,15 @@ bx_fbsd_pktmover_c::rx_timer(void)
     write_pktlog_txt(ne2klog_txt, rxbuf, bhdr->bh_caplen, 1);
     // flush log so that we see the packets as they arrive w/o buffering
     fflush (this->ne2klog);
+=======
+    if (1 != fwrite(bhdr, bhdr->bh_caplen, 1, pktlog)) {
+      BX_PANIC(("fwrite to pktlog failed: %s", strerror(errno)));
+    }
+    // dump packet in hex into an ascii log file
+    write_pktlog_txt(pktlog_txt, rxbuf, bhdr->bh_caplen, 1);
+    // flush log so that we see the packets as they arrive w/o buffering
+    fflush (this->pktlog);
+>>>>>>> version-2.6.9
 #endif
 
     // Advance bhdr and phdr pointers to next packet

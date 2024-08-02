@@ -1,5 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 // $Id: vbox.cc 12698 2015-03-29 14:27:32Z vruppert $
+=======
+// $Id: vbox.cc 13055 2017-01-30 19:08:37Z vruppert $
+>>>>>>> version-2.6.9
 /////////////////////////////////////////////////////////////////////////
 
 /*
@@ -9,8 +13,13 @@
  * Author: Benjamin D Lunt
  * Contact: fys [at] fysnet [dot] net
  *
+<<<<<<< HEAD
  * Copyright (C) 2015 Benjamin D Lunt.
  * Copyright (C) 2006-2015  The Bochs Project
+=======
+ * Copyright (C) 2015       Benjamin D Lunt.
+ * Copyright (C) 2006-2017  The Bochs Project
+>>>>>>> version-2.6.9
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -66,7 +75,11 @@ vbox_image_t::vbox_image_t()
   header_dirty(0)
 {
   if (sizeof(_VBOX_VDI_Header) != 512) {
+<<<<<<< HEAD
     BX_PANIC(("system error: invalid header structure size"));
+=======
+    BX_FATAL(("system error: invalid header structure size"));
+>>>>>>> version-2.6.9
   }
 }
 
@@ -167,7 +180,11 @@ void vbox_image_t::close()
   delete [] mtlb; mtlb = 0;
   delete [] block_data; block_data = 0;
 
+<<<<<<< HEAD
   ::close(file_descriptor);
+=======
+  bx_close_image(file_descriptor, pathname);
+>>>>>>> version-2.6.9
   file_descriptor = -1;
 }
 
@@ -191,6 +208,10 @@ Bit64s vbox_image_t::lseek(Bit64s offset, int whence)
 
 ssize_t vbox_image_t::read(void *buf, size_t count)
 {
+<<<<<<< HEAD
+=======
+  char *cbuf = (char*)buf;
+>>>>>>> version-2.6.9
   ssize_t total = 0;
   while (count > 0) {
     off_t readable = perform_seek();
@@ -201,10 +222,18 @@ ssize_t vbox_image_t::read(void *buf, size_t count)
 
     off_t copysize = ((off_t)count > readable) ? readable : count;
     off_t offset = current_offset & (header.block_size - 1);
+<<<<<<< HEAD
     memcpy(buf, block_data + (size_t) offset, (size_t) copysize);
 
     current_offset += copysize;
     total += (long) copysize;
+=======
+    memcpy(cbuf, block_data + (size_t) offset, (size_t) copysize);
+
+    current_offset += copysize;
+    total += (long) copysize;
+    cbuf += copysize;
+>>>>>>> version-2.6.9
     count -= (size_t) copysize;
   }
 
@@ -213,6 +242,10 @@ ssize_t vbox_image_t::read(void *buf, size_t count)
 
 ssize_t vbox_image_t::write(const void *buf, size_t count)
 {
+<<<<<<< HEAD
+=======
+  char *cbuf = (char*)buf;
+>>>>>>> version-2.6.9
   ssize_t total = 0;
   while (count > 0) {
     off_t writable = perform_seek();
@@ -223,10 +256,18 @@ ssize_t vbox_image_t::write(const void *buf, size_t count)
 
     off_t writesize = ((off_t)count > writable) ? writable : count;
     off_t offset = current_offset & (header.block_size - 1);
+<<<<<<< HEAD
     memcpy(block_data + offset, buf, (size_t) writesize);
 
     current_offset += writesize;
     total += (long) writesize;
+=======
+    memcpy(block_data + offset, cbuf, (size_t) writesize);
+
+    current_offset += writesize;
+    total += (long) writesize;
+    cbuf += writesize;
+>>>>>>> version-2.6.9
     count -= (size_t) writesize;
     is_dirty = 1;
   }
